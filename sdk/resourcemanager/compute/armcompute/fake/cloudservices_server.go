@@ -24,7 +24,7 @@ import (
 )
 
 // CloudServicesServer is a fake server for instances of the armcompute.CloudServicesClient type.
-type CloudServicesServer struct {
+type CloudServicesServer struct{
 	// BeginCreateOrUpdate is the fake for method CloudServicesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters armcompute.CloudService, options *armcompute.CloudServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -76,6 +76,7 @@ type CloudServicesServer struct {
 	// BeginUpdate is the fake for method CloudServicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters armcompute.CloudServiceUpdate, options *armcompute.CloudServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCloudServicesServerTransport creates a new instance of CloudServicesServerTransport with the provided implementation.
@@ -83,36 +84,36 @@ type CloudServicesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServicesServerTransport(srv *CloudServicesServer) *CloudServicesServerTransport {
 	return &CloudServicesServerTransport{
-		srv:                  srv,
-		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]](),
-		beginDelete:          newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]](),
 		beginDeleteInstances: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse]](),
-		newListPager:         newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]](),
-		newListAllPager:      newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]](),
-		beginPowerOff:        newTracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]](),
-		beginRebuild:         newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]](),
-		beginReimage:         newTracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]](),
-		beginRestart:         newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]](),
-		beginStart:           newTracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]](),
-		beginUpdate:          newTracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]](),
+		newListAllPager: newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]](),
+		beginPowerOff: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]](),
+		beginRebuild: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]](),
+		beginReimage: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]](),
+		beginRestart: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]](),
+		beginStart: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]](),
 	}
 }
 
 // CloudServicesServerTransport connects instances of armcompute.CloudServicesClient to instances of CloudServicesServer.
 // Don't use this type directly, use NewCloudServicesServerTransport instead.
 type CloudServicesServerTransport struct {
-	srv                  *CloudServicesServer
-	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]]
-	beginDelete          *tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]]
+	srv *CloudServicesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]]
 	beginDeleteInstances *tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse]]
-	newListPager         *tracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]]
-	newListAllPager      *tracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]]
-	beginPowerOff        *tracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]]
-	beginRebuild         *tracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]]
-	beginReimage         *tracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]]
-	beginRestart         *tracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]]
-	beginStart           *tracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]]
-	beginUpdate          *tracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]]
+	newListAllPager *tracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]]
+	beginPowerOff *tracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]]
+	beginRebuild *tracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]]
+	beginReimage *tracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]]
+	beginRestart *tracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]]
+	beginStart *tracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServicesServerTransport.
@@ -170,28 +171,28 @@ func (c *CloudServicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.CloudService](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.CloudService](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -218,24 +219,24 @@ func (c *CloudServicesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		c.beginDelete.add(req, beginDelete)
 	}
@@ -262,34 +263,34 @@ func (c *CloudServicesServerTransport) dispatchBeginDeleteInstances(req *http.Re
 	}
 	beginDeleteInstances := c.beginDeleteInstances.get(req)
 	if beginDeleteInstances == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/delete`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/delete`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.CloudServicesClientBeginDeleteInstancesOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armcompute.CloudServicesClientBeginDeleteInstancesOptions{
+			Parameters: &body,
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.CloudServicesClientBeginDeleteInstancesOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcompute.CloudServicesClientBeginDeleteInstancesOptions{
-				Parameters: &body,
-			}
-		}
-		respr, errRespr := c.srv.BeginDeleteInstances(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := c.srv.BeginDeleteInstances(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDeleteInstances = &respr
 		c.beginDeleteInstances.add(req, beginDeleteInstances)
 	}
@@ -337,8 +338,7 @@ func (c *CloudServicesServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudService, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -370,8 +370,7 @@ func (c *CloudServicesServerTransport) dispatchGetInstanceView(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudServiceInstanceView, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -382,17 +381,17 @@ func (c *CloudServicesServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListPager(resourceGroupNameUnescaped, nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CloudServicesClientListResponse, createLink func() string) {
@@ -419,13 +418,13 @@ func (c *CloudServicesServerTransport) dispatchNewListAllPager(req *http.Request
 	}
 	newListAllPager := c.newListAllPager.get(req)
 	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListAllPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := c.srv.NewListAllPager(nil)
 		newListAllPager = &resp
 		c.newListAllPager.add(req, newListAllPager)
 		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armcompute.CloudServicesClientListAllResponse, createLink func() string) {
@@ -452,24 +451,24 @@ func (c *CloudServicesServerTransport) dispatchBeginPowerOff(req *http.Request) 
 	}
 	beginPowerOff := c.beginPowerOff.get(req)
 	if beginPowerOff == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/poweroff`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginPowerOff(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/poweroff`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginPowerOff(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginPowerOff = &respr
 		c.beginPowerOff.add(req, beginPowerOff)
 	}
@@ -496,34 +495,34 @@ func (c *CloudServicesServerTransport) dispatchBeginRebuild(req *http.Request) (
 	}
 	beginRebuild := c.beginRebuild.get(req)
 	if beginRebuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebuild`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebuild`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.CloudServicesClientBeginRebuildOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armcompute.CloudServicesClientBeginRebuildOptions{
+			Parameters: &body,
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.CloudServicesClientBeginRebuildOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcompute.CloudServicesClientBeginRebuildOptions{
-				Parameters: &body,
-			}
-		}
-		respr, errRespr := c.srv.BeginRebuild(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := c.srv.BeginRebuild(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRebuild = &respr
 		c.beginRebuild.add(req, beginRebuild)
 	}
@@ -550,34 +549,34 @@ func (c *CloudServicesServerTransport) dispatchBeginReimage(req *http.Request) (
 	}
 	beginReimage := c.beginReimage.get(req)
 	if beginReimage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.CloudServicesClientBeginReimageOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armcompute.CloudServicesClientBeginReimageOptions{
+			Parameters: &body,
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.CloudServicesClientBeginReimageOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcompute.CloudServicesClientBeginReimageOptions{
-				Parameters: &body,
-			}
-		}
-		respr, errRespr := c.srv.BeginReimage(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := c.srv.BeginReimage(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginReimage = &respr
 		c.beginReimage.add(req, beginReimage)
 	}
@@ -604,34 +603,34 @@ func (c *CloudServicesServerTransport) dispatchBeginRestart(req *http.Request) (
 	}
 	beginRestart := c.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.CloudServicesClientBeginRestartOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armcompute.CloudServicesClientBeginRestartOptions{
+			Parameters: &body,
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.RoleInstances](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.CloudServicesClientBeginRestartOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcompute.CloudServicesClientBeginRestartOptions{
-				Parameters: &body,
-			}
-		}
-		respr, errRespr := c.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := c.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRestart = &respr
 		c.beginRestart.add(req, beginRestart)
 	}
@@ -658,24 +657,24 @@ func (c *CloudServicesServerTransport) dispatchBeginStart(req *http.Request) (*h
 	}
 	beginStart := c.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginStart(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginStart(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginStart = &respr
 		c.beginStart.add(req, beginStart)
 	}
@@ -702,28 +701,28 @@ func (c *CloudServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.CloudServiceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.CloudServiceUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, cloudServiceNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		c.beginUpdate.add(req, beginUpdate)
 	}
@@ -743,3 +742,4 @@ func (c *CloudServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*
 
 	return resp, nil
 }
+

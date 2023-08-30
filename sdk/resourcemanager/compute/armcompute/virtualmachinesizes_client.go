@@ -23,7 +23,7 @@ import (
 // VirtualMachineSizesClient contains the methods for the VirtualMachineSizes group.
 // Don't use this type directly, use NewVirtualMachineSizesClient() instead.
 type VirtualMachineSizesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,24 +39,24 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 	}
 	client := &VirtualMachineSizesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - location - The location upon which virtual-machine-sizes is queried.
 //   - options - VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.NewListPager
 //     method.
-func (client *VirtualMachineSizesClient) NewListPager(location string, options *VirtualMachineSizesClientListOptions) *runtime.Pager[VirtualMachineSizesClientListResponse] {
+func (client *VirtualMachineSizesClient) NewListPager(location string, options *VirtualMachineSizesClientListOptions) (*runtime.Pager[VirtualMachineSizesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineSizesClientListResponse]{
 		More: func(page VirtualMachineSizesClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineSizesClientListResponse) (VirtualMachineSizesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineSizesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineSizesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, location, options)
 			if err != nil {
 				return VirtualMachineSizesClientListResponse{}, err
@@ -90,7 +90,7 @@ func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -104,3 +104,4 @@ func (client *VirtualMachineSizesClient) listHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
+

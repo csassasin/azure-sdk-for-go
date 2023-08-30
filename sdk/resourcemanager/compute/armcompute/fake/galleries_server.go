@@ -23,7 +23,7 @@ import (
 )
 
 // GalleriesServer is a fake server for instances of the armcompute.GalleriesClient type.
-type GalleriesServer struct {
+type GalleriesServer struct{
 	// BeginCreateOrUpdate is the fake for method GalleriesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, galleryName string, gallery armcompute.Gallery, options *armcompute.GalleriesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type GalleriesServer struct {
 	// BeginUpdate is the fake for method GalleriesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, gallery armcompute.GalleryUpdate, options *armcompute.GalleriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewGalleriesServerTransport creates a new instance of GalleriesServerTransport with the provided implementation.
@@ -54,24 +55,24 @@ type GalleriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGalleriesServerTransport(srv *GalleriesServer) *GalleriesServerTransport {
 	return &GalleriesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]](),
 	}
 }
 
 // GalleriesServerTransport connects instances of armcompute.GalleriesClient to instances of GalleriesServer.
 // Don't use this type directly, use NewGalleriesServerTransport instead.
 type GalleriesServerTransport struct {
-	srv                         *GalleriesServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]]
+	srv *GalleriesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleriesServerTransport.
@@ -115,28 +116,28 @@ func (g *GalleriesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.Gallery](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.Gallery](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		g.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -163,24 +164,24 @@ func (g *GalleriesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		g.beginDelete.add(req, beginDelete)
 	}
@@ -246,8 +247,7 @@ func (g *GalleriesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Gallery, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -258,13 +258,13 @@ func (g *GalleriesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := g.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := g.srv.NewListPager(nil)
 		newListPager = &resp
 		g.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.GalleriesClientListResponse, createLink func() string) {
@@ -291,17 +291,17 @@ func (g *GalleriesServerTransport) dispatchNewListByResourceGroupPager(req *http
 	}
 	newListByResourceGroupPager := g.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := g.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		g.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.GalleriesClientListByResourceGroupResponse, createLink func() string) {
@@ -328,28 +328,28 @@ func (g *GalleriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.GalleryUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.GalleryUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		g.beginUpdate.add(req, beginUpdate)
 	}
@@ -369,3 +369,4 @@ func (g *GalleriesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 
 	return resp, nil
 }
+

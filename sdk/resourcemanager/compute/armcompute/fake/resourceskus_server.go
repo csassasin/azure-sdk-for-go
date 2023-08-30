@@ -22,10 +22,11 @@ import (
 )
 
 // ResourceSKUsServer is a fake server for instances of the armcompute.ResourceSKUsClient type.
-type ResourceSKUsServer struct {
+type ResourceSKUsServer struct{
 	// NewListPager is the fake for method ResourceSKUsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armcompute.ResourceSKUsClientListOptions) (resp azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse])
+
 }
 
 // NewResourceSKUsServerTransport creates a new instance of ResourceSKUsServerTransport with the provided implementation.
@@ -33,7 +34,7 @@ type ResourceSKUsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResourceSKUsServerTransport(srv *ResourceSKUsServer) *ResourceSKUsServerTransport {
 	return &ResourceSKUsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]](),
 	}
 }
@@ -41,7 +42,7 @@ func NewResourceSKUsServerTransport(srv *ResourceSKUsServer) *ResourceSKUsServer
 // ResourceSKUsServerTransport connects instances of armcompute.ResourceSKUsClient to instances of ResourceSKUsServer.
 // Don't use this type directly, use NewResourceSKUsServerTransport instead.
 type ResourceSKUsServerTransport struct {
-	srv          *ResourceSKUsServer
+	srv *ResourceSKUsServer
 	newListPager *tracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]]
 }
 
@@ -76,31 +77,31 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/skus`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	includeExtendedLocationsUnescaped, err := url.QueryUnescape(qp.Get("includeExtendedLocations"))
+	if err != nil {
+		return nil, err
+	}
+	includeExtendedLocationsParam := getOptional(includeExtendedLocationsUnescaped)
+	var options *armcompute.ResourceSKUsClientListOptions
+	if filterParam != nil || includeExtendedLocationsParam != nil {
+		options = &armcompute.ResourceSKUsClientListOptions{
+			Filter: filterParam,
+			IncludeExtendedLocations: includeExtendedLocationsParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		includeExtendedLocationsUnescaped, err := url.QueryUnescape(qp.Get("includeExtendedLocations"))
-		if err != nil {
-			return nil, err
-		}
-		includeExtendedLocationsParam := getOptional(includeExtendedLocationsUnescaped)
-		var options *armcompute.ResourceSKUsClientListOptions
-		if filterParam != nil || includeExtendedLocationsParam != nil {
-			options = &armcompute.ResourceSKUsClientListOptions{
-				Filter:                   filterParam,
-				IncludeExtendedLocations: includeExtendedLocationsParam,
-			}
-		}
-		resp := r.srv.NewListPager(options)
+	}
+resp := r.srv.NewListPager(options)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.ResourceSKUsClientListResponse, createLink func() string) {
@@ -120,3 +121,4 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	return resp, nil
 }
+

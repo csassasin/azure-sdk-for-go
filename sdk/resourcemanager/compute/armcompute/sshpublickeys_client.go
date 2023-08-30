@@ -23,7 +23,7 @@ import (
 // SSHPublicKeysClient contains the methods for the SSHPublicKeys group.
 // Don't use this type directly, use NewSSHPublicKeysClient() instead.
 type SSHPublicKeysClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &SSHPublicKeysClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,7 +47,7 @@ func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCreden
 // Create - Creates a new SSH public key resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - sshPublicKeyName - The name of the SSH public key.
 //   - parameters - Parameters supplied to create the SSH public key.
@@ -94,12 +94,12 @@ func (client *SSHPublicKeysClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -115,7 +115,7 @@ func (client *SSHPublicKeysClient) createHandleResponse(resp *http.Response) (SS
 // Delete - Delete an SSH public key.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - sshPublicKeyName - The name of the SSH public key.
 //   - options - SSHPublicKeysClientDeleteOptions contains the optional parameters for the SSHPublicKeysClient.Delete method.
@@ -160,7 +160,7 @@ func (client *SSHPublicKeysClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *SSHPublicKeysClient) deleteCreateRequest(ctx context.Context, reso
 // SSH public key resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - sshPublicKeyName - The name of the SSH public key.
 //   - options - SSHPublicKeysClientGenerateKeyPairOptions contains the optional parameters for the SSHPublicKeysClient.GenerateKeyPair
@@ -218,7 +218,7 @@ func (client *SSHPublicKeysClient) generateKeyPairCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,7 +236,7 @@ func (client *SSHPublicKeysClient) generateKeyPairHandleResponse(resp *http.Resp
 // Get - Retrieves information about an SSH public key.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - sshPublicKeyName - The name of the SSH public key.
 //   - options - SSHPublicKeysClientGetOptions contains the optional parameters for the SSHPublicKeysClient.Get method.
@@ -282,7 +282,7 @@ func (client *SSHPublicKeysClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -300,17 +300,17 @@ func (client *SSHPublicKeysClient) getHandleResponse(resp *http.Response) (SSHPu
 // NewListByResourceGroupPager - Lists all of the SSH public keys in the specified resource group. Use the nextLink property
 // in the response to get the next page of SSH public keys.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - SSHPublicKeysClientListByResourceGroupOptions contains the optional parameters for the SSHPublicKeysClient.NewListByResourceGroupPager
 //     method.
-func (client *SSHPublicKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *SSHPublicKeysClientListByResourceGroupOptions) *runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse] {
+func (client *SSHPublicKeysClient) NewListByResourceGroupPager(resourceGroupName string, options *SSHPublicKeysClientListByResourceGroupOptions) (*runtime.Pager[SSHPublicKeysClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SSHPublicKeysClientListByResourceGroupResponse]{
 		More: func(page SSHPublicKeysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SSHPublicKeysClientListByResourceGroupResponse) (SSHPublicKeysClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SSHPublicKeysClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SSHPublicKeysClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -350,7 +350,7 @@ func (client *SSHPublicKeysClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,16 +368,16 @@ func (client *SSHPublicKeysClient) listByResourceGroupHandleResponse(resp *http.
 // NewListBySubscriptionPager - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response
 // to get the next page of SSH public keys.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - options - SSHPublicKeysClientListBySubscriptionOptions contains the optional parameters for the SSHPublicKeysClient.NewListBySubscriptionPager
 //     method.
-func (client *SSHPublicKeysClient) NewListBySubscriptionPager(options *SSHPublicKeysClientListBySubscriptionOptions) *runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse] {
+func (client *SSHPublicKeysClient) NewListBySubscriptionPager(options *SSHPublicKeysClientListBySubscriptionOptions) (*runtime.Pager[SSHPublicKeysClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[SSHPublicKeysClientListBySubscriptionResponse]{
 		More: func(page SSHPublicKeysClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SSHPublicKeysClientListBySubscriptionResponse) (SSHPublicKeysClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SSHPublicKeysClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SSHPublicKeysClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -413,7 +413,7 @@ func (client *SSHPublicKeysClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,7 +431,7 @@ func (client *SSHPublicKeysClient) listBySubscriptionHandleResponse(resp *http.R
 // Update - Updates a new SSH public key resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - sshPublicKeyName - The name of the SSH public key.
 //   - parameters - Parameters supplied to update the SSH public key.
@@ -478,12 +478,12 @@ func (client *SSHPublicKeysClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -495,3 +495,4 @@ func (client *SSHPublicKeysClient) updateHandleResponse(resp *http.Response) (SS
 	}
 	return result, nil
 }
+

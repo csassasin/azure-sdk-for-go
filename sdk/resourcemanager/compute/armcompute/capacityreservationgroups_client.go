@@ -23,7 +23,7 @@ import (
 // CapacityReservationGroupsClient contains the methods for the CapacityReservationGroups group.
 // Don't use this type directly, use NewCapacityReservationGroupsClient() instead.
 type CapacityReservationGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore
 	}
 	client := &CapacityReservationGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -49,7 +49,7 @@ func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore
 // details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - capacityReservationGroupName - The name of the capacity reservation group.
 //   - parameters - Parameters supplied to the Create capacity reservation Group.
@@ -97,12 +97,12 @@ func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -120,7 +120,7 @@ func (client *CapacityReservationGroupsClient) createOrUpdateHandleResponse(resp
 // the reservation group have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - capacityReservationGroupName - The name of the capacity reservation group.
 //   - options - CapacityReservationGroupsClientDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
@@ -166,7 +166,7 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -175,7 +175,7 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 // Get - The operation that retrieves information about a capacity reservation group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - capacityReservationGroupName - The name of the capacity reservation group.
 //   - options - CapacityReservationGroupsClientGetOptions contains the optional parameters for the CapacityReservationGroupsClient.Get
@@ -225,7 +225,7 @@ func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,17 +243,17 @@ func (client *CapacityReservationGroupsClient) getHandleResponse(resp *http.Resp
 // NewListByResourceGroupPager - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink
 // property in the response to get the next page of capacity reservation groups.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - CapacityReservationGroupsClientListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *CapacityReservationGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) *runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse] {
+func (client *CapacityReservationGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) (*runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CapacityReservationGroupsClientListByResourceGroupResponse]{
 		More: func(page CapacityReservationGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CapacityReservationGroupsClientListByResourceGroupResponse) (CapacityReservationGroupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -293,7 +293,7 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
@@ -314,16 +314,16 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupHandleResponse
 // NewListBySubscriptionPager - Lists all of the capacity reservation groups in the subscription. Use the nextLink property
 // in the response to get the next page of capacity reservation groups.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - options - CapacityReservationGroupsClientListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroupsClient.NewListBySubscriptionPager
 //     method.
-func (client *CapacityReservationGroupsClient) NewListBySubscriptionPager(options *CapacityReservationGroupsClientListBySubscriptionOptions) *runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse] {
+func (client *CapacityReservationGroupsClient) NewListBySubscriptionPager(options *CapacityReservationGroupsClientListBySubscriptionOptions) (*runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CapacityReservationGroupsClientListBySubscriptionResponse]{
 		More: func(page CapacityReservationGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CapacityReservationGroupsClientListBySubscriptionResponse) (CapacityReservationGroupsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -359,7 +359,7 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
@@ -381,7 +381,7 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionHandleResponse(
 // be modified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - capacityReservationGroupName - The name of the capacity reservation group.
 //   - parameters - Parameters supplied to the Update capacity reservation Group operation.
@@ -429,12 +429,12 @@ func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -446,3 +446,4 @@ func (client *CapacityReservationGroupsClient) updateHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

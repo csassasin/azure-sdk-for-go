@@ -23,7 +23,7 @@ import (
 )
 
 // DiskEncryptionSetsServer is a fake server for instances of the armcompute.DiskEncryptionSetsClient type.
-type DiskEncryptionSetsServer struct {
+type DiskEncryptionSetsServer struct{
 	// BeginCreateOrUpdate is the fake for method DiskEncryptionSetsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet armcompute.DiskEncryptionSet, options *armcompute.DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -51,6 +51,7 @@ type DiskEncryptionSetsServer struct {
 	// BeginUpdate is the fake for method DiskEncryptionSetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet armcompute.DiskEncryptionSetUpdate, options *armcompute.DiskEncryptionSetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewDiskEncryptionSetsServerTransport creates a new instance of DiskEncryptionSetsServerTransport with the provided implementation.
@@ -58,26 +59,26 @@ type DiskEncryptionSetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskEncryptionSetsServerTransport(srv *DiskEncryptionSetsServer) *DiskEncryptionSetsServerTransport {
 	return &DiskEncryptionSetsServerTransport{
-		srv:                             srv,
-		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]](),
-		beginDelete:                     newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]](),
-		newListPager:                    newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]](),
 		newListAssociatedResourcesPager: newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]](),
-		newListByResourceGroupPager:     newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]](),
-		beginUpdate:                     newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]](),
 	}
 }
 
 // DiskEncryptionSetsServerTransport connects instances of armcompute.DiskEncryptionSetsClient to instances of DiskEncryptionSetsServer.
 // Don't use this type directly, use NewDiskEncryptionSetsServerTransport instead.
 type DiskEncryptionSetsServerTransport struct {
-	srv                             *DiskEncryptionSetsServer
-	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]]
-	beginDelete                     *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]]
-	newListPager                    *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]]
+	srv *DiskEncryptionSetsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]]
 	newListAssociatedResourcesPager *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]]
-	newListByResourceGroupPager     *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]]
-	beginUpdate                     *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskEncryptionSetsServerTransport.
@@ -123,28 +124,28 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.DiskEncryptionSet](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.DiskEncryptionSet](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -171,24 +172,24 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginDelete(req *http.Reques
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		d.beginDelete.add(req, beginDelete)
 	}
@@ -236,8 +237,7 @@ func (d *DiskEncryptionSetsServerTransport) dispatchGet(req *http.Request) (*htt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiskEncryptionSet, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -248,13 +248,13 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := d.srv.NewListPager(nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.DiskEncryptionSetsClientListResponse, createLink func() string) {
@@ -281,21 +281,21 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListAssociatedResourcesPa
 	}
 	newListAssociatedResourcesPager := d.newListAssociatedResourcesPager.get(req)
 	if newListAssociatedResourcesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListAssociatedResourcesPager(resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/associatedResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListAssociatedResourcesPager(resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, nil)
 		newListAssociatedResourcesPager = &resp
 		d.newListAssociatedResourcesPager.add(req, newListAssociatedResourcesPager)
 		server.PagerResponderInjectNextLinks(newListAssociatedResourcesPager, req, func(page *armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse, createLink func() string) {
@@ -322,17 +322,17 @@ func (d *DiskEncryptionSetsServerTransport) dispatchNewListByResourceGroupPager(
 	}
 	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.DiskEncryptionSetsClientListByResourceGroupResponse, createLink func() string) {
@@ -359,28 +359,28 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginUpdate(req *http.Reques
 	}
 	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.DiskEncryptionSetUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/diskEncryptionSets/(?P<diskEncryptionSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.DiskEncryptionSetUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	diskEncryptionSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("diskEncryptionSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, diskEncryptionSetNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		d.beginUpdate.add(req, beginUpdate)
 	}
@@ -400,3 +400,4 @@ func (d *DiskEncryptionSetsServerTransport) dispatchBeginUpdate(req *http.Reques
 
 	return resp, nil
 }
+

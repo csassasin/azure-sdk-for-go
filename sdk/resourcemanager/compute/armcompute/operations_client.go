@@ -32,22 +32,22 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 		return nil, err
 	}
 	client := &OperationsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Gets a list of compute operations.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) (*runtime.Pager[OperationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return OperationsClientListResponse{}, err
@@ -73,7 +73,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -87,3 +87,4 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 	}
 	return result, nil
 }
+

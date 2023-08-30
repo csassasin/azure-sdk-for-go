@@ -23,7 +23,7 @@ import (
 // CloudServicesClient contains the methods for the CloudServices group.
 // Don't use this type directly, use NewCloudServicesClient() instead.
 type CloudServicesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCreden
 	}
 	client := &CloudServicesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -116,8 +116,8 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -264,8 +264,8 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -406,13 +406,13 @@ func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Resp
 // Generated from API version 2022-09-04
 //   - resourceGroupName - Name of the resource group.
 //   - options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.NewListPager method.
-func (client *CloudServicesClient) NewListPager(resourceGroupName string, options *CloudServicesClientListOptions) *runtime.Pager[CloudServicesClientListResponse] {
+func (client *CloudServicesClient) NewListPager(resourceGroupName string, options *CloudServicesClientListOptions) (*runtime.Pager[CloudServicesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServicesClientListResponse]{
 		More: func(page CloudServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServicesClientListResponse) (CloudServicesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -474,13 +474,13 @@ func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (Clou
 // Generated from API version 2022-09-04
 //   - options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.NewListAllPager
 //     method.
-func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {
+func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) (*runtime.Pager[CloudServicesClientListAllResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServicesClientListAllResponse]{
 		More: func(page CloudServicesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServicesClientListAllResponse) (CloudServicesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesClient.NewListAllPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesClient.NewListAllPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -679,8 +679,8 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -757,8 +757,8 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -835,8 +835,8 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
+	return nil, err
+}
 		return req, nil
 	}
 	return req, nil
@@ -985,7 +985,8 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

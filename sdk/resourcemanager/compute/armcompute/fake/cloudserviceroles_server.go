@@ -23,7 +23,7 @@ import (
 )
 
 // CloudServiceRolesServer is a fake server for instances of the armcompute.CloudServiceRolesClient type.
-type CloudServiceRolesServer struct {
+type CloudServiceRolesServer struct{
 	// Get is the fake for method CloudServiceRolesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRolesClientGetOptions) (resp azfake.Responder[armcompute.CloudServiceRolesClientGetResponse], errResp azfake.ErrorResponder)
@@ -31,6 +31,7 @@ type CloudServiceRolesServer struct {
 	// NewListPager is the fake for method CloudServiceRolesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRolesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse])
+
 }
 
 // NewCloudServiceRolesServerTransport creates a new instance of CloudServiceRolesServerTransport with the provided implementation.
@@ -38,7 +39,7 @@ type CloudServiceRolesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceRolesServerTransport(srv *CloudServiceRolesServer) *CloudServiceRolesServerTransport {
 	return &CloudServiceRolesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]](),
 	}
 }
@@ -46,7 +47,7 @@ func NewCloudServiceRolesServerTransport(srv *CloudServiceRolesServer) *CloudSer
 // CloudServiceRolesServerTransport connects instances of armcompute.CloudServiceRolesClient to instances of CloudServiceRolesServer.
 // Don't use this type directly, use NewCloudServiceRolesServerTransport instead.
 type CloudServiceRolesServerTransport struct {
-	srv          *CloudServiceRolesServer
+	srv *CloudServiceRolesServer
 	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]]
 }
 
@@ -108,8 +109,7 @@ func (c *CloudServiceRolesServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CloudServiceRole, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -120,21 +120,21 @@ func (c *CloudServiceRolesServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roles`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CloudServiceRolesClientListResponse, createLink func() string) {
@@ -154,3 +154,4 @@ func (c *CloudServiceRolesServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	return resp, nil
 }
+

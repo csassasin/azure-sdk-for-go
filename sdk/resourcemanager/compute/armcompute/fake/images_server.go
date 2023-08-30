@@ -23,7 +23,7 @@ import (
 )
 
 // ImagesServer is a fake server for instances of the armcompute.ImagesClient type.
-type ImagesServer struct {
+type ImagesServer struct{
 	// BeginCreateOrUpdate is the fake for method ImagesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.Image, options *armcompute.ImagesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type ImagesServer struct {
 	// BeginUpdate is the fake for method ImagesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.ImageUpdate, options *armcompute.ImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewImagesServerTransport creates a new instance of ImagesServerTransport with the provided implementation.
@@ -54,24 +55,24 @@ type ImagesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewImagesServerTransport(srv *ImagesServer) *ImagesServerTransport {
 	return &ImagesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]](),
 	}
 }
 
 // ImagesServerTransport connects instances of armcompute.ImagesClient to instances of ImagesServer.
 // Don't use this type directly, use NewImagesServerTransport instead.
 type ImagesServerTransport struct {
-	srv                         *ImagesServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]]
+	srv *ImagesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ImagesServerTransport.
@@ -115,28 +116,28 @@ func (i *ImagesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.Image](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		imageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, imageNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.Image](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, imageNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		i.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -163,24 +164,24 @@ func (i *ImagesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		imageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, imageNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, imageNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		i.beginDelete.add(req, beginDelete)
 	}
@@ -240,8 +241,7 @@ func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Image, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -252,13 +252,13 @@ func (i *ImagesServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := i.srv.NewListPager(nil)
 		newListPager = &resp
 		i.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.ImagesClientListResponse, createLink func() string) {
@@ -285,17 +285,17 @@ func (i *ImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Re
 	}
 	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := i.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.ImagesClientListByResourceGroupResponse, createLink func() string) {
@@ -322,28 +322,28 @@ func (i *ImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 	}
 	beginUpdate := i.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.ImageUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		imageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, imageNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.ImageUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, imageNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		i.beginUpdate.add(req, beginUpdate)
 	}
@@ -363,3 +363,4 @@ func (i *ImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 
 	return resp, nil
 }
+

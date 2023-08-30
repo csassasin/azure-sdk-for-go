@@ -23,7 +23,7 @@ import (
 )
 
 // VirtualMachineExtensionImagesServer is a fake server for instances of the armcompute.VirtualMachineExtensionImagesClient type.
-type VirtualMachineExtensionImagesServer struct {
+type VirtualMachineExtensionImagesServer struct{
 	// Get is the fake for method VirtualMachineExtensionImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, publisherName string, typeParam string, version string, options *armcompute.VirtualMachineExtensionImagesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientGetResponse], errResp azfake.ErrorResponder)
@@ -35,6 +35,7 @@ type VirtualMachineExtensionImagesServer struct {
 	// ListVersions is the fake for method VirtualMachineExtensionImagesClient.ListVersions
 	// HTTP status codes to indicate success: http.StatusOK
 	ListVersions func(ctx context.Context, location string, publisherName string, typeParam string, options *armcompute.VirtualMachineExtensionImagesClientListVersionsOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientListVersionsResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachineExtensionImagesServerTransport creates a new instance of VirtualMachineExtensionImagesServerTransport with the provided implementation.
@@ -114,8 +115,7 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchGet(req *http.Req
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineExtensionImage, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -147,8 +147,7 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListTypes(req *ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineExtensionImageArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -203,8 +202,8 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 	var options *armcompute.VirtualMachineExtensionImagesClientListVersionsOptions
 	if filterParam != nil || topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineExtensionImagesClientListVersionsOptions{
-			Filter:  filterParam,
-			Top:     topParam,
+			Filter: filterParam,
+			Top: topParam,
 			Orderby: orderbyParam,
 		}
 	}
@@ -217,8 +216,8 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineExtensionImageArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

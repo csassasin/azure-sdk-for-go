@@ -23,7 +23,7 @@ import (
 )
 
 // VirtualMachineImagesServer is a fake server for instances of the armcompute.VirtualMachineImagesClient type.
-type VirtualMachineImagesServer struct {
+type VirtualMachineImagesServer struct{
 	// Get is the fake for method VirtualMachineImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *armcompute.VirtualMachineImagesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientGetResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type VirtualMachineImagesServer struct {
 	// ListSKUs is the fake for method VirtualMachineImagesClient.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSKUs func(ctx context.Context, location string, publisherName string, offer string, options *armcompute.VirtualMachineImagesClientListSKUsOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListSKUsResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachineImagesServerTransport creates a new instance of VirtualMachineImagesServerTransport with the provided implementation.
@@ -136,8 +137,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchGet(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImage, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -196,8 +196,8 @@ func (v *VirtualMachineImagesServerTransport) dispatchList(req *http.Request) (*
 	var options *armcompute.VirtualMachineImagesClientListOptions
 	if expandParam != nil || topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineImagesClientListOptions{
-			Expand:  expandParam,
-			Top:     topParam,
+			Expand: expandParam,
+			Top: topParam,
 			Orderby: orderbyParam,
 		}
 	}
@@ -210,8 +210,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchList(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -243,8 +242,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListByEdgeZone(req *http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VMImagesInEdgeZoneListResult, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -276,8 +274,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListOffers(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -305,8 +302,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListPublishers(req *http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -342,8 +338,8 @@ func (v *VirtualMachineImagesServerTransport) dispatchListSKUs(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

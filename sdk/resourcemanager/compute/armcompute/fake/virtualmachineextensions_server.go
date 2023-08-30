@@ -22,7 +22,7 @@ import (
 )
 
 // VirtualMachineExtensionsServer is a fake server for instances of the armcompute.VirtualMachineExtensionsClient type.
-type VirtualMachineExtensionsServer struct {
+type VirtualMachineExtensionsServer struct{
 	// BeginCreateOrUpdate is the fake for method VirtualMachineExtensionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters armcompute.VirtualMachineExtension, options *armcompute.VirtualMachineExtensionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -42,6 +42,7 @@ type VirtualMachineExtensionsServer struct {
 	// BeginUpdate is the fake for method VirtualMachineExtensionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters armcompute.VirtualMachineExtensionUpdate, options *armcompute.VirtualMachineExtensionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachineExtensionsServerTransport creates a new instance of VirtualMachineExtensionsServerTransport with the provided implementation.
@@ -49,20 +50,20 @@ type VirtualMachineExtensionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineExtensionsServerTransport(srv *VirtualMachineExtensionsServer) *VirtualMachineExtensionsServerTransport {
 	return &VirtualMachineExtensionsServerTransport{
-		srv:                 srv,
+		srv: srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientDeleteResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientDeleteResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineExtensionsServerTransport connects instances of armcompute.VirtualMachineExtensionsClient to instances of VirtualMachineExtensionsServer.
 // Don't use this type directly, use NewVirtualMachineExtensionsServerTransport instead.
 type VirtualMachineExtensionsServerTransport struct {
-	srv                 *VirtualMachineExtensionsServer
+	srv *VirtualMachineExtensionsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientDeleteResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientDeleteResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachineExtensionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineExtensionsServerTransport.
@@ -104,32 +105,32 @@ func (v *VirtualMachineExtensionsServerTransport) dispatchBeginCreateOrUpdate(re
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineExtension](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		vmExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmExtensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, vmExtensionNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineExtension](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	vmExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmExtensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, vmExtensionNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -156,28 +157,28 @@ func (v *VirtualMachineExtensionsServerTransport) dispatchBeginDelete(req *http.
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		vmExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmExtensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, vmExtensionNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	vmExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmExtensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, vmExtensionNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		v.beginDelete.add(req, beginDelete)
 	}
@@ -241,8 +242,7 @@ func (v *VirtualMachineExtensionsServerTransport) dispatchGet(req *http.Request)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineExtension, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -286,8 +286,7 @@ func (v *VirtualMachineExtensionsServerTransport) dispatchList(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineExtensionsListResult, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -298,32 +297,32 @@ func (v *VirtualMachineExtensionsServerTransport) dispatchBeginUpdate(req *http.
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineExtensionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		vmExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmExtensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, vmExtensionNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineExtensionUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	vmExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmExtensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, vmExtensionNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		v.beginUpdate.add(req, beginUpdate)
 	}
@@ -343,3 +342,4 @@ func (v *VirtualMachineExtensionsServerTransport) dispatchBeginUpdate(req *http.
 
 	return resp, nil
 }
+

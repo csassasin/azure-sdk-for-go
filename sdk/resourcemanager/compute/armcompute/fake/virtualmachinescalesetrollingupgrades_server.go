@@ -22,7 +22,7 @@ import (
 )
 
 // VirtualMachineScaleSetRollingUpgradesServer is a fake server for instances of the armcompute.VirtualMachineScaleSetRollingUpgradesClient type.
-type VirtualMachineScaleSetRollingUpgradesServer struct {
+type VirtualMachineScaleSetRollingUpgradesServer struct{
 	// BeginCancel is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginCancel
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCancel func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse], errResp azfake.ErrorResponder)
@@ -38,6 +38,7 @@ type VirtualMachineScaleSetRollingUpgradesServer struct {
 	// BeginStartOSUpgrade is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStartOSUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachineScaleSetRollingUpgradesServerTransport creates a new instance of VirtualMachineScaleSetRollingUpgradesServerTransport with the provided implementation.
@@ -45,20 +46,20 @@ type VirtualMachineScaleSetRollingUpgradesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetRollingUpgradesServerTransport(srv *VirtualMachineScaleSetRollingUpgradesServer) *VirtualMachineScaleSetRollingUpgradesServerTransport {
 	return &VirtualMachineScaleSetRollingUpgradesServerTransport{
-		srv:                        srv,
-		beginCancel:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]](),
+		srv: srv,
+		beginCancel: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]](),
 		beginStartExtensionUpgrade: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse]](),
-		beginStartOSUpgrade:        newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]](),
+		beginStartOSUpgrade: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetRollingUpgradesServerTransport connects instances of armcompute.VirtualMachineScaleSetRollingUpgradesClient to instances of VirtualMachineScaleSetRollingUpgradesServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetRollingUpgradesServerTransport instead.
 type VirtualMachineScaleSetRollingUpgradesServerTransport struct {
-	srv                        *VirtualMachineScaleSetRollingUpgradesServer
-	beginCancel                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]]
+	srv *VirtualMachineScaleSetRollingUpgradesServer
+	beginCancel *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]]
 	beginStartExtensionUpgrade *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse]]
-	beginStartOSUpgrade        *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]]
+	beginStartOSUpgrade *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetRollingUpgradesServerTransport.
@@ -98,24 +99,24 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginCanc
 	}
 	beginCancel := v.beginCancel.get(req)
 	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rollingUpgrades/cancel`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginCancel(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rollingUpgrades/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginCancel(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCancel = &respr
 		v.beginCancel.add(req, beginCancel)
 	}
@@ -163,8 +164,7 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchGetLatest
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RollingUpgradeStatusInfo, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -175,24 +175,24 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginStar
 	}
 	beginStartExtensionUpgrade := v.beginStartExtensionUpgrade.get(req)
 	if beginStartExtensionUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionRollingUpgrade`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginStartExtensionUpgrade(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionRollingUpgrade`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginStartExtensionUpgrade(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginStartExtensionUpgrade = &respr
 		v.beginStartExtensionUpgrade.add(req, beginStartExtensionUpgrade)
 	}
@@ -219,24 +219,24 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginStar
 	}
 	beginStartOSUpgrade := v.beginStartOSUpgrade.get(req)
 	if beginStartOSUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/osRollingUpgrade`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginStartOSUpgrade(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/osRollingUpgrade`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginStartOSUpgrade(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginStartOSUpgrade = &respr
 		v.beginStartOSUpgrade.add(req, beginStartOSUpgrade)
 	}
@@ -256,3 +256,4 @@ func (v *VirtualMachineScaleSetRollingUpgradesServerTransport) dispatchBeginStar
 
 	return resp, nil
 }
+

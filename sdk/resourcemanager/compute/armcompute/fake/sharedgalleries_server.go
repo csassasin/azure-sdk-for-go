@@ -23,7 +23,7 @@ import (
 )
 
 // SharedGalleriesServer is a fake server for instances of the armcompute.SharedGalleriesClient type.
-type SharedGalleriesServer struct {
+type SharedGalleriesServer struct{
 	// Get is the fake for method SharedGalleriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, galleryUniqueName string, options *armcompute.SharedGalleriesClientGetOptions) (resp azfake.Responder[armcompute.SharedGalleriesClientGetResponse], errResp azfake.ErrorResponder)
@@ -31,6 +31,7 @@ type SharedGalleriesServer struct {
 	// NewListPager is the fake for method SharedGalleriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(location string, options *armcompute.SharedGalleriesClientListOptions) (resp azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse])
+
 }
 
 // NewSharedGalleriesServerTransport creates a new instance of SharedGalleriesServerTransport with the provided implementation.
@@ -38,7 +39,7 @@ type SharedGalleriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSharedGalleriesServerTransport(srv *SharedGalleriesServer) *SharedGalleriesServerTransport {
 	return &SharedGalleriesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse]](),
 	}
 }
@@ -46,7 +47,7 @@ func NewSharedGalleriesServerTransport(srv *SharedGalleriesServer) *SharedGaller
 // SharedGalleriesServerTransport connects instances of armcompute.SharedGalleriesClient to instances of SharedGalleriesServer.
 // Don't use this type directly, use NewSharedGalleriesServerTransport instead.
 type SharedGalleriesServerTransport struct {
-	srv          *SharedGalleriesServer
+	srv *SharedGalleriesServer
 	newListPager *tracker[azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse]]
 }
 
@@ -104,8 +105,7 @@ func (s *SharedGalleriesServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SharedGallery, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -116,29 +116,29 @@ func (s *SharedGalleriesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	sharedToUnescaped, err := url.QueryUnescape(qp.Get("sharedTo"))
+	if err != nil {
+		return nil, err
+	}
+	sharedToParam := getOptional(armcompute.SharedToValues(sharedToUnescaped))
+	var options *armcompute.SharedGalleriesClientListOptions
+	if sharedToParam != nil {
+		options = &armcompute.SharedGalleriesClientListOptions{
+			SharedTo: sharedToParam,
 		}
-		qp := req.URL.Query()
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		sharedToUnescaped, err := url.QueryUnescape(qp.Get("sharedTo"))
-		if err != nil {
-			return nil, err
-		}
-		sharedToParam := getOptional(armcompute.SharedToValues(sharedToUnescaped))
-		var options *armcompute.SharedGalleriesClientListOptions
-		if sharedToParam != nil {
-			options = &armcompute.SharedGalleriesClientListOptions{
-				SharedTo: sharedToParam,
-			}
-		}
-		resp := s.srv.NewListPager(locationUnescaped, options)
+	}
+resp := s.srv.NewListPager(locationUnescaped, options)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SharedGalleriesClientListResponse, createLink func() string) {
@@ -158,3 +158,4 @@ func (s *SharedGalleriesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	return resp, nil
 }
+

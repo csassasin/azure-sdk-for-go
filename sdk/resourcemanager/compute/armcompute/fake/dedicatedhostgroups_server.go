@@ -23,7 +23,7 @@ import (
 )
 
 // DedicatedHostGroupsServer is a fake server for instances of the armcompute.DedicatedHostGroupsClient type.
-type DedicatedHostGroupsServer struct {
+type DedicatedHostGroupsServer struct{
 	// CreateOrUpdate is the fake for method DedicatedHostGroupsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, hostGroupName string, parameters armcompute.DedicatedHostGroup, options *armcompute.DedicatedHostGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type DedicatedHostGroupsServer struct {
 	// Update is the fake for method DedicatedHostGroupsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, hostGroupName string, parameters armcompute.DedicatedHostGroupUpdate, options *armcompute.DedicatedHostGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewDedicatedHostGroupsServerTransport creates a new instance of DedicatedHostGroupsServerTransport with the provided implementation.
@@ -54,18 +55,18 @@ type DedicatedHostGroupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDedicatedHostGroupsServerTransport(srv *DedicatedHostGroupsServer) *DedicatedHostGroupsServerTransport {
 	return &DedicatedHostGroupsServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]](),
 	}
 }
 
 // DedicatedHostGroupsServerTransport connects instances of armcompute.DedicatedHostGroupsClient to instances of DedicatedHostGroupsServer.
 // Don't use this type directly, use NewDedicatedHostGroupsServerTransport instead.
 type DedicatedHostGroupsServerTransport struct {
-	srv                         *DedicatedHostGroupsServer
+	srv *DedicatedHostGroupsServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DedicatedHostGroupsServerTransport.
@@ -134,8 +135,7 @@ func (d *DedicatedHostGroupsServerTransport) dispatchCreateOrUpdate(req *http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DedicatedHostGroup, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -167,8 +167,7 @@ func (d *DedicatedHostGroupsServerTransport) dispatchDelete(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -212,8 +211,7 @@ func (d *DedicatedHostGroupsServerTransport) dispatchGet(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DedicatedHostGroup, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -224,17 +222,17 @@ func (d *DedicatedHostGroupsServerTransport) dispatchNewListByResourceGroupPager
 	}
 	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.DedicatedHostGroupsClientListByResourceGroupResponse, createLink func() string) {
@@ -261,13 +259,13 @@ func (d *DedicatedHostGroupsServerTransport) dispatchNewListBySubscriptionPager(
 	}
 	newListBySubscriptionPager := d.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := d.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		d.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcompute.DedicatedHostGroupsClientListBySubscriptionResponse, createLink func() string) {
@@ -319,8 +317,8 @@ func (d *DedicatedHostGroupsServerTransport) dispatchUpdate(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DedicatedHostGroup, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

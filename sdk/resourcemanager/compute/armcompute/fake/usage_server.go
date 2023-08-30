@@ -22,10 +22,11 @@ import (
 )
 
 // UsageServer is a fake server for instances of the armcompute.UsageClient type.
-type UsageServer struct {
+type UsageServer struct{
 	// NewListPager is the fake for method UsageClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(location string, options *armcompute.UsageClientListOptions) (resp azfake.PagerResponder[armcompute.UsageClientListResponse])
+
 }
 
 // NewUsageServerTransport creates a new instance of UsageServerTransport with the provided implementation.
@@ -33,7 +34,7 @@ type UsageServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUsageServerTransport(srv *UsageServer) *UsageServerTransport {
 	return &UsageServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armcompute.UsageClientListResponse]](),
 	}
 }
@@ -41,7 +42,7 @@ func NewUsageServerTransport(srv *UsageServer) *UsageServerTransport {
 // UsageServerTransport connects instances of armcompute.UsageClient to instances of UsageServer.
 // Don't use this type directly, use NewUsageServerTransport instead.
 type UsageServerTransport struct {
-	srv          *UsageServer
+	srv *UsageServer
 	newListPager *tracker[azfake.PagerResponder[armcompute.UsageClientListResponse]]
 }
 
@@ -76,17 +77,17 @@ func (u *UsageServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	}
 	newListPager := u.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := u.srv.NewListPager(locationUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+resp := u.srv.NewListPager(locationUnescaped, nil)
 		newListPager = &resp
 		u.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.UsageClientListResponse, createLink func() string) {
@@ -106,3 +107,4 @@ func (u *UsageServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	}
 	return resp, nil
 }
+

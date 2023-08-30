@@ -23,7 +23,7 @@ import (
 // AvailabilitySetsClient contains the methods for the AvailabilitySets group.
 // Don't use this type directly, use NewAvailabilitySetsClient() instead.
 type AvailabilitySetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 	}
 	client := &AvailabilitySetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,7 +47,7 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Create or update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the Create Availability Set operation.
@@ -95,12 +95,12 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -116,7 +116,7 @@ func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Re
 // Delete - Delete an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientDeleteOptions contains the optional parameters for the AvailabilitySetsClient.Delete method.
@@ -161,7 +161,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Retrieves information about an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
@@ -216,7 +216,7 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -233,17 +233,17 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 
 // NewListPager - Lists all availability sets in a resource group.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.NewListPager
 //     method.
-func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
+func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) (*runtime.Pager[AvailabilitySetsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListResponse]{
 		More: func(page AvailabilitySetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListResponse) (AvailabilitySetsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -283,7 +283,7 @@ func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,18 +301,18 @@ func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (A
 // NewListAvailableSizesPager - Lists all available virtual machine sizes that can be used to create a new virtual machine
 // in an existing availability set.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientListAvailableSizesOptions contains the optional parameters for the AvailabilitySetsClient.NewListAvailableSizesPager
 //     method.
-func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientListAvailableSizesOptions) *runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse] {
+func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientListAvailableSizesOptions) (*runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListAvailableSizesResponse]{
 		More: func(page AvailabilitySetsClientListAvailableSizesResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListAvailableSizesResponse) (AvailabilitySetsClientListAvailableSizesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListAvailableSizesPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListAvailableSizesPager")
 			req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 			if err != nil {
 				return AvailabilitySetsClientListAvailableSizesResponse{}, err
@@ -350,7 +350,7 @@ func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -367,16 +367,16 @@ func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Lists all availability sets in a subscription.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.NewListBySubscriptionPager
 //     method.
-func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
+func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) (*runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListBySubscriptionResponse]{
 		More: func(page AvailabilitySetsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListBySubscriptionResponse) (AvailabilitySetsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -412,7 +412,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -433,7 +433,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 // Update - Update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the Update Availability Set operation.
@@ -480,12 +480,12 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -497,3 +497,4 @@ func (client *AvailabilitySetsClient) updateHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
+

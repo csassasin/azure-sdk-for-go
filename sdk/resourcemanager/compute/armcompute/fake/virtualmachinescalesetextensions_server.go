@@ -23,7 +23,7 @@ import (
 )
 
 // VirtualMachineScaleSetExtensionsServer is a fake server for instances of the armcompute.VirtualMachineScaleSetExtensionsClient type.
-type VirtualMachineScaleSetExtensionsServer struct {
+type VirtualMachineScaleSetExtensionsServer struct{
 	// BeginCreateOrUpdate is the fake for method VirtualMachineScaleSetExtensionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters armcompute.VirtualMachineScaleSetExtension, options *armcompute.VirtualMachineScaleSetExtensionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type VirtualMachineScaleSetExtensionsServer struct {
 	// BeginUpdate is the fake for method VirtualMachineScaleSetExtensionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters armcompute.VirtualMachineScaleSetExtensionUpdate, options *armcompute.VirtualMachineScaleSetExtensionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachineScaleSetExtensionsServerTransport creates a new instance of VirtualMachineScaleSetExtensionsServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type VirtualMachineScaleSetExtensionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetExtensionsServerTransport(srv *VirtualMachineScaleSetExtensionsServer) *VirtualMachineScaleSetExtensionsServerTransport {
 	return &VirtualMachineScaleSetExtensionsServerTransport{
-		srv:                 srv,
+		srv: srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetExtensionsClientListResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetExtensionsClientListResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetExtensionsServerTransport connects instances of armcompute.VirtualMachineScaleSetExtensionsClient to instances of VirtualMachineScaleSetExtensionsServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetExtensionsServerTransport instead.
 type VirtualMachineScaleSetExtensionsServerTransport struct {
-	srv                 *VirtualMachineScaleSetExtensionsServer
+	srv *VirtualMachineScaleSetExtensionsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetExtensionsClientListResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetExtensionsClientListResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetExtensionsServerTransport.
@@ -107,32 +108,32 @@ func (v *VirtualMachineScaleSetExtensionsServerTransport) dispatchBeginCreateOrU
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmssExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineScaleSetExtension](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		vmssExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmssExtensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, vmssExtensionNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmssExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineScaleSetExtension](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	vmssExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmssExtensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, vmssExtensionNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -159,28 +160,28 @@ func (v *VirtualMachineScaleSetExtensionsServerTransport) dispatchBeginDelete(re
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmssExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		vmssExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmssExtensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, vmssExtensionNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmssExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	vmssExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmssExtensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, vmssExtensionNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		v.beginDelete.add(req, beginDelete)
 	}
@@ -244,8 +245,7 @@ func (v *VirtualMachineScaleSetExtensionsServerTransport) dispatchGet(req *http.
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineScaleSetExtension, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -256,21 +256,21 @@ func (v *VirtualMachineScaleSetExtensionsServerTransport) dispatchNewListPager(r
 	}
 	newListPager := v.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListPager(resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+resp := v.srv.NewListPager(resourceGroupNameUnescaped, vmScaleSetNameUnescaped, nil)
 		newListPager = &resp
 		v.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.VirtualMachineScaleSetExtensionsClientListResponse, createLink func() string) {
@@ -297,32 +297,32 @@ func (v *VirtualMachineScaleSetExtensionsServerTransport) dispatchBeginUpdate(re
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmssExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineScaleSetExtensionUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		vmssExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmssExtensionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, vmssExtensionNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<vmssExtensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineScaleSetExtensionUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmScaleSetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	vmssExtensionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmssExtensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmScaleSetNameUnescaped, vmssExtensionNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		v.beginUpdate.add(req, beginUpdate)
 	}
@@ -342,3 +342,4 @@ func (v *VirtualMachineScaleSetExtensionsServerTransport) dispatchBeginUpdate(re
 
 	return resp, nil
 }
+

@@ -61,8 +61,8 @@ type AdditionalCapabilities struct {
 	HibernationEnabled *bool
 
 	// The flag that enables or disables a capability to have one or more managed data disks with UltraSSDLRS storage account
-	// type on the VM or VMSS. Managed disks with storage account type UltraSSDLRS can
-	// be added to a virtual machine or virtual machine scale set only if this property is enabled.
+// type on the VM or VMSS. Managed disks with storage account type UltraSSDLRS can
+// be added to a virtual machine or virtual machine scale set only if this property is enabled.
 	UltraSSDEnabled *bool
 }
 
@@ -74,8 +74,8 @@ type AdditionalUnattendContent struct {
 	ComponentName *string
 
 	// Specifies the XML formatted content that is added to the unattend.xml file for the specified path and component. The XML
-	// must be less than 4KB and must include the root element for the setting or
-	// feature that is being inserted.
+// must be less than 4KB and must include the root element for the setting or
+// feature that is being inserted.
 	Content *string
 
 	// The pass name. Currently, the only allowable value is OobeSystem.
@@ -91,7 +91,7 @@ type AlternativeOption struct {
 	Type *AlternativeType
 
 	// Indicates the alternative option value specified by the Publisher. This is the Offer name when the type is Offer or the
-	// Plan name when the type is Plan.
+// Plan name when the type is Plan.
 	Value *string
 }
 
@@ -101,20 +101,40 @@ type ApplicationProfile struct {
 	GalleryApplications []*VMGalleryApplication
 }
 
+// AttachDataDisk - Describes the data disk to be attached.
+type AttachDataDisk struct {
+	// REQUIRED; ID of the managed data disk.
+	DiskID *string
+
+	// The logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be
+// unique for each data disk attached to a VM. If not specified, lun would be auto
+// assigned.
+	Lun *int32
+}
+
+// AttachDetachDataDisksRequest - Specifies the input for attaching and detaching a list of managed data disks.
+type AttachDetachDataDisksRequest struct {
+	// The list of managed data disks to be attached.
+	AttachDataDisks []*AttachDataDisk
+
+	// The list of managed data disks to be detached.
+	DetachDataDisks []*DetachDataDisk
+}
+
 // AutomaticOSUpgradePolicy - The configuration parameters used for performing automatic OS upgrade.
 type AutomaticOSUpgradePolicy struct {
 	// Whether OS image rollback feature should be disabled. Default value is false.
 	DisableAutomaticRollback *bool
 
 	// Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer
-	// version of the OS image becomes available. Default value is false. If this is set
-	// to true for Windows based scale sets, enableAutomaticUpdates
-	// [https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet]
-	// is automatically set to false and cannot be set to true.
+// version of the OS image becomes available. Default value is false. If this is set
+// to true for Windows based scale sets, enableAutomaticUpdates
+// [https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet]
+// is automatically set to false and cannot be set to true.
 	EnableAutomaticOSUpgrade *bool
 
 	// Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Default value is false. Auto OS Upgrade
-	// will fallback to the default policy if no policy is defined on the VMSS.
+// will fallback to the default policy if no policy is defined on the VMSS.
 	UseRollingUpgradePolicy *bool
 }
 
@@ -130,14 +150,14 @@ type AutomaticRepairsPolicy struct {
 	Enabled *bool
 
 	// The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the
-	// state change has completed. This helps avoid premature or accidental repairs.
-	// The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes (PT10M), which
-	// is also the default value. The maximum allowed grace period is 90 minutes
-	// (PT90M).
+// state change has completed. This helps avoid premature or accidental repairs.
+// The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes (PT10M), which
+// is also the default value. The maximum allowed grace period is 90 minutes
+// (PT90M).
 	GracePeriod *string
 
 	// Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines in the scale
-	// set. Default value is replace.
+// set. Default value is replace.
 	RepairAction *RepairAction
 }
 
@@ -156,8 +176,8 @@ type AvailabilitySet struct {
 	Properties *AvailabilitySetProperties
 
 	// Sku of the availability set, only name is required to be set. See AvailabilitySetSkuTypes for possible set of values. Use
-	// 'Aligned' for virtual machines with managed disks and 'Classic' for virtual
-	// machines with unmanaged disks. Default value is 'Classic'.
+// 'Aligned' for virtual machines with managed disks and 'Classic' for virtual
+// machines with unmanaged disks. Default value is 'Classic'.
 	SKU *SKU
 
 	// Resource tags
@@ -191,7 +211,7 @@ type AvailabilitySetProperties struct {
 	PlatformUpdateDomainCount *int32
 
 	// Specifies information about the proximity placement group that the availability set should be assigned to. Minimum api-version:
-	// 2018-04-01.
+// 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
 	// A list of references to all virtual machines in the availability set.
@@ -217,7 +237,7 @@ type AvailabilitySetUpdate struct {
 // AvailablePatchSummary - Describes the properties of an virtual machine instance view for available patch summary.
 type AvailablePatchSummary struct {
 	// READ-ONLY; The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-	// logs.
+// logs.
 	AssessmentActivityID *string
 
 	// READ-ONLY; The number of critical or security patches that have been detected as available and not yet installed.
@@ -233,32 +253,32 @@ type AvailablePatchSummary struct {
 	OtherPatchCount *int32
 
 	// READ-ONLY; The overall reboot status of the VM. It will be true when partially installed patches require a reboot to complete
-	// installation but the reboot has not yet occurred.
+// installation but the reboot has not yet occurred.
 	RebootPending *bool
 
 	// READ-ONLY; The UTC timestamp when the operation began.
 	StartTime *time.Time
 
 	// READ-ONLY; The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-	// At that point it will become "Unknown", "Failed", "Succeeded", or
-	// "CompletedWithWarnings."
+// At that point it will become "Unknown", "Failed", "Succeeded", or
+// "CompletedWithWarnings."
 	Status *PatchOperationStatus
 }
 
 // BillingProfile - Specifies the billing related details of a Azure Spot VM or VMSS. Minimum api-version: 2019-03-01.
 type BillingProfile struct {
 	// Specifies the maximum price you are willing to pay for a Azure Spot VM/VMSS. This price is in US Dollars.
-	// This price will be compared with the current Azure Spot price for the VM size. Also, the prices are compared at the time
-	// of create/update of Azure Spot VM/VMSS and the operation will only succeed if
-	// the maxPrice is greater than the current Azure Spot price.
-	// The maxPrice will also be used for evicting a Azure Spot VM/VMSS if the current Azure Spot price goes beyond the maxPrice
-	// after creation of VM/VMSS.
-	// Possible values are:
-	// - Any decimal value greater than zero. Example: 0.01538
-	// -1 – indicates default price to be up-to on-demand.
-	// You can set the maxPrice to -1 to indicate that the Azure Spot VM/VMSS should not be evicted for price reasons. Also, the
-	// default max price is -1 if it is not provided by you.
-	// Minimum api-version: 2019-03-01.
+// This price will be compared with the current Azure Spot price for the VM size. Also, the prices are compared at the time
+// of create/update of Azure Spot VM/VMSS and the operation will only succeed if
+// the maxPrice is greater than the current Azure Spot price.
+// The maxPrice will also be used for evicting a Azure Spot VM/VMSS if the current Azure Spot price goes beyond the maxPrice
+// after creation of VM/VMSS.
+// Possible values are:
+// - Any decimal value greater than zero. Example: 0.01538
+// -1 – indicates default price to be up-to on-demand.
+// You can set the maxPrice to -1 to indicate that the Azure Spot VM/VMSS should not be evicted for price reasons. Also, the
+// default max price is -1 if it is not provided by you.
+// Minimum api-version: 2019-03-01.
 	MaxPrice *float64
 }
 
@@ -270,22 +290,22 @@ type BootDiagnostics struct {
 	Enabled *bool
 
 	// Uri of the storage account to use for placing the console output and screenshot. If storageUri is not specified while enabling
-	// boot diagnostics, managed storage will be used.
+// boot diagnostics, managed storage will be used.
 	StorageURI *string
 }
 
 // BootDiagnosticsInstanceView - The instance view of a virtual machine boot diagnostics.
 type BootDiagnosticsInstanceView struct {
 	// READ-ONLY; The console screenshot blob URI. Note: This will not be set if boot diagnostics is currently enabled with managed
-	// storage.
+// storage.
 	ConsoleScreenshotBlobURI *string
 
 	// READ-ONLY; The serial console log blob Uri. Note: This will not be set if boot diagnostics is currently enabled with managed
-	// storage.
+// storage.
 	SerialConsoleLogBlobURI *string
 
 	// READ-ONLY; The boot diagnostics status information for the VM. Note: It will be set only if there are errors encountered
-	// in enabling boot diagnostics.
+// in enabling boot diagnostics.
 	Status *InstanceViewStatus
 }
 
@@ -295,9 +315,9 @@ type CapacityReservation struct {
 	Location *string
 
 	// REQUIRED; SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently
-	// VM Skus with the capability called 'CapacityReservationSupported' set to true are
-	// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
-	// for supported values.
+// VM Skus with the capability called 'CapacityReservationSupported' set to true are
+// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
+// for supported values.
 	SKU *SKU
 
 	// Properties of the Capacity reservation.
@@ -307,9 +327,9 @@ type CapacityReservation struct {
 	Tags map[string]*string
 
 	// Availability Zone to use for this capacity reservation. The zone has to be single value and also should be part for the
-	// list of zones specified during the capacity reservation group creation. The zone
-	// can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If provided,
-	// enforces VM/VMSS using this capacity reservation to be in same zone.
+// list of zones specified during the capacity reservation group creation. The zone
+// can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If provided,
+// enforces VM/VMSS using this capacity reservation to be in same zone.
 	Zones []*string
 
 	// READ-ONLY; Resource Id
@@ -336,8 +356,8 @@ type CapacityReservationGroup struct {
 	Tags map[string]*string
 
 	// Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation. If not provided,
-	// the group supports only regional resources in the region. If provided,
-	// enforces each capacity reservation in the group to be in one of the zones.
+// the group supports only regional resources in the region. If provided,
+// enforces each capacity reservation in the group to be in one of the zones.
 	Zones []*string
 
 	// READ-ONLY; Resource Id
@@ -361,7 +381,7 @@ type CapacityReservationGroupListResult struct {
 	Value []*CapacityReservationGroup
 
 	// The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next page of
-	// capacity reservation groups.
+// capacity reservation groups.
 	NextLink *string
 }
 
@@ -371,7 +391,7 @@ type CapacityReservationGroupProperties struct {
 	CapacityReservations []*SubResourceReadOnly
 
 	// READ-ONLY; The capacity reservation group instance view which has the list of instance views for all the capacity reservations
-	// that belong to the capacity reservation group.
+// that belong to the capacity reservation group.
 	InstanceView *CapacityReservationGroupInstanceView
 
 	// READ-ONLY; A list of references to all virtual machines associated to the capacity reservation group.
@@ -417,15 +437,15 @@ type CapacityReservationListResult struct {
 	Value []*CapacityReservation
 
 	// The URI to fetch the next page of capacity reservations. Call ListNext() with this URI to fetch the next page of capacity
-	// reservations.
+// reservations.
 	NextLink *string
 }
 
 // CapacityReservationProfile - The parameters of a capacity reservation Profile.
 type CapacityReservationProfile struct {
 	// Specifies the capacity reservation group resource id that should be used for allocating the virtual machine or scaleset
-	// vm instances provided enough capacity has been reserved. Please refer to
-	// https://aka.ms/CapacityReservation for more details.
+// vm instances provided enough capacity has been reserved. Please refer to
+// https://aka.ms/CapacityReservation for more details.
 	CapacityReservationGroup *SubResource
 }
 
@@ -435,8 +455,8 @@ type CapacityReservationProperties struct {
 	InstanceView *CapacityReservationInstanceView
 
 	// READ-ONLY; Specifies the value of fault domain count that Capacity Reservation supports for requested VM size. Note: The
-	// fault domain count specified for a resource (like virtual machines scale set) must be less
-	// than or equal to this value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
+// fault domain count specified for a resource (like virtual machines scale set) must be less
+// than or equal to this value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
 	PlatformFaultDomainCount *int32
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
@@ -446,7 +466,7 @@ type CapacityReservationProperties struct {
 	ProvisioningTime *time.Time
 
 	// READ-ONLY; A unique id generated and assigned to the capacity reservation by the platform which does not change throughout
-	// the lifetime of the resource.
+// the lifetime of the resource.
 	ReservationID *string
 
 	// READ-ONLY; Specifies the time at which the Capacity Reservation resource was created. Minimum api-version: 2021-11-01.
@@ -462,9 +482,9 @@ type CapacityReservationUpdate struct {
 	Properties *CapacityReservationProperties
 
 	// SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently VM
-	// Skus with the capability called 'CapacityReservationSupported' set to true are
-	// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
-	// for supported values.
+// Skus with the capability called 'CapacityReservationSupported' set to true are
+// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
+// for supported values.
 	SKU *SKU
 
 	// Resource tags
@@ -474,7 +494,7 @@ type CapacityReservationUpdate struct {
 // CapacityReservationUtilization - Represents the capacity reservation utilization in terms of resources allocated.
 type CapacityReservationUtilization struct {
 	// READ-ONLY; The value provides the current capacity of the VM size which was reserved successfully and for which the customer
-	// is getting billed. Minimum api-version: 2022-08-01.
+// is getting billed. Minimum api-version: 2022-08-01.
 	CurrentCapacity *int32
 
 	// READ-ONLY; A list of all virtual machines resource ids allocated against the capacity reservation.
@@ -496,7 +516,7 @@ type CloudService struct {
 	Tags map[string]*string
 
 	// List of logical availability zone of the resource. List should contain only 1 zone where cloud service should be provisioned.
-	// This field is optional.
+// This field is optional.
 	Zones []*string
 
 	// READ-ONLY; Resource Id.
@@ -518,14 +538,14 @@ type CloudServiceExtensionProfile struct {
 // CloudServiceExtensionProperties - Extension Properties.
 type CloudServiceExtensionProperties struct {
 	// Explicitly specify whether platform can automatically upgrade typeHandlerVersion to higher minor versions when they become
-	// available.
+// available.
 	AutoUpgradeMinorVersion *bool
 
 	// Tag to force apply the provided public and protected settings. Changing the tag value allows for re-running the extension
-	// without changing any of the public or protected settings. If forceUpdateTag is
-	// not changed, updates to public or protected settings would still be applied by the handler. If neither forceUpdateTag nor
-	// any of public or protected settings change, extension would flow to the role
-	// instance with the same sequence-number, and it is up to handler implementation whether to re-run it or not
+// without changing any of the public or protected settings. If forceUpdateTag is
+// not changed, updates to public or protected settings would still be applied by the handler. If neither forceUpdateTag nor
+// any of public or protected settings change, extension would flow to the role
+// instance with the same sequence-number, and it is up to handler implementation whether to re-run it or not
 	ForceUpdateTag *string
 
 	// Protected settings for the extension which are encrypted before sent to the role instance.
@@ -538,22 +558,22 @@ type CloudServiceExtensionProperties struct {
 	Publisher *string
 
 	// Optional list of roles to apply this extension. If property is not specified or '*' is specified, extension is applied
-	// to all roles in the cloud service.
+// to all roles in the cloud service.
 	RolesAppliedTo []*string
 
 	// Public settings for the extension. For JSON extensions, this is the JSON settings for the extension. For XML Extension
-	// (like RDP), this is the XML setting for the extension.
+// (like RDP), this is the XML setting for the extension.
 	Settings any
 
 	// Specifies the type of the extension.
 	Type *string
 
 	// Specifies the version of the extension. Specifies the version of the extension. If this element is not specified or an
-	// asterisk (*) is used as the value, the latest version of the extension is used.
-	// If the value is specified with a major version number and an asterisk as the minor version number (X.), the latest minor
-	// version of the specified major version is selected. If a major version number
-	// and a minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
-	// an auto-upgrade is performed on the role instance.
+// asterisk (*) is used as the value, the latest version of the extension is used.
+// If the value is specified with a major version number and an asterisk as the minor version number (X.), the latest minor
+// version of the specified major version is selected. If a major version number
+// and a minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
+// an auto-upgrade is performed on the role instance.
 	TypeHandlerVersion *string
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
@@ -566,7 +586,7 @@ type CloudServiceInstanceView struct {
 	RoleInstance *InstanceViewStatusesSummary
 
 	// READ-ONLY; Specifies a list of unique identifiers generated internally for the cloud service.
-	// NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
+// NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
 	PrivateIDs []*string
 
 	// READ-ONLY; The version of the SDK that was used to generate the package for the cloud service.
@@ -582,25 +602,25 @@ type CloudServiceListResult struct {
 	Value []*CloudService
 
 	// The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is null
-	// to fetch all the resources.
+// to fetch all the resources.
 	NextLink *string
 }
 
 // CloudServiceNetworkProfile - Network Profile for the cloud service.
 type CloudServiceNetworkProfile struct {
 	// List of Load balancer configurations. Cloud service can have up to two load balancer configurations, corresponding to a
-	// Public Load Balancer and an Internal Load Balancer.
+// Public Load Balancer and an Internal Load Balancer.
 	LoadBalancerConfigurations []*LoadBalancerConfiguration
 
 	// Slot type for the cloud service. Possible values are
-	// Production
-	// Staging
-	// If not specified, the default value is Production.
+// Production
+// Staging
+// If not specified, the default value is Production.
 	SlotType *CloudServiceSlotType
 
 	// The id reference of the cloud service containing the target IP with which the subject cloud service can perform a swap.
-	// This property cannot be updated once it is set. The swappable cloud service
-	// referred by this id must be present otherwise an error will be thrown.
+// This property cannot be updated once it is set. The swappable cloud service
+// referred by this id must be present otherwise an error will be thrown.
 	SwappableCloudService *SubResource
 }
 
@@ -613,16 +633,16 @@ type CloudServiceOsProfile struct {
 // CloudServiceProperties - Cloud service properties
 type CloudServiceProperties struct {
 	// (Optional) Indicates whether the role sku properties (roleProfile.roles.sku) specified in the model/template should override
-	// the role instance count and vm size specified in the .cscfg and .csdef
-	// respectively. The default value is false.
+// the role instance count and vm size specified in the .cscfg and .csdef
+// respectively. The default value is false.
 	AllowModelOverride *bool
 
 	// Specifies the XML service configuration (.cscfg) for the cloud service.
 	Configuration *string
 
 	// Specifies a URL that refers to the location of the service configuration in the Blob service. The service package URL can
-	// be Shared Access Signature (SAS) URI from any storage account. This is a
-	// write-only property and is not returned in GET calls.
+// be Shared Access Signature (SAS) URI from any storage account. This is a
+// write-only property and is not returned in GET calls.
 	ConfigurationURL *string
 
 	// Describes a cloud service extension profile.
@@ -635,28 +655,28 @@ type CloudServiceProperties struct {
 	OSProfile *CloudServiceOsProfile
 
 	// Specifies a URL that refers to the location of the service package in the Blob service. The service package URL can be
-	// Shared Access Signature (SAS) URI from any storage account. This is a write-only
-	// property and is not returned in GET calls.
+// Shared Access Signature (SAS) URI from any storage account. This is a write-only
+// property and is not returned in GET calls.
 	PackageURL *string
 
 	// Describes the role profile for the cloud service.
 	RoleProfile *CloudServiceRoleProfile
 
 	// (Optional) Indicates whether to start the cloud service immediately after it is created. The default value is true. If
-	// false, the service model is still deployed, but the code is not run immediately.
-	// Instead, the service is PoweredOff until you call Start, at which time the service will be started. A deployed service
-	// still incurs charges, even if it is poweredoff.
+// false, the service model is still deployed, but the code is not run immediately.
+// Instead, the service is PoweredOff until you call Start, at which time the service will be started. A deployed service
+// still incurs charges, even if it is poweredoff.
 	StartCloudService *bool
 
 	// Update mode for the cloud service. Role instances are allocated to update domains when the service is deployed. Updates
-	// can be initiated manually in each update domain or initiated automatically in
-	// all update domains. Possible Values are
-	// Auto
-	// Manual
-	// Simultaneous
-	// If not specified, the default value is Auto. If set to Manual, PUT UpdateDomain must be called to apply the update. If
-	// set to Auto, the update is automatically applied to each update domain in
-	// sequence.
+// can be initiated manually in each update domain or initiated automatically in
+// all update domains. Possible Values are
+// Auto
+// Manual
+// Simultaneous
+// If not specified, the default value is Auto. If set to Manual, PUT UpdateDomain must be called to apply the update. If
+// set to Auto, the update is automatically applied to each update domain in
+// sequence.
 	UpgradeMode *CloudServiceUpgradeMode
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
@@ -693,7 +713,7 @@ type CloudServiceRoleListResult struct {
 	Value []*CloudServiceRole
 
 	// The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is null
-	// to fetch all the resources.
+// to fetch all the resources.
 	NextLink *string
 }
 
@@ -724,12 +744,12 @@ type CloudServiceRoleSKU struct {
 	Capacity *int64
 
 	// The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is currently on, you need to delete
-	// and recreate the cloud service or move back to the old sku.
+// and recreate the cloud service or move back to the old sku.
 	Name *string
 
 	// Specifies the tier of the cloud service. Possible Values are
-	// Standard
-	// Basic
+// Standard
+// Basic
 	Tier *string
 }
 
@@ -821,7 +841,7 @@ type CommunityGalleryImageList struct {
 	Value []*CommunityGalleryImage
 
 	// The uri to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of community
-	// gallery images.
+// gallery images.
 	NextLink *string
 }
 
@@ -831,14 +851,14 @@ type CommunityGalleryImageProperties struct {
 	Identifier *CommunityGalleryImageIdentifier
 
 	// REQUIRED; This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
-	// or 'Specialized'.
+// or 'Specialized'.
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-	// managed image.
-	// Possible values are:
-	// Windows
-	// Linux
+// managed image.
+// Possible values are:
+// Windows
+// Linux
 	OSType *OperatingSystemTypes
 
 	// The architecture of the image. Applicable to OS disks only.
@@ -848,7 +868,7 @@ type CommunityGalleryImageProperties struct {
 	Disallowed *Disallowed
 
 	// The end of life date of the gallery image definition. This property can be used for decommissioning purposes. This property
-	// is updatable.
+// is updatable.
 	EndOfLifeDate *time.Time
 
 	// End-user license agreement for the current community gallery image.
@@ -894,21 +914,21 @@ type CommunityGalleryImageVersionList struct {
 	Value []*CommunityGalleryImageVersion
 
 	// The uri to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next page of
-	// community gallery image versions.
+// community gallery image versions.
 	NextLink *string
 }
 
 // CommunityGalleryImageVersionProperties - Describes the properties of a gallery image version.
 type CommunityGalleryImageVersionProperties struct {
 	// The end of life date of the gallery image version Definition. This property can be used for decommissioning purposes. This
-	// property is updatable.
+// property is updatable.
 	EndOfLifeDate *time.Time
 
 	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool
 
 	// The published date of the gallery image version Definition. This property can be used for decommissioning purposes. This
-	// property is updatable.
+// property is updatable.
 	PublishedDate *time.Time
 
 	// Describes the storage profile of the image version.
@@ -952,8 +972,8 @@ type CreationData struct {
 	CreateOption *DiskCreateOption
 
 	// Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference
-	// will be the ARM id of the shared galley image version from which to create a
-	// disk.
+// will be the ARM id of the shared galley image version from which to create a
+// disk.
 	GalleryImageReference *ImageDiskReference
 
 	// Disk source information for PIR or user images.
@@ -963,8 +983,8 @@ type CreationData struct {
 	LogicalSectorSize *int32
 
 	// Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective performance
-	// target. This flag can only be set on disk creation time and cannot be
-	// disabled after enabled.
+// target. This flag can only be set on disk creation time and cannot be
+// disabled after enabled.
 	PerformancePlus *bool
 
 	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
@@ -977,12 +997,12 @@ type CreationData struct {
 	SourceURI *string
 
 	// Required if createOption is Import. The Azure Resource Manager identifier of the storage account containing the blob to
-	// import as a disk.
+// import as a disk.
 	StorageAccountID *string
 
 	// If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value should be
-	// between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520
-	// bytes (32 TiB + 512 bytes for the VHD footer).
+// between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520
+// bytes (32 TiB + 512 bytes for the VHD footer).
 	UploadSizeBytes *int64
 
 	// READ-ONLY; If this field is set, this is the unique id identifying the source of this resource.
@@ -992,43 +1012,43 @@ type CreationData struct {
 // DataDisk - Describes a data disk.
 type DataDisk struct {
 	// REQUIRED; Specifies how the virtual machine should be created. Possible values are: Attach. This value is used when you
-	// are using a specialized disk to create the virtual machine. FromImage. This value is used
-	// when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
-	// element described above. If you are using a marketplace image, you
-	// should also use the plan element previously described.
+// are using a specialized disk to create the virtual machine. FromImage. This value is used
+// when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+// element described above. If you are using a marketplace image, you
+// should also use the plan element previously described.
 	CreateOption *DiskCreateOptionTypes
 
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
-	// therefore must be unique for each data disk attached to a VM.
+// therefore must be unique for each data disk attached to a VM.
 	Lun *int32
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The defaulting behavior is: None for
-	// Standard storage. ReadOnly for Premium storage.
+// Standard storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: Delete. If this value
-	// is used, the data disk is deleted when VM is deleted. Detach. If this value is
-	// used, the data disk is retained after VM is deleted. The default value is set to Detach.
+// is used, the data disk is deleted when VM is deleted. Detach. If this value is
+// used, the data disk is retained after VM is deleted. The default value is set to Detach.
 	DeleteOption *DiskDeleteOptionTypes
 
 	// Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from the
-	// virtual machine. Supported values: ForceDetach. detachOption: ForceDetach is
-	// applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected
-	// failure from the virtual machine and the disk is still not released then
-	// use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
-	// when using this detach behavior. This feature is still in preview mode and is
-	// not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
-	// detachOption: 'ForceDetach'.
+// virtual machine. Supported values: ForceDetach. detachOption: ForceDetach is
+// applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected
+// failure from the virtual machine and the disk is still not released then
+// use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
+// when using this detach behavior. This feature is still in preview mode and is
+// not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
+// detachOption: 'ForceDetach'.
 	DetachOption *DiskDetachOptionTypes
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
-	// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
-	// for the disk and the value cannot be larger than 1023.
+// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
+// for the disk and the value cannot be larger than 1023.
 	DiskSizeGB *int32
 
 	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine.
-	// If SourceImage is provided, the destination virtual hard drive must not
-	// exist.
+// If SourceImage is provided, the destination virtual hard drive must not
+// exist.
 	Image *VirtualHardDisk
 
 	// The managed disk parameters.
@@ -1047,28 +1067,28 @@ type DataDisk struct {
 	WriteAcceleratorEnabled *bool
 
 	// READ-ONLY; Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for
-	// VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine
-	// Scale Set.
+// VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine
+// Scale Set.
 	DiskIOPSReadWrite *int64
 
 	// READ-ONLY; Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS. Returned
-	// only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
-	// VirtualMachine Scale Set.
+// only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
+// VirtualMachine Scale Set.
 	DiskMBpsReadWrite *int64
 }
 
 // DataDiskImage - Contains the data disk images information.
 type DataDiskImage struct {
 	// READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM
-	// and therefore must be unique for each data disk attached to a VM.
+// and therefore must be unique for each data disk attached to a VM.
 	Lun *int32
 }
 
 // DataDiskImageEncryption - Contains encryption settings for a data disk image.
 type DataDiskImageEncryption struct {
 	// REQUIRED; This property specifies the logical unit number of the data disk. This value is used to identify data disks within
-	// the Virtual Machine and therefore must be unique for each data disk attached to the
-	// Virtual Machine.
+// the Virtual Machine and therefore must be unique for each data disk attached to the
+// Virtual Machine.
 	Lun *int32
 
 	// A relative URI containing the resource ID of the disk encryption set.
@@ -1081,7 +1101,7 @@ type DedicatedHost struct {
 	Location *string
 
 	// REQUIRED; SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List Microsoft.Compute
-	// SKUs for a list of possible values.
+// SKUs for a list of possible values.
 	SKU *SKU
 
 	// Properties of the dedicated host.
@@ -1112,7 +1132,7 @@ type DedicatedHostAllocatableVM struct {
 // DedicatedHostAvailableCapacity - Dedicated host unutilized capacity.
 type DedicatedHostAvailableCapacity struct {
 	// The unutilized capacity of the dedicated host represented in terms of each VM size that is allowed to be deployed to the
-	// dedicated host.
+// dedicated host.
 	AllocatableVMs []*DedicatedHostAllocatableVM
 }
 
@@ -1130,8 +1150,8 @@ type DedicatedHostGroup struct {
 	Tags map[string]*string
 
 	// Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation.
-	// If not provided, the group supports all zones in the region. If provided,
-	// enforces each host in the group to be in the same zone.
+// If not provided, the group supports all zones in the region. If provided,
+// enforces each host in the group to be in the same zone.
 	Zones []*string
 
 	// READ-ONLY; Resource Id
@@ -1155,7 +1175,7 @@ type DedicatedHostGroupListResult struct {
 	Value []*DedicatedHostGroup
 
 	// The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI to fetch the next page of Dedicated
-	// Host Groups.
+// Host Groups.
 	NextLink *string
 }
 
@@ -1168,16 +1188,16 @@ type DedicatedHostGroupProperties struct {
 	AdditionalCapabilities *DedicatedHostGroupPropertiesAdditionalCapabilities
 
 	// Specifies whether virtual machines or virtual machine scale sets can be placed automatically on the dedicated host group.
-	// Automatic placement means resources are allocated on dedicated hosts, that are
-	// chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when not provided. Minimum api-version:
-	// 2020-06-01.
+// Automatic placement means resources are allocated on dedicated hosts, that are
+// chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when not provided. Minimum api-version:
+// 2020-06-01.
 	SupportAutomaticPlacement *bool
 
 	// READ-ONLY; A list of references to all dedicated hosts in the dedicated host group.
 	Hosts []*SubResourceReadOnly
 
 	// READ-ONLY; The dedicated host group instance view, which has the list of instance view of the dedicated hosts under the
-	// dedicated host group.
+// dedicated host group.
 	InstanceView *DedicatedHostGroupInstanceView
 }
 
@@ -1185,12 +1205,12 @@ type DedicatedHostGroupProperties struct {
 // api-version: 2022-03-01.
 type DedicatedHostGroupPropertiesAdditionalCapabilities struct {
 	// The flag that enables or disables a capability to have UltraSSD Enabled Virtual Machines on Dedicated Hosts of the Dedicated
-	// Host Group. For the Virtual Machines to be UltraSSD Enabled,
-	// UltraSSDEnabled flag for the resource needs to be set true as well. The value is defaulted to 'false' when not provided.
-	// Please refer to
-	// https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more details on Ultra SSD feature. Note:
-	// The ultraSSDEnabled setting can only be enabled for Host Groups that are
-	// created as zonal. Minimum api-version: 2022-03-01.
+// Host Group. For the Virtual Machines to be UltraSSD Enabled,
+// UltraSSDEnabled flag for the resource needs to be set true as well. The value is defaulted to 'false' when not provided.
+// Please refer to
+// https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more details on Ultra SSD feature. Note:
+// The ultraSSDEnabled setting can only be enabled for Host Groups that are
+// created as zonal. Minimum api-version: 2022-03-01.
 	UltraSSDEnabled *bool
 }
 
@@ -1204,8 +1224,8 @@ type DedicatedHostGroupUpdate struct {
 	Tags map[string]*string
 
 	// Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation.
-	// If not provided, the group supports all zones in the region. If provided,
-	// enforces each host in the group to be in the same zone.
+// If not provided, the group supports all zones in the region. If provided,
+// enforces each host in the group to be in the same zone.
 	Zones []*string
 }
 
@@ -1249,18 +1269,18 @@ type DedicatedHostListResult struct {
 // DedicatedHostProperties - Properties of the dedicated host.
 type DedicatedHostProperties struct {
 	// Specifies whether the dedicated host should be replaced automatically in case of a failure. The value is defaulted to 'true'
-	// when not provided.
+// when not provided.
 	AutoReplaceOnFailure *bool
 
 	// Specifies the software license type that will be applied to the VMs deployed on the dedicated host. Possible values are:
-	// None, WindowsServerHybrid, WindowsServerPerpetual. The default value is: None.
+// None, WindowsServerHybrid, WindowsServerPerpetual. The default value is: None.
 	LicenseType *DedicatedHostLicenseTypes
 
 	// Fault domain of the dedicated host within a dedicated host group.
 	PlatformFaultDomain *int32
 
 	// READ-ONLY; A unique id generated and assigned to the dedicated host by the platform. Does not change throughout the lifetime
-	// of the host.
+// of the host.
 	HostID *string
 
 	// READ-ONLY; The dedicated host instance view.
@@ -1292,20 +1312,29 @@ type DedicatedHostUpdate struct {
 	Properties *DedicatedHostProperties
 
 	// List all available dedicated host sizes for resizing [https://docs.microsoft.com/rest/api/compute/dedicated-hosts/listavailablesizes].
-	// Resizing can be only used to scale up DedicatedHost. Only name is
-	// required to be set.
+// Resizing can be only used to scale up DedicatedHost. Only name is
+// required to be set.
 	SKU *SKU
 
 	// Resource tags
 	Tags map[string]*string
 }
 
+// DetachDataDisk - Describes the data disk to be detached.
+type DetachDataDisk struct {
+	// REQUIRED; ID of the managed data disk.
+	DiskID *string
+
+	// Supported options available for Detach of a disk from a VM. Refer to DetachOption object reference for more details.
+	DetachOption *DiskDetachOptionTypes
+}
+
 // DiagnosticsProfile - Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
 type DiagnosticsProfile struct {
 	// Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. NOTE:
-	// If storageUri is being specified then ensure that the storage account is in
-	// the same region and subscription as the VM. You can easily view the output of your console log. Azure also enables you
-	// to see a screenshot of the VM from the hypervisor.
+// If storageUri is being specified then ensure that the storage account is in
+// the same region and subscription as the VM. You can easily view the output of your console log. Azure also enables you
+// to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnostics
 }
 
@@ -1316,10 +1345,10 @@ type DiffDiskSettings struct {
 	Option *DiffDiskOptions
 
 	// Specifies the ephemeral disk placement for operating system disk. Possible values are: CacheDisk, ResourceDisk. The defaulting
-	// behavior is: CacheDisk if one is configured for the VM size otherwise
-	// ResourceDisk is used. Refer to the VM size documentation for Windows VM at https://docs.microsoft.com/azure/virtual-machines/windows/sizes
-	// and Linux VM at
-	// https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
+// behavior is: CacheDisk if one is configured for the VM size otherwise
+// ResourceDisk is used. Refer to the VM size documentation for Windows VM at https://docs.microsoft.com/azure/virtual-machines/windows/sizes
+// and Linux VM at
+// https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
 	Placement *DiffDiskPlacement
 }
 
@@ -1362,7 +1391,7 @@ type Disk struct {
 	ManagedBy *string
 
 	// READ-ONLY; List of relative URIs containing the IDs of the VMs that have the disk attached. maxShares should be set to
-	// a value greater than one for disks to allow attaching them to multiple VMs.
+// a value greater than one for disks to allow attaching them to multiple VMs.
 	ManagedByExtended []*string
 
 	// READ-ONLY; Resource name
@@ -1379,7 +1408,7 @@ type DiskAccess struct {
 
 	// The extended location where the disk access will be created. Extended location cannot be changed.
 	ExtendedLocation *ExtendedLocation
-	Properties       *DiskAccessProperties
+	Properties *DiskAccessProperties
 
 	// Resource tags
 	Tags map[string]*string
@@ -1400,13 +1429,13 @@ type DiskAccessList struct {
 	Value []*DiskAccess
 
 	// The uri to fetch the next page of disk access resources. Call ListNext() with this to fetch the next page of disk access
-	// resources.
+// resources.
 	NextLink *string
 }
 
 type DiskAccessProperties struct {
 	// READ-ONLY; A readonly collection of private endpoint connections created on the disk. Currently only one endpoint connection
-	// is supported.
+// is supported.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The disk access resource provisioning state.
@@ -1428,8 +1457,8 @@ type DiskEncryptionSet struct {
 	Location *string
 
 	// The managed identity for the disk encryption set. It should be given permission on the key vault before it can be used
-	// to encrypt disks.
-	Identity   *EncryptionSetIdentity
+// to encrypt disks.
+	Identity *EncryptionSetIdentity
 	Properties *EncryptionSetProperties
 
 	// Resource tags
@@ -1451,7 +1480,7 @@ type DiskEncryptionSetList struct {
 	Value []*DiskEncryptionSet
 
 	// The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk encryption
-	// sets.
+// sets.
 	NextLink *string
 }
 
@@ -1466,7 +1495,7 @@ type DiskEncryptionSetParameters struct {
 // DiskEncryptionSetUpdate - disk encryption set update resource.
 type DiskEncryptionSetUpdate struct {
 	// The managed identity for the disk encryption set. It should be given permission on the key vault before it can be used
-	// to encrypt disks.
+// to encrypt disks.
 	Identity *EncryptionSetIdentity
 
 	// disk encryption set resource update properties.
@@ -1485,7 +1514,7 @@ type DiskEncryptionSetUpdateProperties struct {
 	EncryptionType *DiskEncryptionSetType
 
 	// Multi-tenant application client id to access key vault in a different tenant. Setting the value to 'None' will clear the
-	// property.
+// property.
 	FederatedClientID *string
 
 	// Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
@@ -1513,7 +1542,7 @@ type DiskImageEncryption struct {
 // DiskInstanceView - The instance view of the disk.
 type DiskInstanceView struct {
 	// Specifies the encryption settings for the OS Disk.
-	// Minimum api-version: 2015-06-15
+// Minimum api-version: 2015-06-15
 	EncryptionSettings []*DiskEncryptionSettings
 
 	// The disk name.
@@ -1538,7 +1567,7 @@ type DiskProperties struct {
 	CreationData *CreationData
 
 	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default.
-	// Does not apply to Ultra disks.
+// Does not apply to Ultra disks.
 	BurstingEnabled *bool
 
 	// Percentage complete for the background copy when a resource is created via the CopyStart operation.
@@ -1551,24 +1580,24 @@ type DiskProperties struct {
 	DiskAccessID *string
 
 	// The total number of IOPS that will be allowed across all VMs mounting the shared disk as ReadOnly. One operation can transfer
-	// between 4k and 256k bytes.
+// between 4k and 256k bytes.
 	DiskIOPSReadOnly *int64
 
 	// The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k
-	// bytes.
+// bytes.
 	DiskIOPSReadWrite *int64
 
 	// The total throughput (MBps) that will be allowed across all VMs mounting the shared disk as ReadOnly. MBps means millions
-	// of bytes per second - MB here uses the ISO notation, of powers of 10.
+// of bytes per second - MB here uses the ISO notation, of powers of 10.
 	DiskMBpsReadOnly *int64
 
 	// The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here
-	// uses the ISO notation, of powers of 10.
+// uses the ISO notation, of powers of 10.
 	DiskMBpsReadWrite *int64
 
 	// If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this
-	// field is present for updates or creation with other options, it indicates a
-	// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+// field is present for updates or creation with other options, it indicates a
+// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32
 
 	// Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
@@ -1581,7 +1610,7 @@ type DiskProperties struct {
 	HyperVGeneration *HyperVGeneration
 
 	// The maximum number of VMs that can attach to the disk at the same time. Value greater than one indicates a disk that can
-	// be mounted on multiple VMs at the same time.
+// be mounted on multiple VMs at the same time.
 	MaxShares *int32
 
 	// Policy for accessing the disk via network.
@@ -1591,16 +1620,16 @@ type DiskProperties struct {
 	OSType *OperatingSystemTypes
 
 	// Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times
-	// a day) by detached from one virtual machine and attached to another. This
-	// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
-	// with the fault domain of the virtual machine.
+// a day) by detached from one virtual machine and attached to another. This
+// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
+// with the fault domain of the virtual machine.
 	OptimizedForFrequentAttach *bool
 
 	// Policy for controlling export on the disk.
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Purchase plan information for the the image from which the OS disk was created. E.g. - {name: 2019-Datacenter, publisher:
-	// MicrosoftWindowsServer, product: WindowsServer}
+// MicrosoftWindowsServer, product: WindowsServer}
 	PurchasePlan *DiskPurchasePlan
 
 	// Contains the security related information for the resource.
@@ -1613,7 +1642,7 @@ type DiskProperties struct {
 	SupportsHibernation *bool
 
 	// Performance tier of the disk (e.g, P4, S10) as described here: https://azure.microsoft.com/en-us/pricing/details/managed-disks/.
-	// Does not apply to Ultra disks.
+// Does not apply to Ultra disks.
 	Tier *string
 
 	// READ-ONLY; Latest time when bursting was last enabled on a disk.
@@ -1632,7 +1661,7 @@ type DiskProperties struct {
 	ProvisioningState *string
 
 	// READ-ONLY; Details of the list of all VMs that have the disk attached. maxShares should be set to a value greater than
-	// one for disks to allow attaching them to multiple VMs.
+// one for disks to allow attaching them to multiple VMs.
 	ShareInfo []*ShareInfoElement
 
 	// READ-ONLY; The time when the disk was created.
@@ -1648,7 +1677,7 @@ type DiskPurchasePlan struct {
 	Name *string
 
 	// REQUIRED; Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference
-	// element.
+// element.
 	Product *string
 
 	// REQUIRED; The publisher ID.
@@ -1676,7 +1705,7 @@ type DiskRestorePoint struct {
 // DiskRestorePointAttributes - Disk Restore Point details.
 type DiskRestorePointAttributes struct {
 	// Encryption at rest settings for disk restore point. It is an optional property that can be specified in the input while
-	// creating a restore point.
+// creating a restore point.
 	Encryption *RestorePointEncryption
 
 	// Resource Id of the source disk restore point.
@@ -1701,7 +1730,7 @@ type DiskRestorePointList struct {
 	Value []*DiskRestorePoint
 
 	// The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk restore
-	// points.
+// points.
 	NextLink *string
 }
 
@@ -1802,7 +1831,7 @@ type DiskUpdate struct {
 // DiskUpdateProperties - Disk resource update properties.
 type DiskUpdateProperties struct {
 	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default.
-	// Does not apply to Ultra disks.
+// Does not apply to Ultra disks.
 	BurstingEnabled *bool
 
 	// Additional authentication requirements when exporting or uploading to a disk or snapshot.
@@ -1812,24 +1841,24 @@ type DiskUpdateProperties struct {
 	DiskAccessID *string
 
 	// The total number of IOPS that will be allowed across all VMs mounting the shared disk as ReadOnly. One operation can transfer
-	// between 4k and 256k bytes.
+// between 4k and 256k bytes.
 	DiskIOPSReadOnly *int64
 
 	// The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k
-	// bytes.
+// bytes.
 	DiskIOPSReadWrite *int64
 
 	// The total throughput (MBps) that will be allowed across all VMs mounting the shared disk as ReadOnly. MBps means millions
-	// of bytes per second - MB here uses the ISO notation, of powers of 10.
+// of bytes per second - MB here uses the ISO notation, of powers of 10.
 	DiskMBpsReadOnly *int64
 
 	// The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here
-	// uses the ISO notation, of powers of 10.
+// uses the ISO notation, of powers of 10.
 	DiskMBpsReadWrite *int64
 
 	// If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this
-	// field is present for updates or creation with other options, it indicates a
-	// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+// field is present for updates or creation with other options, it indicates a
+// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32
 
 	// Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
@@ -1839,7 +1868,7 @@ type DiskUpdateProperties struct {
 	EncryptionSettingsCollection *EncryptionSettingsCollection
 
 	// The maximum number of VMs that can attach to the disk at the same time. Value greater than one indicates a disk that can
-	// be mounted on multiple VMs at the same time.
+// be mounted on multiple VMs at the same time.
 	MaxShares *int32
 
 	// Policy for accessing the disk via network.
@@ -1849,9 +1878,9 @@ type DiskUpdateProperties struct {
 	OSType *OperatingSystemTypes
 
 	// Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times
-	// a day) by detached from one virtual machine and attached to another. This
-	// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
-	// with the fault domain of the virtual machine.
+// a day) by detached from one virtual machine and attached to another. This
+// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
+// with the fault domain of the virtual machine.
 	OptimizedForFrequentAttach *bool
 
 	// Policy for controlling export on the disk.
@@ -1867,7 +1896,7 @@ type DiskUpdateProperties struct {
 	SupportsHibernation *bool
 
 	// Performance tier of the disk (e.g, P4, S10) as described here: https://azure.microsoft.com/en-us/pricing/details/managed-disks/.
-	// Does not apply to Ultra disks.
+// Does not apply to Ultra disks.
 	Tier *string
 
 	// READ-ONLY; Properties of the disk for which update is pending.
@@ -1897,22 +1926,22 @@ type EncryptionImages struct {
 // before it can be used to encrypt disks.
 type EncryptionSetIdentity struct {
 	// The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations. Disk Encryption
-	// Sets can be updated with Identity type None during migration of
-	// subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
+// Sets can be updated with Identity type None during migration of
+// subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
 	Type *DiskEncryptionSetIdentityType
 
 	// The list of user identities associated with the disk encryption set. The user identity dictionary key references will be
-	// ARM resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// ARM resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue
 
 	// READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id
-	// header in the PUT request if the resource has a systemAssigned(implicit)
-	// identity
+// header in the PUT request if the resource has a systemAssigned(implicit)
+// identity
 	PrincipalID *string
 
 	// READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id
-	// header in the PUT request if the resource has a systemAssigned(implicit) identity
+// header in the PUT request if the resource has a systemAssigned(implicit) identity
 	TenantID *string
 }
 
@@ -1924,21 +1953,21 @@ type EncryptionSetProperties struct {
 	EncryptionType *DiskEncryptionSetType
 
 	// Multi-tenant application client id to access key vault in a different tenant. Setting the value to 'None' will clear the
-	// property.
+// property.
 	FederatedClientID *string
 
 	// Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
 	RotationToLatestKeyVersionEnabled *bool
 
 	// READ-ONLY; The error that was encountered during auto-key rotation. If an error is present, then auto-key rotation will
-	// not be attempted until the error on this disk encryption set is fixed.
+// not be attempted until the error on this disk encryption set is fixed.
 	AutoKeyRotationError *APIError
 
 	// READ-ONLY; The time when the active key of this disk encryption set was updated.
 	LastKeyRotationTimestamp *time.Time
 
 	// READ-ONLY; A readonly collection of key vault keys previously used by this disk encryption set while a key rotation is
-	// in progress. It will be empty if there is no ongoing key rotation.
+// in progress. It will be empty if there is no ongoing key rotation.
 	PreviousKeys []*KeyForDiskEncryptionSet
 
 	// READ-ONLY; The disk encryption set provisioning state.
@@ -1948,16 +1977,16 @@ type EncryptionSetProperties struct {
 // EncryptionSettingsCollection - Encryption settings for disk or snapshot
 type EncryptionSettingsCollection struct {
 	// REQUIRED; Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption. Set this
-	// flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption.
-	// If EncryptionSettings is null in the request object, the existing settings remain unchanged.
+// flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption.
+// If EncryptionSettings is null in the request object, the existing settings remain unchanged.
 	Enabled *bool
 
 	// A collection of encryption settings, one for each disk volume.
 	EncryptionSettings []*EncryptionSettingsElement
 
 	// Describes what type of encryption is used for the disks. Once this field is set, it cannot be overwritten. '1.0' corresponds
-	// to Azure Disk Encryption with AAD app.'1.1' corresponds to Azure Disk
-	// Encryption.
+// to Azure Disk Encryption with AAD app.'1.1' corresponds to Azure Disk
+// Encryption.
 	EncryptionSettingsVersion *string
 }
 
@@ -1967,7 +1996,7 @@ type EncryptionSettingsElement struct {
 	DiskEncryptionKey *KeyVaultAndSecretReference
 
 	// Key Vault Key Url and vault id of the key encryption key. KeyEncryptionKey is optional and when provided is used to unwrap
-	// the disk encryption key.
+// the disk encryption key.
 	KeyEncryptionKey *KeyVaultAndKeyReference
 }
 
@@ -2071,16 +2100,16 @@ type GalleryApplicationList struct {
 	Value []*GalleryApplication
 
 	// The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this to fetch
-	// the next page of gallery Application Definitions.
+// the next page of gallery Application Definitions.
 	NextLink *string
 }
 
 // GalleryApplicationProperties - Describes the properties of a gallery Application Definition.
 type GalleryApplicationProperties struct {
 	// REQUIRED; This property allows you to specify the supported type of the OS that application is built for.
-	// Possible values are:
-	// Windows
-	// Linux
+// Possible values are:
+// Windows
+// Linux
 	SupportedOSType *OperatingSystemTypes
 
 	// A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.
@@ -2090,7 +2119,7 @@ type GalleryApplicationProperties struct {
 	Description *string
 
 	// The end of life date of the gallery Application Definition. This property can be used for decommissioning purposes. This
-	// property is updatable.
+// property is updatable.
 	EndOfLifeDate *time.Time
 
 	// The Eula agreement for the gallery Application Definition.
@@ -2148,7 +2177,7 @@ type GalleryApplicationVersionList struct {
 	Value []*GalleryApplicationVersion
 
 	// The uri to fetch the next page of gallery Application Versions. Call ListNext() with this to fetch the next page of gallery
-	// Application Versions.
+// Application Versions.
 	NextLink *string
 }
 
@@ -2182,22 +2211,22 @@ type GalleryApplicationVersionPublishingProfile struct {
 	EnableHealthCheck *bool
 
 	// The end of life date of the gallery image version. This property can be used for decommissioning purposes. This property
-	// is updatable.
+// is updatable.
 	EndOfLifeDate *time.Time
 
 	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool
-	ManageActions     *UserArtifactManage
+	ManageActions *UserArtifactManage
 
 	// The number of replicas of the Image Version to be created per region. This property would take effect for a region when
-	// regionalReplicaCount is not specified. This property is updatable.
+// regionalReplicaCount is not specified. This property is updatable.
 	ReplicaCount *int32
 
 	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
 	ReplicationMode *ReplicationMode
 
 	// Additional settings for the VM app that contains the target package and config file name when it is deployed to target
-	// VM or VM scale set.
+// VM or VM scale set.
 	Settings *UserArtifactSettings
 
 	// Specifies the storage account type to be used to store the image. This property is not updatable.
@@ -2240,14 +2269,14 @@ type GalleryApplicationVersionUpdate struct {
 // GalleryArtifactPublishingProfileBase - Describes the basic gallery artifact publishing profile.
 type GalleryArtifactPublishingProfileBase struct {
 	// The end of life date of the gallery image version. This property can be used for decommissioning purposes. This property
-	// is updatable.
+// is updatable.
 	EndOfLifeDate *time.Time
 
 	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool
 
 	// The number of replicas of the Image Version to be created per region. This property would take effect for a region when
-	// regionalReplicaCount is not specified. This property is updatable.
+// regionalReplicaCount is not specified. This property is updatable.
 	ReplicaCount *int32
 
 	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
@@ -2296,8 +2325,8 @@ type GalleryArtifactVersionSource struct {
 // GalleryDataDiskImage - This is the data disk image.
 type GalleryDataDiskImage struct {
 	// REQUIRED; This property specifies the logical unit number of the data disk. This value is used to identify data disks within
-	// the Virtual Machine and therefore must be unique for each data disk attached to the
-	// Virtual Machine.
+// the Virtual Machine and therefore must be unique for each data disk attached to the
+// Virtual Machine.
 	Lun *int32
 
 	// The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
@@ -2396,7 +2425,7 @@ type GalleryImageList struct {
 	Value []*GalleryImage
 
 	// The uri to fetch the next page of Image Definitions in the Shared Image Gallery. Call ListNext() with this to fetch the
-	// next page of gallery image definitions.
+// next page of gallery image definitions.
 	NextLink *string
 }
 
@@ -2406,14 +2435,14 @@ type GalleryImageProperties struct {
 	Identifier *GalleryImageIdentifier
 
 	// REQUIRED; This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
-	// or 'Specialized'.
+// or 'Specialized'.
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-	// managed image.
-	// Possible values are:
-	// Windows
-	// Linux
+// managed image.
+// Possible values are:
+// Windows
+// Linux
 	OSType *OperatingSystemTypes
 
 	// The architecture of the image. Applicable to OS disks only.
@@ -2426,7 +2455,7 @@ type GalleryImageProperties struct {
 	Disallowed *Disallowed
 
 	// The end of life date of the gallery image definition. This property can be used for decommissioning purposes. This property
-	// is updatable.
+// is updatable.
 	EndOfLifeDate *time.Time
 
 	// The Eula agreement for the gallery image definition.
@@ -2499,7 +2528,7 @@ type GalleryImageVersionList struct {
 	Value []*GalleryImageVersion
 
 	// The uri to fetch the next page of gallery image versions. Call ListNext() with this to fetch the next page of gallery image
-	// versions.
+// versions.
 	NextLink *string
 }
 
@@ -2524,14 +2553,14 @@ type GalleryImageVersionProperties struct {
 // GalleryImageVersionPublishingProfile - The publishing profile of a gallery image Version.
 type GalleryImageVersionPublishingProfile struct {
 	// The end of life date of the gallery image version. This property can be used for decommissioning purposes. This property
-	// is updatable.
+// is updatable.
 	EndOfLifeDate *time.Time
 
 	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool
 
 	// The number of replicas of the Image Version to be created per region. This property would take effect for a region when
-	// regionalReplicaCount is not specified. This property is updatable.
+// regionalReplicaCount is not specified. This property is updatable.
 	ReplicaCount *int32
 
 	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
@@ -2677,9 +2706,6 @@ type GrantAccessData struct {
 	// REQUIRED; Time duration in seconds until the SAS access expires.
 	DurationInSeconds *int32
 
-	// Used to specify the file format when making request for SAS on a VHDX file format snapshot
-	FileFormat *FileFormat
-
 	// Set this flag to true to get additional SAS for VM guest state
 	GetSecureVMGuestStateSAS *bool
 }
@@ -2687,18 +2713,18 @@ type GrantAccessData struct {
 // HardwareProfile - Specifies the hardware settings for the virtual machine.
 type HardwareProfile struct {
 	// Specifies the size of the virtual machine. The enum data type is currently deprecated and will be removed by December 23rd
-	// 2023. The recommended way to get the list of available sizes is using these
-	// APIs: List all available virtual machine sizes in an availability set [https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes],
-	// List all available virtual machine sizes in a
-	// region [https://docs.microsoft.com/rest/api/compute/resourceskus/list], List all available virtual machine sizes for resizing
-	// [https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes]. For more information about virtual machine
-	// sizes, see Sizes for virtual machines
-	// [https://docs.microsoft.com/azure/virtual-machines/sizes]. The available VM sizes depend on region and availability set.
+// 2023. The recommended way to get the list of available sizes is using these
+// APIs: List all available virtual machine sizes in an availability set [https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes],
+// List all available virtual machine sizes in a
+// region [https://docs.microsoft.com/rest/api/compute/resourceskus/list], List all available virtual machine sizes for resizing
+// [https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes]. For more information about virtual machine
+// sizes, see Sizes for virtual machines
+// [https://docs.microsoft.com/azure/virtual-machines/sizes]. The available VM sizes depend on region and availability set.
 	VMSize *VirtualMachineSizeTypes
 
 	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-07-01. This feature
-	// is still in preview mode and is not supported for VirtualMachineScaleSet. Please
-	// follow the instructions in VM Customization [https://aka.ms/vmcustomization] for more details.
+// is still in preview mode and is not supported for VirtualMachineScaleSet. Please
+// follow the instructions in VM Customization [https://aka.ms/vmcustomization] for more details.
 	VMSizeProperties *VMSizeProperties
 }
 
@@ -2731,21 +2757,21 @@ type Image struct {
 // ImageDataDisk - Describes a data disk.
 type ImageDataDisk struct {
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
-	// therefore must be unique for each data disk attached to a VM.
+// therefore must be unique for each data disk attached to a VM.
 	Lun *int32
 
 	// The Virtual Hard Disk.
 	BlobURI *string
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard
-	// storage. ReadOnly for Premium storage.
+// storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies the customer managed disk encryption set resource id for the managed image disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters
 
 	// Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual
-	// machine image. This value cannot be larger than 1023 GB.
+// machine image. This value cannot be larger than 1023 GB.
 	DiskSizeGB *int32
 
 	// The managedDisk.
@@ -2755,7 +2781,7 @@ type ImageDataDisk struct {
 	Snapshot *SubResource
 
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
-	// be used with OS Disk.
+// be used with OS Disk.
 	StorageAccountType *StorageAccountTypes
 }
 
@@ -2777,14 +2803,14 @@ type ImageDisk struct {
 	BlobURI *string
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard
-	// storage. ReadOnly for Premium storage.
+// storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies the customer managed disk encryption set resource id for the managed image disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters
 
 	// Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual
-	// machine image. This value cannot be larger than 1023 GB.
+// machine image. This value cannot be larger than 1023 GB.
 	DiskSizeGB *int32
 
 	// The managedDisk.
@@ -2794,7 +2820,7 @@ type ImageDisk struct {
 	Snapshot *SubResource
 
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
-	// be used with OS Disk.
+// be used with OS Disk.
 	StorageAccountType *StorageAccountTypes
 }
 
@@ -2807,7 +2833,7 @@ type ImageDiskReference struct {
 	ID *string
 
 	// If the disk is created from an image's data disk, this is an index that indicates which of the data disks in the image
-	// to use. For OS disks, this field is null.
+// to use. For OS disks, this field is null.
 	Lun *int32
 
 	// A relative uri containing a direct shared Azure Compute Gallery image reference.
@@ -2829,21 +2855,21 @@ type ImageOSDisk struct {
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk if creating a VM from a custom
-	// image. Possible values are: Windows, Linux.
+// image. Possible values are: Windows, Linux.
 	OSType *OperatingSystemTypes
 
 	// The Virtual Hard Disk.
 	BlobURI *string
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard
-	// storage. ReadOnly for Premium storage.
+// storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies the customer managed disk encryption set resource id for the managed image disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters
 
 	// Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual
-	// machine image. This value cannot be larger than 1023 GB.
+// machine image. This value cannot be larger than 1023 GB.
 	DiskSizeGB *int32
 
 	// The managedDisk.
@@ -2853,16 +2879,16 @@ type ImageOSDisk struct {
 	Snapshot *SubResource
 
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
-	// be used with OS Disk.
+// be used with OS Disk.
 	StorageAccountType *StorageAccountTypes
 }
 
 // ImageProperties - Describes the properties of an Image.
 type ImageProperties struct {
 	// Specifies the HyperVGenerationType of the VirtualMachine created from the image. From API Version 2019-03-01 if the image
-	// source is a blob, then we need the user to specify the value, if the source is
-	// managed resource like disk or snapshot, we may require the user to specify the property if we cannot deduce it from the
-	// source managed resource.
+// source is a blob, then we need the user to specify the value, if the source is
+// managed resource like disk or snapshot, we may require the user to specify the property if we cannot deduce it from the
+// source managed resource.
 	HyperVGeneration *HyperVGenerationTypes
 
 	// The source virtual machine from which Image is created.
@@ -2893,7 +2919,7 @@ type ImagePurchasePlan struct {
 // publisher and offer can only be set when you create the scale set.
 type ImageReference struct {
 	// Specified the community gallery image unique id for vm deployment. This can be fetched from community gallery image GET
-	// call.
+// call.
 	CommunityGalleryImageID *string
 
 	// Resource Id
@@ -2912,33 +2938,33 @@ type ImageReference struct {
 	SharedGalleryImageID *string
 
 	// Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats
-	// are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers.
-	// Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image
-	// will not automatically update after deploy time even if a new version becomes
-	// available. Please do not use field 'version' for gallery image deployment, gallery image should always use 'id' field for
-	// deployment, to use 'latest' version of gallery image, just set
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
-	// in the 'id' field without version input.
+// are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers.
+// Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image
+// will not automatically update after deploy time even if a new version becomes
+// available. Please do not use field 'version' for gallery image deployment, gallery image should always use 'id' field for
+// deployment, to use 'latest' version of gallery image, just set
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
+// in the 'id' field without version input.
 	Version *string
 
 	// READ-ONLY; Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
-	// machine. This readonly field differs from 'version', only if the value specified in
-	// 'version' field is 'latest'.
+// machine. This readonly field differs from 'version', only if the value specified in
+// 'version' field is 'latest'.
 	ExactVersion *string
 }
 
 // ImageStorageProfile - Describes a storage profile.
 type ImageStorageProfile struct {
 	// Specifies the parameters that are used to add a data disk to a virtual machine.
-	// For more information about disks, see About disks and VHDs for Azure virtual machines [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
+// For more information about disks, see About disks and VHDs for Azure virtual machines [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 	DataDisks []*ImageDataDisk
 
 	// Specifies information about the operating system disk used by the virtual machine.
-	// For more information about disks, see About disks and VHDs for Azure virtual machines [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
+// For more information about disks, see About disks and VHDs for Azure virtual machines [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 	OSDisk *ImageOSDisk
 
 	// Specifies whether an image is zone resilient or not. Default is false. Zone resilient images can be created only in regions
-	// that provide Zone Redundant Storage (ZRS).
+// that provide Zone Redundant Storage (ZRS).
 	ZoneResilient *bool
 }
 
@@ -2996,11 +3022,11 @@ type InstanceViewStatusesSummary struct {
 // KeyForDiskEncryptionSet - Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots
 type KeyForDiskEncryptionSet struct {
 	// REQUIRED; Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is required regardless of rotationToLatestKeyVersionEnabled
-	// value.
+// value.
 	KeyURL *string
 
 	// Resource id of the KeyVault containing the key or secret. This property is optional and cannot be used if the KeyVault
-	// subscription is not the same as the Disk Encryption Set subscription.
+// subscription is not the same as the Disk Encryption Set subscription.
 	SourceVault *SourceVault
 }
 
@@ -3053,7 +3079,7 @@ type LastPatchInstallationSummary struct {
 	FailedPatchCount *int32
 
 	// READ-ONLY; The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-	// logs.
+// logs.
 	InstallationActivityID *string
 
 	// READ-ONLY; The count of patches that successfully installed.
@@ -3066,7 +3092,7 @@ type LastPatchInstallationSummary struct {
 	MaintenanceWindowExceeded *bool
 
 	// READ-ONLY; The number of all available patches but not going to be installed because it didn't match a classification or
-	// inclusion list entry.
+// inclusion list entry.
 	NotSelectedPatchCount *int32
 
 	// READ-ONLY; The number of all available patches expected to be installed over the course of the patch installation operation.
@@ -3076,8 +3102,8 @@ type LastPatchInstallationSummary struct {
 	StartTime *time.Time
 
 	// READ-ONLY; The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-	// At that point it will become "Unknown", "Failed", "Succeeded", or
-	// "CompletedWithWarnings."
+// At that point it will become "Unknown", "Failed", "Succeeded", or
+// "CompletedWithWarnings."
 	Status *PatchOperationStatus
 }
 
@@ -3104,8 +3130,8 @@ type LinuxConfiguration struct {
 	PatchSettings *LinuxPatchSettings
 
 	// Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified
-	// in the request body, default behavior is to set it to true. This will ensure
-	// that VM Agent is installed on the VM so that extensions can be added to the VM later.
+// in the request body, default behavior is to set it to true. This will ensure
+// that VM Agent is installed on the VM so that extensions can be added to the VM later.
 	ProvisionVMAgent *bool
 
 	// Specifies the ssh key configuration for a Linux OS.
@@ -3130,20 +3156,20 @@ type LinuxParameters struct {
 // LinuxPatchSettings - Specifies settings related to VM Guest Patching on Linux.
 type LinuxPatchSettings struct {
 	// Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.
-	// Possible values are:
-	// ImageDefault - You control the timing of patch assessments on a virtual machine.
-	// AutomaticByPlatform - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
+// Possible values are:
+// ImageDefault - You control the timing of patch assessments on a virtual machine.
+// AutomaticByPlatform - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
 	AssessmentMode *LinuxPatchAssessmentMode
 
 	// Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Linux.
 	AutomaticByPlatformSettings *LinuxVMGuestPatchAutomaticByPlatformSettings
 
 	// Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale
-	// set with OrchestrationMode as Flexible.
-	// Possible values are:
-	// ImageDefault - The virtual machine's default patching configuration is used.
-	// AutomaticByPlatform - The virtual machine will be automatically updated by the platform. The property provisionVMAgent
-	// must be true
+// set with OrchestrationMode as Flexible.
+// Possible values are:
+// ImageDefault - The virtual machine's default patching configuration is used.
+// AutomaticByPlatform - The virtual machine will be automatically updated by the platform. The property provisionVMAgent
+// must be true
 	PatchMode *LinuxVMGuestPatchMode
 }
 
@@ -3163,7 +3189,7 @@ type ListUsagesResult struct {
 	Value []*Usage
 
 	// The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the next page
-	// of compute resource usage information.
+// of compute resource usage information.
 	NextLink *string
 }
 
@@ -3182,7 +3208,7 @@ type LoadBalancerConfiguration struct {
 // LoadBalancerConfigurationProperties - Describes the properties of the load balancer configuration.
 type LoadBalancerConfigurationProperties struct {
 	// REQUIRED; Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each
-	// load balancer configuration must have exactly one frontend IP configuration.
+// load balancer configuration must have exactly one frontend IP configuration.
 	FrontendIPConfigurations []*LoadBalancerFrontendIPConfiguration
 }
 
@@ -3190,7 +3216,7 @@ type LoadBalancerConfigurationProperties struct {
 // address is supported. Each load balancer configuration must have exactly one frontend IP configuration.
 type LoadBalancerFrontendIPConfiguration struct {
 	// REQUIRED; The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
-	// This name can be used to access the resource.
+// This name can be used to access the resource.
 	Name *string
 
 	// REQUIRED; Properties of load balancer frontend ip configuration.
@@ -3290,7 +3316,7 @@ type ManagedDiskParameters struct {
 	SecurityProfile *VMDiskSecurityProfile
 
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
-	// be used with OS Disk.
+// be used with OS Disk.
 	StorageAccountType *StorageAccountTypes
 }
 
@@ -3329,37 +3355,37 @@ type NetworkProfile struct {
 // [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 type OSDisk struct {
 	// REQUIRED; Specifies how the virtual machine should be created. Possible values are: Attach. This value is used when you
-	// are using a specialized disk to create the virtual machine. FromImage. This value is used
-	// when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
-	// element described above. If you are using a marketplace image, you
-	// should also use the plan element previously described.
+// are using a specialized disk to create the virtual machine. FromImage. This value is used
+// when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+// element described above. If you are using a marketplace image, you
+// should also use the plan element previously described.
 	CreateOption *DiskCreateOptionTypes
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The defaulting behavior is: None for
-	// Standard storage. ReadOnly for Premium storage.
+// Standard storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible values are: Delete. If this value is
-	// used, the OS disk is deleted when VM is deleted. Detach. If this value is used,
-	// the os disk is retained after VM is deleted. The default value is set to Detach. For an ephemeral OS Disk, the default
-	// value is set to Delete. The user cannot change the delete option for an ephemeral
-	// OS Disk.
+// used, the OS disk is deleted when VM is deleted. Detach. If this value is used,
+// the os disk is retained after VM is deleted. The default value is set to Detach. For an ephemeral OS Disk, the default
+// value is set to Delete. The user cannot change the delete option for an ephemeral
+// OS Disk.
 	DeleteOption *DiskDeleteOptionTypes
 
 	// Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
 	DiffDiskSettings *DiffDiskSettings
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
-	// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
-	// for the disk and the value cannot be larger than 1023.
+// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
+// for the disk and the value cannot be larger than 1023.
 	DiskSizeGB *int32
 
 	// Specifies the encryption settings for the OS Disk. Minimum api-version: 2015-06-15.
 	EncryptionSettings *DiskEncryptionSettings
 
 	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine.
-	// If SourceImage is provided, the destination virtual hard drive must not
-	// exist.
+// If SourceImage is provided, the destination virtual hard drive must not
+// exist.
 	Image *VirtualHardDisk
 
 	// The managed disk parameters.
@@ -3369,7 +3395,7 @@ type OSDisk struct {
 	Name *string
 
 	// This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or
-	// a specialized VHD. Possible values are: Windows, Linux.
+// a specialized VHD. Possible values are: Windows, Linux.
 	OSType *OperatingSystemTypes
 
 	// The virtual hard disk.
@@ -3427,7 +3453,7 @@ type OSFamilyListResult struct {
 	Value []*OSFamily
 
 	// The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is null
-	// to fetch all the resources.
+// to fetch all the resources.
 	NextLink *string
 }
 
@@ -3448,8 +3474,8 @@ type OSImageNotificationProfile struct {
 	Enable *bool
 
 	// Length of time a Virtual Machine being reimaged or having its OS upgraded will have to potentially approve the OS Image
-	// Scheduled Event before the event is auto approved (timed out). The configuration
-	// is specified in ISO 8601 format, and the value must be 15 minutes (PT15M)
+// Scheduled Event before the event is auto approved (timed out). The configuration
+// is specified in ISO 8601 format, and the value must be 15 minutes (PT15M)
 	NotBeforeTimeout *string
 }
 
@@ -3457,64 +3483,64 @@ type OSImageNotificationProfile struct {
 // VM is provisioned.
 type OSProfile struct {
 	// Specifies the password of the administrator account.
-	// Minimum-length (Windows): 8 characters
-	// Minimum-length (Linux): 6 characters
-	// Max-length (Windows): 123 characters
-	// Max-length (Linux): 72 characters
-	// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
-	// Has lower characters
-	// Has upper characters
-	// Has a digit
-	// Has a special character (Regex match [\W_])
-	// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
-	// "Password22", "iloveyou!"
-	// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
-	// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
-	// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
+// Minimum-length (Windows): 8 characters
+// Minimum-length (Linux): 6 characters
+// Max-length (Windows): 123 characters
+// Max-length (Linux): 72 characters
+// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
+// Has lower characters
+// Has upper characters
+// Has a digit
+// Has a special character (Regex match [\W_])
+// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
+// "Password22", "iloveyou!"
+// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
+// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
+// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
 	AdminPassword *string
 
 	// Specifies the name of the administrator account.
-	// This property cannot be updated after the VM is created.
-	// Windows-only restriction: Cannot end in "."
-	// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123",
-	// "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest",
-	// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-	// Minimum-length (Linux): 1 character
-	// Max-length (Linux): 64 characters
-	// Max-length (Windows): 20 characters.
+// This property cannot be updated after the VM is created.
+// Windows-only restriction: Cannot end in "."
+// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123",
+// "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest",
+// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
+// Minimum-length (Linux): 1 character
+// Max-length (Linux): 64 characters
+// Max-length (Windows): 20 characters.
 	AdminUsername *string
 
 	// Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no
-	// extensions are present on the virtual machine.
+// extensions are present on the virtual machine.
 	AllowExtensionOperations *bool
 
 	// Specifies the host OS name of the virtual machine. This name cannot be updated after the VM is created. Max-length (Windows):
-	// 15 characters. Max-length (Linux): 64 characters. For naming conventions
-	// and restrictions see Azure infrastructure services implementation guidelines [https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules].
+// 15 characters. Max-length (Linux): 64 characters. For naming conventions
+// and restrictions see Azure infrastructure services implementation guidelines [https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules].
 	ComputerName *string
 
 	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
-	// as a file on the Virtual Machine. The maximum length of the binary array is
-	// 65535 bytes. Note: Do not pass any secrets or passwords in customData property. This property cannot be updated after the
-	// VM is created. The property 'customData' is passed to the VM to be saved as a
-	// file, for more information see Custom Data on Azure VMs [https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/].
-	// For using cloud-init for your Linux VM, see Using cloud-init to
-	// customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init].
+// as a file on the Virtual Machine. The maximum length of the binary array is
+// 65535 bytes. Note: Do not pass any secrets or passwords in customData property. This property cannot be updated after the
+// VM is created. The property 'customData' is passed to the VM to be saved as a
+// file, for more information see Custom Data on Azure VMs [https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/].
+// For using cloud-init for your Linux VM, see Using cloud-init to
+// customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init].
 	CustomData *string
 
 	// Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions, see
-	// Linux on Azure-Endorsed Distributions
-	// [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
+// Linux on Azure-Endorsed Distributions
+// [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 	LinuxConfiguration *LinuxConfiguration
 
 	// Optional property which must either be set to True or omitted.
 	RequireGuestProvisionSignal *bool
 
 	// Specifies set of certificates that should be installed onto the virtual machine. To install certificates on a virtual machine
-	// it is recommended to use the Azure Key Vault virtual machine extension for
-	// Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine
-	// extension for Windows
-	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
+// it is recommended to use the Azure Key Vault virtual machine extension for
+// Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine
+// extension for Windows
+// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	Secrets []*VaultSecretGroup
 
 	// Specifies Windows operating system settings on the virtual machine.
@@ -3524,29 +3550,29 @@ type OSProfile struct {
 // OSProfileProvisioningData - Additional parameters for Reimaging Non-Ephemeral Virtual Machine.
 type OSProfileProvisioningData struct {
 	// Specifies the password of the administrator account.
-	// Minimum-length (Windows): 8 characters
-	// Minimum-length (Linux): 6 characters
-	// Max-length (Windows): 123 characters
-	// Max-length (Linux): 72 characters
-	// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
-	// Has lower characters
-	// Has upper characters
-	// Has a digit
-	// Has a special character (Regex match [\W_])
-	// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
-	// "Password22", "iloveyou!"
-	// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
-	// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
-	// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
+// Minimum-length (Windows): 8 characters
+// Minimum-length (Linux): 6 characters
+// Max-length (Windows): 123 characters
+// Max-length (Linux): 72 characters
+// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
+// Has lower characters
+// Has upper characters
+// Has a digit
+// Has a special character (Regex match [\W_])
+// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
+// "Password22", "iloveyou!"
+// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
+// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
+// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
 	AdminPassword *string
 
 	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
-	// as a file on the Virtual Machine. The maximum length of the binary array is
-	// 65535 bytes. Note: Do not pass any secrets or passwords in customData property. This property cannot be updated after the
-	// VM is created. The property customData is passed to the VM to be saved as a
-	// file, for more information see Custom Data on Azure VMs [https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/].
-	// If using cloud-init for your Linux VM, see Using cloud-init to
-	// customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init].
+// as a file on the Virtual Machine. The maximum length of the binary array is
+// 65535 bytes. Note: Do not pass any secrets or passwords in customData property. This property cannot be updated after the
+// VM is created. The property customData is passed to the VM to be saved as a
+// file, for more information see Custom Data on Azure VMs [https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/].
+// If using cloud-init for your Linux VM, see Using cloud-init to
+// customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init].
 	CustomData *string
 }
 
@@ -3574,7 +3600,7 @@ type OSVersionListResult struct {
 	Value []*OSVersion
 
 	// The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is null
-	// to fetch all the resources.
+// to fetch all the resources.
 	NextLink *string
 }
 
@@ -3689,28 +3715,28 @@ type PatchInstallationDetail struct {
 // PatchSettings - Specifies settings related to VM Guest Patching on Windows.
 type PatchSettings struct {
 	// Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.
-	// Possible values are:
-	// ImageDefault - You control the timing of patch assessments on a virtual machine.
-	// AutomaticByPlatform - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
+// Possible values are:
+// ImageDefault - You control the timing of patch assessments on a virtual machine.
+// AutomaticByPlatform - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
 	AssessmentMode *WindowsPatchAssessmentMode
 
 	// Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Windows.
 	AutomaticByPlatformSettings *WindowsVMGuestPatchAutomaticByPlatformSettings
 
 	// Enables customers to patch their Azure VMs without requiring a reboot. For enableHotpatching, the 'provisionVMAgent' must
-	// be set to true and 'patchMode' must be set to 'AutomaticByPlatform'.
+// be set to true and 'patchMode' must be set to 'AutomaticByPlatform'.
 	EnableHotpatching *bool
 
 	// Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale
-	// set with OrchestrationMode as Flexible.
-	// Possible values are:
-	// Manual - You control the application of patches to a virtual machine. You do this by applying patches manually inside the
-	// VM. In this mode, automatic updates are disabled; the property
-	// WindowsConfiguration.enableAutomaticUpdates must be false
-	// AutomaticByOS - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates
-	// must be true.
-	// AutomaticByPlatform - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and
-	// WindowsConfiguration.enableAutomaticUpdates must be true
+// set with OrchestrationMode as Flexible.
+// Possible values are:
+// Manual - You control the application of patches to a virtual machine. You do this by applying patches manually inside the
+// VM. In this mode, automatic updates are disabled; the property
+// WindowsConfiguration.enableAutomaticUpdates must be false
+// AutomaticByOS - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates
+// must be true.
+// AutomaticByPlatform - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and
+// WindowsConfiguration.enableAutomaticUpdates must be true
 	PatchMode *WindowsVMGuestPatchMode
 }
 
@@ -3787,7 +3813,7 @@ type PriorityMixPolicy struct {
 	BaseRegularPriorityCount *int32
 
 	// The percentage of VM instances, after the base regular priority count has been reached, that are expected to use regular
-	// priority.
+// priority.
 	RegularPriorityPercentageAboveBase *int32
 }
 
@@ -3897,7 +3923,7 @@ type ProximityPlacementGroup struct {
 	Tags map[string]*string
 
 	// Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the
-	// proximity placement group can be created.
+// proximity placement group can be created.
 	Zones []*string
 
 	// READ-ONLY; Resource Id
@@ -3928,7 +3954,7 @@ type ProximityPlacementGroupProperties struct {
 	Intent *ProximityPlacementGroupPropertiesIntent
 
 	// Specifies the type of the proximity placement group. Possible values are: Standard : Co-locate resources within an Azure
-	// region or Availability Zone. Ultra : For future use.
+// region or Availability Zone. Ultra : For future use.
 	ProximityPlacementGroupType *ProximityPlacementGroupType
 
 	// READ-ONLY; A list of references to all availability sets in the proximity placement group.
@@ -3993,7 +4019,7 @@ type PurchasePlan struct {
 	Name *string
 
 	// REQUIRED; Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference
-	// element.
+// element.
 	Product *string
 
 	// REQUIRED; The publisher ID.
@@ -4169,9 +4195,9 @@ type ResourceSKU struct {
 	Size *string
 
 	// READ-ONLY; Specifies the tier of virtual machines in a scale set.
-	// Possible Values:
-	// Standard
-	// Basic
+// Possible Values:
+// Standard
+// Basic
 	Tier *string
 }
 
@@ -4250,7 +4276,7 @@ type ResourceSKURestrictions struct {
 	Type *ResourceSKURestrictionsType
 
 	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
-	// the SKU is restricted.
+// the SKU is restricted.
 	Values []*string
 }
 
@@ -4382,8 +4408,8 @@ type RestorePointCollectionUpdate struct {
 // in the input while creating a restore point.
 type RestorePointEncryption struct {
 	// Describes the parameter of customer managed disk encryption set resource id that can be specified for disk. Note: The disk
-	// encryption set resource id can only be specified for managed disk. Please
-	// refer https://aka.ms/mdssewithcmkoverview for more details.
+// encryption set resource id can only be specified for managed disk. Please
+// refer https://aka.ms/mdssewithcmkoverview for more details.
 	DiskEncryptionSet *DiskEncryptionSetParameters
 
 	// The type of key used to encrypt the data of the disk restore point.
@@ -4402,12 +4428,12 @@ type RestorePointInstanceView struct {
 // RestorePointProperties - The restore point properties.
 type RestorePointProperties struct {
 	// ConsistencyMode of the RestorePoint. Can be specified in the input while creating a restore point. For now, only CrashConsistent
-	// is accepted as a valid input. Please refer to
-	// https://aka.ms/RestorePoints for more details.
+// is accepted as a valid input. Please refer to
+// https://aka.ms/RestorePoints for more details.
 	ConsistencyMode *ConsistencyModeTypes
 
 	// List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks
-	// will be included.
+// will be included.
 	ExcludeDisks []*APIEntityReference
 
 	// Gets the details of the VM captured at the time of the restore point creation.
@@ -4560,7 +4586,7 @@ type RoleInstanceListResult struct {
 	Value []*RoleInstance
 
 	// The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is null
-	// to fetch all the resources.
+// to fetch all the resources.
 	NextLink *string
 }
 
@@ -4588,7 +4614,7 @@ type RoleInstanceView struct {
 	PlatformUpdateDomain *int32
 
 	// READ-ONLY; Specifies a unique identifier generated internally for the cloud service associated with this role instance.
-	// NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
+// NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
 	PrivateID *string
 
 	// READ-ONLY
@@ -4616,34 +4642,34 @@ type RollbackStatusInfo struct {
 // RollingUpgradePolicy - The configuration parameters used while performing a rolling upgrade.
 type RollingUpgradePolicy struct {
 	// Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent
-	// to determine the batch size.
+// to determine the batch size.
 	EnableCrossZoneUpgrade *bool
 
 	// The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one
-	// batch. As this is a maximum, unhealthy instances in previous or future batches
-	// can cause the percentage of instances in a batch to decrease to ensure higher reliability. The default value for this parameter
-	// is 20%.
+// batch. As this is a maximum, unhealthy instances in previous or future batches
+// can cause the percentage of instances in a batch to decrease to ensure higher reliability. The default value for this parameter
+// is 20%.
 	MaxBatchInstancePercent *int32
 
 	// Create new virtual machines to upgrade the scale set, rather than updating the existing virtual machines. Existing virtual
-	// machines will be deleted once the new virtual machines are created for each
-	// batch.
+// machines will be deleted once the new virtual machines are created for each
+// batch.
 	MaxSurge *bool
 
 	// The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either
-	// as a result of being upgraded, or by being found in an unhealthy state by
-	// the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting
-	// any batch. The default value for this parameter is 20%.
+// as a result of being upgraded, or by being found in an unhealthy state by
+// the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting
+// any batch. The default value for this parameter is 20%.
 	MaxUnhealthyInstancePercent *int32
 
 	// The maximum percentage of upgraded virtual machine instances that can be found to be in an unhealthy state. This check
-	// will happen after each batch is upgraded. If this percentage is ever exceeded,
-	// the rolling update aborts. The default value for this parameter is 20%.
+// will happen after each batch is upgraded. If this percentage is ever exceeded,
+// the rolling update aborts. The default value for this parameter is 20%.
 	MaxUnhealthyUpgradedInstancePercent *int32
 
 	// The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time
-	// duration should be specified in ISO 8601 format. The default value is 0 seconds
-	// (PT0S).
+// duration should be specified in ISO 8601 format. The default value is 0 seconds
+// (PT0S).
 	PauseTimeBetweenBatches *string
 
 	// Upgrade all unhealthy instances in a scale set before any healthy instances.
@@ -4770,7 +4796,7 @@ type RunCommandInput struct {
 	Parameters []*RunCommandInputParameter
 
 	// Optional. The script to be executed. When this value is given, the given script will override the default script of the
-	// command.
+// command.
 	Script []*string
 }
 
@@ -4838,9 +4864,9 @@ type SKU struct {
 	Name *string
 
 	// Specifies the tier of virtual machines in a scale set.
-	// Possible Values:
-	// Standard
-	// Basic
+// Possible Values:
+// Standard
+// Basic
 	Tier *string
 }
 
@@ -4854,12 +4880,12 @@ type SSHConfiguration struct {
 // is placed.
 type SSHPublicKey struct {
 	// SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa
-	// format. For creating ssh keys, see [Create SSH keys on Linux and Mac for
-	// Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
+// format. For creating ssh keys, see [Create SSH keys on Linux and Mac for
+// Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
 	KeyData *string
 
 	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key
-	// is appended to the file. Example: /home/user/.ssh/authorized_keys
+// is appended to the file. Example: /home/user/.ssh/authorized_keys
 	Path *string
 }
 
@@ -4869,11 +4895,11 @@ type SSHPublicKeyGenerateKeyPairResult struct {
 	ID *string
 
 	// REQUIRED; Private key portion of the key pair used to authenticate to a virtual machine through ssh. The private key is
-	// returned in RFC3447 format and should be treated as a secret.
+// returned in RFC3447 format and should be treated as a secret.
 	PrivateKey *string
 
 	// REQUIRED; Public key portion of the key pair used to authenticate to a virtual machine through ssh. The public key is in
-	// ssh-rsa format.
+// ssh-rsa format.
 	PublicKey *string
 }
 
@@ -4901,9 +4927,9 @@ type SSHPublicKeyResource struct {
 // SSHPublicKeyResourceProperties - Properties of the SSH public key.
 type SSHPublicKeyResourceProperties struct {
 	// SSH public key used to authenticate to a virtual machine through ssh. If this property is not initially provided when the
-	// resource is created, the publicKey property will be populated when
-	// generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at
-	// least 2048-bit and in ssh-rsa format.
+// resource is created, the publicKey property will be populated when
+// generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at
+// least 2048-bit and in ssh-rsa format.
 	PublicKey *string
 }
 
@@ -4928,22 +4954,22 @@ type SSHPublicKeysGroupListResult struct {
 // ScaleInPolicy - Describes a scale-in policy for a virtual machine scale set.
 type ScaleInPolicy struct {
 	// This property allows you to specify if virtual machines chosen for removal have to be force deleted when a virtual machine
-	// scale set is being scaled-in.(Feature in Preview)
+// scale set is being scaled-in.(Feature in Preview)
 	ForceDeletion *bool
 
 	// The rules to be followed when scaling-in a virtual machine scale set.
-	// Possible values are:
-	// Default When a virtual machine scale set is scaled in, the scale set will first be balanced across zones if it is a zonal
-	// scale set. Then, it will be balanced across Fault Domains as far as possible.
-	// Within each Fault Domain, the virtual machines chosen for removal will be the newest ones that are not protected from scale-in.
-	// OldestVM When a virtual machine scale set is being scaled-in, the oldest virtual machines that are not protected from scale-in
-	// will be chosen for removal. For zonal virtual machine scale sets, the
-	// scale set will first be balanced across zones. Within each zone, the oldest virtual machines that are not protected will
-	// be chosen for removal.
-	// NewestVM When a virtual machine scale set is being scaled-in, the newest virtual machines that are not protected from scale-in
-	// will be chosen for removal. For zonal virtual machine scale sets, the
-	// scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not protected will
-	// be chosen for removal.
+// Possible values are:
+// Default When a virtual machine scale set is scaled in, the scale set will first be balanced across zones if it is a zonal
+// scale set. Then, it will be balanced across Fault Domains as far as possible.
+// Within each Fault Domain, the virtual machines chosen for removal will be the newest ones that are not protected from scale-in.
+// OldestVM When a virtual machine scale set is being scaled-in, the oldest virtual machines that are not protected from scale-in
+// will be chosen for removal. For zonal virtual machine scale sets, the
+// scale set will first be balanced across zones. Within each zone, the oldest virtual machines that are not protected will
+// be chosen for removal.
+// NewestVM When a virtual machine scale set is being scaled-in, the newest virtual machines that are not protected from scale-in
+// will be chosen for removal. For zonal virtual machine scale sets, the
+// scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not protected will
+// be chosen for removal.
 	Rules []*VirtualMachineScaleSetScaleInRules
 }
 
@@ -4968,18 +4994,18 @@ type SecurityPostureReference struct {
 // SecurityProfile - Specifies the Security profile settings for the virtual machine or virtual machine scale set.
 type SecurityProfile struct {
 	// This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual
-	// machine scale set. This will enable the encryption for all the disks
-	// including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be disabled unless this
-	// property is set to true for the resource.
+// machine scale set. This will enable the encryption for all the disks
+// including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be disabled unless this
+// property is set to true for the resource.
 	EncryptionAtHost *bool
 
 	// Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The
-	// default behavior is: UefiSettings will not be enabled unless this property is
-	// set.
+// default behavior is: UefiSettings will not be enabled unless this property is
+// set.
 	SecurityType *SecurityTypes
 
 	// Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum api-version:
-	// 2020-12-01.
+// 2020-12-01.
 	UefiSettings *UefiSettings
 }
 
@@ -4987,7 +5013,7 @@ type SecurityProfile struct {
 // in the scale set when using 'latest' image version. Minimum api-version: 2022-11-01
 type ServiceArtifactReference struct {
 	// The service artifact reference id in the form of
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
 	ID *string
 }
 
@@ -5011,8 +5037,8 @@ type SharedGallery struct {
 // SharedGalleryDataDiskImage - This is the data disk image.
 type SharedGalleryDataDiskImage struct {
 	// REQUIRED; This property specifies the logical unit number of the data disk. This value is used to identify data disks within
-	// the Virtual Machine and therefore must be unique for each data disk attached to the
-	// Virtual Machine.
+// the Virtual Machine and therefore must be unique for each data disk attached to the
+// Virtual Machine.
 	Lun *int32
 
 	// The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
@@ -5058,7 +5084,7 @@ type SharedGalleryImageList struct {
 	Value []*SharedGalleryImage
 
 	// The uri to fetch the next page of shared gallery images. Call ListNext() with this to fetch the next page of shared gallery
-	// images.
+// images.
 	NextLink *string
 }
 
@@ -5068,14 +5094,14 @@ type SharedGalleryImageProperties struct {
 	Identifier *GalleryImageIdentifier
 
 	// REQUIRED; This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
-	// or 'Specialized'.
+// or 'Specialized'.
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-	// managed image.
-	// Possible values are:
-	// Windows
-	// Linux
+// managed image.
+// Possible values are:
+// Windows
+// Linux
 	OSType *OperatingSystemTypes
 
 	// The architecture of the image. Applicable to OS disks only.
@@ -5085,7 +5111,7 @@ type SharedGalleryImageProperties struct {
 	Disallowed *Disallowed
 
 	// The end of life date of the gallery image definition. This property can be used for decommissioning purposes. This property
-	// is updatable.
+// is updatable.
 	EndOfLifeDate *time.Time
 
 	// End-user license agreement for the current community gallery image.
@@ -5128,21 +5154,21 @@ type SharedGalleryImageVersionList struct {
 	Value []*SharedGalleryImageVersion
 
 	// The uri to fetch the next page of shared gallery image versions. Call ListNext() with this to fetch the next page of shared
-	// gallery image versions.
+// gallery image versions.
 	NextLink *string
 }
 
 // SharedGalleryImageVersionProperties - Describes the properties of a gallery image version.
 type SharedGalleryImageVersionProperties struct {
 	// The end of life date of the gallery image version Definition. This property can be used for decommissioning purposes. This
-	// property is updatable.
+// property is updatable.
 	EndOfLifeDate *time.Time
 
 	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool
 
 	// The published date of the gallery image version Definition. This property can be used for decommissioning purposes. This
-	// property is updatable.
+// property is updatable.
 	PublishedDate *time.Time
 
 	// Describes the storage profile of the image version.
@@ -5182,10 +5208,10 @@ type SharingProfile struct {
 	CommunityGalleryInfo *CommunityGalleryInfo
 
 	// This property allows you to specify the permission of sharing gallery.
-	// Possible values are:
-	// Private
-	// Groups
-	// Community
+// Possible values are:
+// Private
+// Groups
+// Community
 	Permissions *GallerySharingPermissionTypes
 
 	// READ-ONLY; A list of sharing profile groups.
@@ -5198,9 +5224,9 @@ type SharingProfileGroup struct {
 	IDs []*string
 
 	// This property allows you to specify the type of sharing group.
-	// Possible values are:
-	// Subscriptions
-	// AADTenants
+// Possible values are:
+// Subscriptions
+// AADTenants
 	Type *SharingProfileGroupTypes
 }
 
@@ -5216,10 +5242,10 @@ type SharingStatus struct {
 // SharingUpdate - Specifies information about the gallery sharing profile update.
 type SharingUpdate struct {
 	// REQUIRED; This property allows you to specify the operation type of gallery sharing update.
-	// Possible values are:
-	// Add
-	// Remove
-	// Reset
+// Possible values are:
+// Add
+// Remove
+// Reset
 	OperationType *SharingUpdateOperationTypes
 
 	// A list of sharing profile groups.
@@ -5238,8 +5264,8 @@ type Snapshot struct {
 	Properties *SnapshotProperties
 
 	// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS. This is an optional parameter for incremental
-	// snapshot and the default behavior is the SKU will be set to the same sku as the
-	// previous snapshot
+// snapshot and the default behavior is the SKU will be set to the same sku as the
+// previous snapshot
 	SKU *SnapshotSKU
 
 	// Resource tags
@@ -5285,8 +5311,8 @@ type SnapshotProperties struct {
 	DiskAccessID *string
 
 	// If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this
-	// field is present for updates or creation with other options, it indicates a
-	// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+// field is present for updates or creation with other options, it indicates a
+// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32
 
 	// Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
@@ -5299,7 +5325,7 @@ type SnapshotProperties struct {
 	HyperVGeneration *HyperVGeneration
 
 	// Whether a snapshot is incremental. Incremental snapshots on the same disk occupy less space than full snapshots and can
-	// be diffed.
+// be diffed.
 	Incremental *bool
 
 	// Policy for accessing the disk via network.
@@ -5330,7 +5356,7 @@ type SnapshotProperties struct {
 	DiskState *DiskState
 
 	// READ-ONLY; Incremental snapshots for a disk share an incremental snapshot family id. The Get Page Range Diff API can only
-	// be called on incremental snapshots with the same family id.
+// be called on incremental snapshots with the same family id.
 	IncrementalSnapshotFamilyID *string
 
 	// READ-ONLY; The disk provisioning state.
@@ -5360,8 +5386,8 @@ type SnapshotUpdate struct {
 	Properties *SnapshotUpdateProperties
 
 	// The snapshots sku name. Can be StandardLRS, PremiumLRS, or Standard_ZRS. This is an optional parameter for incremental
-	// snapshot and the default behavior is the SKU will be set to the same sku as the
-	// previous snapshot
+// snapshot and the default behavior is the SKU will be set to the same sku as the
+// previous snapshot
 	SKU *SnapshotSKU
 
 	// Resource tags
@@ -5377,8 +5403,8 @@ type SnapshotUpdateProperties struct {
 	DiskAccessID *string
 
 	// If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this
-	// field is present for updates or creation with other options, it indicates a
-	// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+// field is present for updates or creation with other options, it indicates a
+// resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32
 
 	// Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
@@ -5420,7 +5446,7 @@ type SourceVault struct {
 // based on capacity availability and pricing constraint.
 type SpotRestorePolicy struct {
 	// Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to be restored opportunistically based
-	// on capacity availability and pricing constraints
+// on capacity availability and pricing constraints
 	Enabled *bool
 
 	// Timeout value expressed as an ISO 8601 time duration after which the platform will not try to restore the VMSS SPOT instances
@@ -5439,26 +5465,26 @@ type StatusCodeCount struct {
 // StorageProfile - Specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
 	// Specifies the parameters that are used to add a data disk to a virtual machine. For more information about disks, see About
-	// disks and VHDs for Azure virtual machines
-	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
+// disks and VHDs for Azure virtual machines
+// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 	DataDisks []*DataDisk
 
 	// Specifies the disk controller type configured for the VM. Note: This property will be set to the default disk controller
-	// type if not specified provided virtual machine is being created with
-	// 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from the the specified
-	// minimum api version. You need to deallocate the VM before updating its disk
-	// controller type unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates
-	// the VM. Minimum api-version: 2022-08-01.
+// type if not specified provided virtual machine is being created with
+// 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from the the specified
+// minimum api version. You need to deallocate the VM before updating its disk
+// controller type unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates
+// the VM. Minimum api-version: 2022-08-01.
 	DiskControllerType *DiskControllerTypes
 
 	// Specifies information about the image to use. You can specify information about platform images, marketplace images, or
-	// virtual machine images. This element is required when you want to use a platform
-	// image, marketplace image, or virtual machine image, but is not used in other creation operations.
+// virtual machine images. This element is required when you want to use a platform
+// image, marketplace image, or virtual machine image, but is not used in other creation operations.
 	ImageReference *ImageReference
 
 	// Specifies information about the operating system disk used by the virtual machine. For more information about disks, see
-	// About disks and VHDs for Azure virtual machines
-	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
+// About disks and VHDs for Azure virtual machines
+// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 	OSDisk *OSDisk
 }
 
@@ -5495,11 +5521,11 @@ type SupportedCapabilities struct {
 // SystemData - The system meta data relating to this resource.
 type SystemData struct {
 	// READ-ONLY; Specifies the time in UTC at which the Cloud Service (extended support) resource was created.
-	// Minimum api-version: 2022-04-04.
+// Minimum api-version: 2022-04-04.
 	CreatedAt *time.Time
 
 	// READ-ONLY; Specifies the time in UTC at which the Cloud Service (extended support) resource was last modified.
-	// Minimum api-version: 2022-04-04.
+// Minimum api-version: 2022-04-04.
 	LastModifiedAt *time.Time
 }
 
@@ -5526,8 +5552,8 @@ type TerminateNotificationProfile struct {
 	Enable *bool
 
 	// Configurable length of time a Virtual Machine being deleted will have to potentially approve the Terminate Scheduled Event
-	// before the event is auto approved (timed out). The configuration must be
-	// specified in ISO 8601 format, the default value is 5 minutes (PT5M)
+// before the event is auto approved (timed out). The configuration must be
+// specified in ISO 8601 format, the default value is 5 minutes (PT5M)
 	NotBeforeTimeout *string
 }
 
@@ -5583,7 +5609,7 @@ type UpdateDomainListResult struct {
 	Value []*UpdateDomain
 
 	// The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is null
-	// to fetch all the resources.
+// to fetch all the resources.
 	NextLink *string
 }
 
@@ -5659,10 +5685,10 @@ type UpgradePolicy struct {
 	AutomaticOSUpgradePolicy *AutomaticOSUpgradePolicy
 
 	// Specifies the mode of an upgrade to virtual machines in the scale set.
-	// Possible values are:
-	// Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade
-	// action.
-	// Automatic - All virtual machines in the scale set are automatically updated at the same time.
+// Possible values are:
+// Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade
+// action.
+// Automatic - All virtual machines in the scale set are automatically updated at the same time.
 	Mode *UpgradeMode
 
 	// The configuration parameters used while performing a rolling upgrade.
@@ -5701,8 +5727,8 @@ type UserArtifactManage struct {
 	Remove *string
 
 	// Optional. The path and arguments to update the gallery application. If not present, then update operation will invoke remove
-	// command on the previous version and install command on the current version
-	// of the gallery application. This is limited to 4096 characters.
+// command on the previous version and install command on the current version
+// of the gallery application. This is limited to 4096 characters.
 	Update *string
 }
 
@@ -5710,12 +5736,12 @@ type UserArtifactManage struct {
 // is deployed to target VM or VM scale set.
 type UserArtifactSettings struct {
 	// Optional. The name to assign the downloaded config file on the VM. This is limited to 4096 characters. If not specified,
-	// the config file will be named the Gallery Application name appended with
-	// "_config".
+// the config file will be named the Gallery Application name appended with
+// "_config".
 	ConfigFileName *string
 
 	// Optional. The name to assign the downloaded package file on the VM. This is limited to 4096 characters. If not specified,
-	// the package file will be named the same as the Gallery Application name.
+// the package file will be named the same as the Gallery Application name.
 	PackageFileName *string
 }
 
@@ -5740,26 +5766,26 @@ type UserAssignedIdentitiesValue struct {
 // VMs.
 type VMDiskSecurityProfile struct {
 	// Specifies the customer managed disk encryption set resource id for the managed disk that is used for Customer Managed Key
-	// encrypted ConfidentialVM OS Disk and VMGuest blob.
+// encrypted ConfidentialVM OS Disk and VMGuest blob.
 	DiskEncryptionSet *DiskEncryptionSetParameters
 
 	// Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the managed disk
-	// along with VMGuestState blob, and VMGuestStateOnly for encryption of just the
-	// VMGuestState blob. Note: It can be set for only Confidential VMs.
+// along with VMGuestState blob, and VMGuestStateOnly for encryption of just the
+// VMGuestState blob. Note: It can be set for only Confidential VMs.
 	SecurityEncryptionType *SecurityEncryptionTypes
 }
 
 // VMGalleryApplication - Specifies the required information to reference a compute gallery application version
 type VMGalleryApplication struct {
 	// REQUIRED; Specifies the GalleryApplicationVersion resource id on the form of
-	// /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}
+// /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}
 	PackageReferenceID *string
 
 	// Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if provided
 	ConfigurationReference *string
 
 	// If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated for the
-	// VM/VMSS
+// VM/VMSS
 	EnableAutomaticUpgrade *bool
 
 	// Optional, Specifies the order in which the packages have to be installed
@@ -5783,22 +5809,22 @@ type VMImagesInEdgeZoneListResult struct {
 
 type VMScaleSetConvertToSinglePlacementGroupInput struct {
 	// Id of the placement group in which you want future virtual machine instances to be placed. To query placement group Id,
-	// please use Virtual Machine Scale Set VMs - Get API. If not provided, the
-	// platform will choose one with maximum number of virtual machine instances.
+// please use Virtual Machine Scale Set VMs - Get API. If not provided, the
+// platform will choose one with maximum number of virtual machine instances.
 	ActivePlacementGroupID *string
 }
 
 // VMSizeProperties - Specifies VM Size Property settings on the virtual machine.
 type VMSizeProperties struct {
 	// Specifies the number of vCPUs available for the VM. When this property is not specified in the request body the default
-	// behavior is to set it to the value of vCPUs available for that VM size exposed
-	// in api response of List all available virtual machine sizes in a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list].
+// behavior is to set it to the value of vCPUs available for that VM size exposed
+// in api response of List all available virtual machine sizes in a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list].
 	VCPUsAvailable *int32
 
 	// Specifies the vCPU to physical core ratio. When this property is not specified in the request body the default behavior
-	// is set to the value of vCPUsPerCore for the VM Size exposed in api response of
-	// List all available virtual machine sizes in a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list].
-	// Setting this property to 1 also means that hyper-threading is disabled.
+// is set to the value of vCPUsPerCore for the VM Size exposed in api response of
+// List all available virtual machine sizes in a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list].
+// Setting this property to 1 also means that hyper-threading is disabled.
 	VCPUsPerCore *int32
 }
 
@@ -5806,26 +5832,26 @@ type VMSizeProperties struct {
 // the VM.
 type VaultCertificate struct {
 	// For Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified
-	// certificate store is implicitly in the LocalMachine account. For Linux
-	// VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name <UppercaseThumbprint>.crt
-	// for the X509 certificate file and <UppercaseThumbprint>.prv for private key. Both
-	// of these files are .pem formatted.
+// certificate store is implicitly in the LocalMachine account. For Linux
+// VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name <UppercaseThumbprint>.crt
+// for the X509 certificate file and <UppercaseThumbprint>.prv for private key. Both
+// of these files are .pem formatted.
 	CertificateStore *string
 
 	// This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault,
-	// see Add a key or secret to the key vault
-	// [https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add]. In this case, your certificate needs to be It
-	// is the Base64 encoding of the following JSON Object which is encoded in UTF-8:
-	// {
-	// "data":"",
-	// "dataType":"pfx",
-	// "password":""
-	// }
-	// To install certificates on a virtual machine it is recommended to use the Azure Key Vault virtual machine extension for
-	// Linux
-	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension
-	// for Windows
-	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
+// see Add a key or secret to the key vault
+// [https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add]. In this case, your certificate needs to be It
+// is the Base64 encoding of the following JSON Object which is encoded in UTF-8:
+// {
+// "data":"",
+// "dataType":"pfx",
+// "password":""
+// }
+// To install certificates on a virtual machine it is recommended to use the Azure Key Vault virtual machine extension for
+// Linux
+// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension
+// for Windows
+// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	CertificateURL *string
 }
 
@@ -5856,10 +5882,10 @@ type VirtualMachine struct {
 	Identity *VirtualMachineIdentity
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
-	// images. Before you can use a marketplace image from an API, you must
-	// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
-	// Want to deploy programmatically, Get Started ->. Enter any required
-	// information and then click Save.
+// images. Before you can use a marketplace image from an API, you must
+// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
+// Want to deploy programmatically, Get Started ->. Enter any required
+// information and then click Save.
 	Plan *Plan
 
 	// Describes the properties of a Virtual Machine.
@@ -5899,7 +5925,7 @@ type VirtualMachineAgentInstanceView struct {
 // VirtualMachineAssessPatchesResult - Describes the properties of an AssessPatches result.
 type VirtualMachineAssessPatchesResult struct {
 	// READ-ONLY; The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-	// logs.
+// logs.
 	AssessmentActivityID *string
 
 	// READ-ONLY; The list of patches that have been detected as available for installation.
@@ -5915,15 +5941,15 @@ type VirtualMachineAssessPatchesResult struct {
 	OtherPatchCount *int32
 
 	// READ-ONLY; The overall reboot status of the VM. It will be true when partially installed patches require a reboot to complete
-	// installation but the reboot has not yet occurred.
+// installation but the reboot has not yet occurred.
 	RebootPending *bool
 
 	// READ-ONLY; The UTC timestamp when the operation began.
 	StartDateTime *time.Time
 
 	// READ-ONLY; The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-	// At that point it will become "Unknown", "Failed", "Succeeded", or
-	// "CompletedWithWarnings."
+// At that point it will become "Unknown", "Failed", "Succeeded", or
+// "CompletedWithWarnings."
 	Status *PatchOperationStatus
 }
 
@@ -6026,8 +6052,8 @@ type VirtualMachineExtensionImageProperties struct {
 	SupportsMultipleExtensions *bool
 
 	// Whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets, but there
-	// might be cases where a publisher wants to explicitly indicate the extension is
-	// only enabled for CRP VMs but not VMSS.
+// might be cases where a publisher wants to explicitly indicate the extension is
+// only enabled for CRP VMs but not VMSS.
 	VMScaleSetEnabled *bool
 }
 
@@ -6052,12 +6078,12 @@ type VirtualMachineExtensionInstanceView struct {
 // VirtualMachineExtensionProperties - Describes the properties of a Virtual Machine Extension.
 type VirtualMachineExtensionProperties struct {
 	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
-	// however, the extension will not upgrade minor versions unless redeployed, even
-	// with this property set to true.
+// however, the extension will not upgrade minor versions unless redeployed, even
+// with this property set to true.
 	AutoUpgradeMinorVersion *bool
 
 	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension
-	// available.
+// available.
 	EnableAutomaticUpgrade *bool
 
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
@@ -6082,7 +6108,7 @@ type VirtualMachineExtensionProperties struct {
 	Settings any
 
 	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting
-	// to the VM will not be suppressed regardless of this value). The default is false.
+// to the VM will not be suppressed regardless of this value). The default is false.
 	SuppressFailures *bool
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
@@ -6107,12 +6133,12 @@ type VirtualMachineExtensionUpdate struct {
 // VirtualMachineExtensionUpdateProperties - Describes the properties of a Virtual Machine Extension.
 type VirtualMachineExtensionUpdateProperties struct {
 	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
-	// however, the extension will not upgrade minor versions unless redeployed, even
-	// with this property set to true.
+// however, the extension will not upgrade minor versions unless redeployed, even
+// with this property set to true.
 	AutoUpgradeMinorVersion *bool
 
 	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension
-	// available.
+// available.
 	EnableAutomaticUpgrade *bool
 
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
@@ -6131,7 +6157,7 @@ type VirtualMachineExtensionUpdateProperties struct {
 	Settings any
 
 	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting
-	// to the VM will not be suppressed regardless of this value). The default is false.
+// to the VM will not be suppressed regardless of this value). The default is false.
 	SuppressFailures *bool
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
@@ -6165,20 +6191,20 @@ type VirtualMachineIPTag struct {
 // VirtualMachineIdentity - Identity for the virtual machine.
 type VirtualMachineIdentity struct {
 	// The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly
-	// created identity and a set of user assigned identities. The type 'None' will
-	// remove any identities from the virtual machine.
+// created identity and a set of user assigned identities. The type 'None' will
+// remove any identities from the virtual machine.
 	Type *ResourceIdentityType
 
 	// The list of user identities associated with the Virtual Machine. The user identity dictionary key references will be ARM
-	// resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue
 
 	// READ-ONLY; The principal id of virtual machine identity. This property will only be provided for a system assigned identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant id associated with the virtual machine. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	TenantID *string
 }
 
@@ -6200,8 +6226,8 @@ type VirtualMachineImage struct {
 	Properties *VirtualMachineImageProperties
 
 	// Specifies the tags that are assigned to the virtual machine. For more information about using tags, see Using tags to organize
-	// your Azure resources
-	// [https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md].
+// your Azure resources
+// [https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md].
 	Tags map[string]*string
 }
 
@@ -6221,11 +6247,11 @@ type VirtualMachineImageProperties struct {
 
 	// Describes automatic OS upgrade properties on the image.
 	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties
-	DataDiskImages               []*DataDiskImage
+	DataDiskImages []*DataDiskImage
 
 	// Specifies disallowed configuration for the VirtualMachine created from the image
 	Disallowed *DisallowedConfiguration
-	Features   []*VirtualMachineImageFeature
+	Features []*VirtualMachineImageFeature
 
 	// Specifies the HyperVGeneration Type
 	HyperVGeneration *HyperVGenerationTypes
@@ -6255,8 +6281,8 @@ type VirtualMachineImageResource struct {
 	ID *string
 
 	// Specifies the tags that are assigned to the virtual machine. For more information about using tags, see Using tags to organize
-	// your Azure resources
-	// [https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md].
+// your Azure resources
+// [https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md].
 	Tags map[string]*string
 }
 
@@ -6269,7 +6295,7 @@ type VirtualMachineInstallPatchesParameters struct {
 	LinuxParameters *LinuxParameters
 
 	// Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration string such
-	// as PT4H (4 hours)
+// as PT4H (4 hours)
 	MaximumDuration *string
 
 	// Input for InstallPatches on a Windows VM, as directly received by the API
@@ -6288,7 +6314,7 @@ type VirtualMachineInstallPatchesResult struct {
 	FailedPatchCount *int32
 
 	// READ-ONLY; The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-	// logs.
+// logs.
 	InstallationActivityID *string
 
 	// READ-ONLY; The number of patches successfully installed.
@@ -6304,7 +6330,7 @@ type VirtualMachineInstallPatchesResult struct {
 	Patches []*PatchInstallationDetail
 
 	// READ-ONLY; The number of patches that were identified as meeting the installation criteria, but were not able to be installed.
-	// Typically this happens when maintenanceWindowExceeded == true.
+// Typically this happens when maintenanceWindowExceeded == true.
 	PendingPatchCount *int32
 
 	// READ-ONLY; The reboot state of the VM following completion of the operation.
@@ -6314,15 +6340,15 @@ type VirtualMachineInstallPatchesResult struct {
 	StartDateTime *time.Time
 
 	// READ-ONLY; The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-	// At that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
+// At that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
 	Status *PatchOperationStatus
 }
 
 // VirtualMachineInstanceView - The instance view of a virtual machine.
 type VirtualMachineInstanceView struct {
 	// Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. You
-	// can easily view the output of your console log. Azure also enables you to see
-	// a screenshot of the VM from the hypervisor.
+// can easily view the output of your console log. Azure also enables you to see
+// a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnosticsInstanceView
 
 	// The computer name assigned to the virtual machine.
@@ -6365,8 +6391,8 @@ type VirtualMachineInstanceView struct {
 	VMAgent *VirtualMachineAgentInstanceView
 
 	// READ-ONLY; Resource id of the dedicated host, on which the virtual machine is allocated through automatic placement, when
-	// the virtual machine is associated with a dedicated host group that has automatic
-	// placement enabled. Minimum api-version: 2020-06-01.
+// the virtual machine is associated with a dedicated host group that has automatic
+// placement enabled. Minimum api-version: 2020-06-01.
 	AssignedHost *string
 
 	// READ-ONLY; The health status for the VM.
@@ -6404,7 +6430,7 @@ type VirtualMachineNetworkInterfaceConfigurationProperties struct {
 
 	// Specifies whether the network interface is disabled for tcp state tracking.
 	DisableTCPStateTracking *bool
-	DscpConfiguration       *SubResource
+	DscpConfiguration *SubResource
 
 	// Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool
@@ -6441,23 +6467,23 @@ type VirtualMachineNetworkInterfaceIPConfiguration struct {
 // properties.
 type VirtualMachineNetworkInterfaceIPConfigurationProperties struct {
 	// Specifies an array of references to backend address pools of application gateways. A virtual machine can reference backend
-	// address pools of multiple application gateways. Multiple virtual machines
-	// cannot use the same application gateway.
+// address pools of multiple application gateways. Multiple virtual machines
+// cannot use the same application gateway.
 	ApplicationGatewayBackendAddressPools []*SubResource
 
 	// Specifies an array of references to application security group.
 	ApplicationSecurityGroups []*SubResource
 
 	// Specifies an array of references to backend address pools of load balancers. A virtual machine can reference backend address
-	// pools of one public and one internal load balancer. [Multiple virtual
-	// machines cannot use the same basic sku load balancer].
+// pools of one public and one internal load balancer. [Multiple virtual
+// machines cannot use the same basic sku load balancer].
 	LoadBalancerBackendAddressPools []*SubResource
 
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
-	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PrivateIPAddressVersion *IPVersions
 
 	// The publicIPAddressConfiguration.
@@ -6488,14 +6514,14 @@ type VirtualMachineProperties struct {
 	ApplicationProfile *ApplicationProfile
 
 	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified
-	// in the same availability set are allocated to different nodes to maximize
-	// availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
-	// For more information on Azure
-	// planned maintenance, see Maintenance and updates for Virtual Machines in Azure [https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates].
-	// Currently, a VM can only be added to
-	// availability set at creation time. The availability set to which the VM is being added should be under the same resource
-	// group as the availability set resource. An existing VM cannot be added to an
-	// availability set. This property cannot exist along with a non-null properties.virtualMachineScaleSet reference.
+// in the same availability set are allocated to different nodes to maximize
+// availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
+// For more information on Azure
+// planned maintenance, see Maintenance and updates for Virtual Machines in Azure [https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates].
+// Currently, a VM can only be added to
+// availability set at creation time. The availability set to which the VM is being added should be under the same resource
+// group as the availability set resource. An existing VM cannot be added to an
+// availability set. This property cannot exist along with a non-null properties.virtualMachineScaleSet reference.
 	AvailabilitySet *SubResource
 
 	// Specifies the billing related details of a Azure Spot virtual machine. Minimum api-version: 2019-03-01.
@@ -6508,13 +6534,13 @@ type VirtualMachineProperties struct {
 	DiagnosticsProfile *DiagnosticsProfile
 
 	// Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot virtual machines,
-	// both 'Deallocate' and 'Delete' are supported and the minimum api-version is
-	// 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
+// both 'Deallocate' and 'Delete' are supported and the minimum api-version is
+// 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
 	EvictionPolicy *VirtualMachineEvictionPolicyTypes
 
 	// Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120 minutes
-	// (inclusive) and should be specified in ISO 8601 format. The default value is 90
-	// minutes (PT1H30M). Minimum api-version: 2020-06-01.
+// (inclusive) and should be specified in ISO 8601 format. The default value is 90
+// minutes (PT1H30M). Minimum api-version: 2020-06-01.
 	ExtensionsTimeBudget *string
 
 	// Specifies the hardware settings for the virtual machine.
@@ -6524,42 +6550,42 @@ type VirtualMachineProperties struct {
 	Host *SubResource
 
 	// Specifies information about the dedicated host group that the virtual machine resides in. Note: User cannot specify both
-	// host and hostGroup properties. Minimum api-version: 2020-06-01.
+// host and hostGroup properties. Minimum api-version: 2020-06-01.
 	HostGroup *SubResource
 
 	// Specifies that the image or disk that is being used was licensed on-premises.
-	// Possible values for Windows Server operating system are:
-	// WindowsClient
-	// WindowsServer
-	// Possible values for Linux Server operating system are:
-	// RHELBYOS (for RHEL)
-	// SLESBYOS (for SUSE)
-	// For more information, see Azure Hybrid Use Benefit for Windows Server [https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing]
-	// Azure Hybrid Use Benefit for Linux Server [https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux]
-	// Minimum api-version: 2015-06-15
+// Possible values for Windows Server operating system are:
+// WindowsClient
+// WindowsServer
+// Possible values for Linux Server operating system are:
+// RHELBYOS (for RHEL)
+// SLESBYOS (for SUSE)
+// For more information, see Azure Hybrid Use Benefit for Windows Server [https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing]
+// Azure Hybrid Use Benefit for Linux Server [https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux]
+// Minimum api-version: 2015-06-15
 	LicenseType *string
 
 	// Specifies the network interfaces of the virtual machine.
 	NetworkProfile *NetworkProfile
 
 	// Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be changed
-	// once VM is provisioned.
+// once VM is provisioned.
 	OSProfile *OSProfile
 
 	// Specifies the scale set logical fault domain into which the Virtual Machine will be created. By default, the Virtual Machine
-	// will by automatically assigned to a fault domain that best maintains
-	// balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet' property of this Virtual
-	// Machine is set. The Virtual Machine Scale Set that is referenced, must have
-	// 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created. Fault domain
-	// assignment can be viewed in the Virtual Machine Instance View. Minimum
-	// api‐version: 2020‐12‐01.
+// will by automatically assigned to a fault domain that best maintains
+// balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet' property of this Virtual
+// Machine is set. The Virtual Machine Scale Set that is referenced, must have
+// 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created. Fault domain
+// assignment can be viewed in the Virtual Machine Instance View. Minimum
+// api‐version: 2020‐12‐01.
 	PlatformFaultDomain *int32
 
 	// Specifies the priority for the virtual machine. Minimum api-version: 2019-03-01
 	Priority *VirtualMachinePriorityTypes
 
 	// Specifies information about the proximity placement group that the virtual machine should be assigned to. Minimum api-version:
-	// 2018-04-01.
+// 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
 	// Specifies Scheduled Event related configurations.
@@ -6572,14 +6598,14 @@ type VirtualMachineProperties struct {
 	StorageProfile *StorageProfile
 
 	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum api-version:
-	// 2021-03-01.
+// 2021-03-01.
 	UserData *string
 
 	// Specifies information about the virtual machine scale set that the virtual machine should be assigned to. Virtual machines
-	// specified in the same virtual machine scale set are allocated to different
-	// nodes to maximize availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing
-	// VM cannot be added to a virtual machine scale set. This property cannot
-	// exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+// specified in the same virtual machine scale set are allocated to different
+// nodes to maximize availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing
+// VM cannot be added to a virtual machine scale set. This property cannot
+// exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
 	VirtualMachineScaleSet *SubResource
 
 	// READ-ONLY; The virtual machine instance view.
@@ -6592,7 +6618,7 @@ type VirtualMachineProperties struct {
 	TimeCreated *time.Time
 
 	// READ-ONLY; Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS
-	// and can be read using platform BIOS commands.
+// and can be read using platform BIOS commands.
 	VMID *string
 }
 
@@ -6624,7 +6650,7 @@ type VirtualMachinePublicIPAddressConfigurationProperties struct {
 	IdleTimeoutInMinutes *int32
 
 	// Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
-	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PublicIPAddressVersion *IPVersions
 
 	// Specify the public IP allocation type
@@ -6637,7 +6663,7 @@ type VirtualMachinePublicIPAddressConfigurationProperties struct {
 // VirtualMachinePublicIPAddressDNSSettingsConfiguration - Describes a virtual machines network configuration's DNS settings.
 type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 	// REQUIRED; The Domain name label prefix of the PublicIPAddress resources that will be created. The generated name label
-	// is the concatenation of the domain name label and vm network profile unique ID.
+// is the concatenation of the domain name label and vm network profile unique ID.
 	DomainNameLabel *string
 }
 
@@ -6645,14 +6671,14 @@ type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 // reimaged
 type VirtualMachineReimageParameters struct {
 	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
-	// is reimaged to the existing version of OS Disk.
+// is reimaged to the existing version of OS Disk.
 	ExactVersion *string
 
 	// Specifies information required for reimaging the non-ephemeral OS disk.
 	OSProfile *OSProfileProvisioningData
 
 	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
-	// for VM/VMSS with Ephemeral OS disk.
+// for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool
 }
 
@@ -6710,27 +6736,27 @@ type VirtualMachineRunCommandProperties struct {
 	AsyncExecution *bool
 
 	// User-assigned managed identity that has access to errorBlobUri storage blob. Use an empty object in case of system-assigned
-	// identity. Make sure managed identity has been given access to blob's
-	// container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it
-	// under VM's identity. For more info on managed identity and Run Command, refer
-	// https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged
+// identity. Make sure managed identity has been given access to blob's
+// container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it
+// under VM's identity. For more info on managed identity and Run Command, refer
+// https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged
 	ErrorBlobManagedIdentity *RunCommandManagedIdentity
 
 	// Specifies the Azure storage blob where script error stream will be uploaded. Use a SAS URI with read, append, create, write
-	// access OR use managed identity to provide the VM access to the blob. Refer
-	// errorBlobManagedIdentity parameter.
+// access OR use managed identity to provide the VM access to the blob. Refer
+// errorBlobManagedIdentity parameter.
 	ErrorBlobURI *string
 
 	// User-assigned managed identity that has access to outputBlobUri storage blob. Use an empty object in case of system-assigned
-	// identity. Make sure managed identity has been given access to blob's
-	// container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it
-	// under VM's identity. For more info on managed identity and Run Command, refer
-	// https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged
+// identity. Make sure managed identity has been given access to blob's
+// container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it
+// under VM's identity. For more info on managed identity and Run Command, refer
+// https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged
 	OutputBlobManagedIdentity *RunCommandManagedIdentity
 
 	// Specifies the Azure storage blob where script output stream will be uploaded. Use a SAS URI with read, append, create,
-	// write access OR use managed identity to provide the VM access to the blob. Refer
-	// outputBlobManagedIdentity parameter.
+// write access OR use managed identity to provide the VM access to the blob. Refer
+// outputBlobManagedIdentity parameter.
 	OutputBlobURI *string
 
 	// The parameters used by the script.
@@ -6752,21 +6778,21 @@ type VirtualMachineRunCommandProperties struct {
 	TimeoutInSeconds *int32
 
 	// Optional. If set to true, any failure in the script will fail the deployment and ProvisioningState will be marked as Failed.
-	// If set to false, ProvisioningState would only reflect whether the run
-	// command was run or not by the extensions platform, it would not indicate whether script failed in case of script failures.
-	// See instance view of run command in case of script failures to see
-	// executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results
+// If set to false, ProvisioningState would only reflect whether the run
+// command was run or not by the extensions platform, it would not indicate whether script failed in case of script failures.
+// See instance view of run command in case of script failures to see
+// executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results
 	TreatFailureAsDeploymentFailure *bool
 
 	// READ-ONLY; The virtual machine run command instance view.
 	InstanceView *VirtualMachineRunCommandInstanceView
 
 	// READ-ONLY; The provisioning state, which only appears in the response. If treatFailureAsDeploymentFailure set to true,
-	// any failure in the script will fail the deployment and ProvisioningState will be marked as
-	// Failed. If treatFailureAsDeploymentFailure set to false, ProvisioningState would only reflect whether the run command was
-	// run or not by the extensions platform, it would not indicate whether script
-	// failed in case of script failures. See instance view of run command in case of script failures to see executionMessage,
-	// output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results
+// any failure in the script will fail the deployment and ProvisioningState will be marked as
+// Failed. If treatFailureAsDeploymentFailure set to false, ProvisioningState would only reflect whether the run command was
+// run or not by the extensions platform, it would not indicate whether script
+// failed in case of script failures. See instance view of run command in case of script failures to see executionMessage,
+// output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results
 	ProvisioningState *string
 }
 
@@ -6783,10 +6809,10 @@ type VirtualMachineRunCommandScriptSource struct {
 	ScriptURI *string
 
 	// User-assigned managed identity that has access to scriptUri in case of Azure storage blob. Use an empty object in case
-	// of system-assigned identity. Make sure the Azure storage blob exists, and managed
-	// identity has been given access to blob's container with 'Storage Blob Data Reader' role assignment. In case of user-assigned
-	// identity, make sure you add it under VM's identity. For more info on
-	// managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+// of system-assigned identity. Make sure the Azure storage blob exists, and managed
+// identity has been given access to blob's container with 'Storage Blob Data Reader' role assignment. In case of user-assigned
+// identity, make sure you add it under VM's identity. For more info on
+// managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
 	ScriptURIManagedIdentity *RunCommandManagedIdentity
 }
 
@@ -6820,10 +6846,10 @@ type VirtualMachineScaleSet struct {
 	Identity *VirtualMachineScaleSetIdentity
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
-	// images. Before you can use a marketplace image from an API, you must
-	// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
-	// Want to deploy programmatically, Get Started ->. Enter any required
-	// information and then click Save.
+// images. Before you can use a marketplace image from an API, you must
+// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
+// Want to deploy programmatically, Get Started ->. Enter any required
+// information and then click Save.
 	Plan *Plan
 
 	// Describes the properties of a Virtual Machine Scale Set.
@@ -6854,32 +6880,32 @@ type VirtualMachineScaleSetDataDisk struct {
 	CreateOption *DiskCreateOptionTypes
 
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
-	// therefore must be unique for each data disk attached to a VM.
+// therefore must be unique for each data disk attached to a VM.
 	Lun *int32
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard
-	// storage. ReadOnly for Premium storage.
+// storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies whether data disk should be deleted or detached upon VMSS Flex deletion (This feature is available for VMSS with
-	// Flexible OrchestrationMode only).
-	// Possible values:
-	// Delete If this value is used, the data disk is deleted when the VMSS Flex VM is deleted.
-	// Detach If this value is used, the data disk is retained after VMSS Flex VM is deleted.
-	// The default value is set to Delete.
+// Flexible OrchestrationMode only).
+// Possible values:
+// Delete If this value is used, the data disk is deleted when the VMSS Flex VM is deleted.
+// Detach If this value is used, the data disk is retained after VMSS Flex VM is deleted.
+// The default value is set to Delete.
 	DeleteOption *DiskDeleteOptionTypes
 
 	// Specifies the Read-Write IOPS for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS. If not
-	// specified, a default value would be assigned based on diskSizeGB.
+// specified, a default value would be assigned based on diskSizeGB.
 	DiskIOPSReadWrite *int64
 
 	// Specifies the bandwidth in MB per second for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS.
-	// If not specified, a default value would be assigned based on diskSizeGB.
+// If not specified, a default value would be assigned based on diskSizeGB.
 	DiskMBpsReadWrite *int64
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
-	// virtual machine image. The property diskSizeGB is the number of bytes x 1024^3
-	// for the disk and the value cannot be larger than 1023.
+// virtual machine image. The property diskSizeGB is the number of bytes x 1024^3
+// for the disk and the value cannot be larger than 1023.
 	DiskSizeGB *int32
 
 	// The managed disk parameters.
@@ -6913,7 +6939,7 @@ type VirtualMachineScaleSetExtensionListResult struct {
 	Value []*VirtualMachineScaleSetExtension
 
 	// The uri to fetch the next page of VM scale set extensions. Call ListNext() with this to fetch the next page of VM scale
-	// set extensions.
+// set extensions.
 	NextLink *string
 }
 
@@ -6923,24 +6949,24 @@ type VirtualMachineScaleSetExtensionProfile struct {
 	Extensions []*VirtualMachineScaleSetExtension
 
 	// Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120 minutes
-	// (inclusive) and should be specified in ISO 8601 format. The default value is 90
-	// minutes (PT1H30M). Minimum api-version: 2020-06-01.
+// (inclusive) and should be specified in ISO 8601 format. The default value is 90
+// minutes (PT1H30M). Minimum api-version: 2020-06-01.
 	ExtensionsTimeBudget *string
 }
 
 // VirtualMachineScaleSetExtensionProperties - Describes the properties of a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtensionProperties struct {
 	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
-	// however, the extension will not upgrade minor versions unless redeployed, even
-	// with this property set to true.
+// however, the extension will not upgrade minor versions unless redeployed, even
+// with this property set to true.
 	AutoUpgradeMinorVersion *bool
 
 	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension
-	// available.
+// available.
 	EnableAutomaticUpgrade *bool
 
 	// If a value is provided and is different from the previous value, the extension handler will be forced to update even if
-	// the extension configuration has not changed.
+// the extension configuration has not changed.
 	ForceUpdateTag *string
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
@@ -6959,7 +6985,7 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	Settings any
 
 	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting
-	// to the VM will not be suppressed regardless of this value). The default is false.
+// to the VM will not be suppressed regardless of this value). The default is false.
 	SuppressFailures *bool
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
@@ -6990,8 +7016,8 @@ type VirtualMachineScaleSetExtensionUpdate struct {
 // VirtualMachineScaleSetHardwareProfile - Specifies the hardware settings for the virtual machine scale set.
 type VirtualMachineScaleSetHardwareProfile struct {
 	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-11-01. Please follow
-	// the instructions in VM Customization [https://aka.ms/vmcustomization] for more
-	// details.
+// the instructions in VM Customization [https://aka.ms/vmcustomization] for more
+// details.
 	VMSizeProperties *VMSizeProperties
 }
 
@@ -7008,28 +7034,28 @@ type VirtualMachineScaleSetIPConfiguration struct {
 // properties.
 type VirtualMachineScaleSetIPConfigurationProperties struct {
 	// Specifies an array of references to backend address pools of application gateways. A scale set can reference backend address
-	// pools of multiple application gateways. Multiple scale sets cannot use the
-	// same application gateway.
+// pools of multiple application gateways. Multiple scale sets cannot use the
+// same application gateway.
 	ApplicationGatewayBackendAddressPools []*SubResource
 
 	// Specifies an array of references to application security group.
 	ApplicationSecurityGroups []*SubResource
 
 	// Specifies an array of references to backend address pools of load balancers. A scale set can reference backend address
-	// pools of one public and one internal load balancer. Multiple scale sets cannot
-	// use the same basic sku load balancer.
+// pools of one public and one internal load balancer. Multiple scale sets cannot
+// use the same basic sku load balancer.
 	LoadBalancerBackendAddressPools []*SubResource
 
 	// Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools
-	// of one public and one internal load balancer. Multiple scale sets cannot use
-	// the same basic sku load balancer.
+// of one public and one internal load balancer. Multiple scale sets cannot use
+// the same basic sku load balancer.
 	LoadBalancerInboundNatPools []*SubResource
 
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
-	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PrivateIPAddressVersion *IPVersion
 
 	// The publicIPAddressConfiguration.
@@ -7051,21 +7077,21 @@ type VirtualMachineScaleSetIPTag struct {
 // VirtualMachineScaleSetIdentity - Identity for the virtual machine scale set.
 type VirtualMachineScaleSetIdentity struct {
 	// The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly
-	// created identity and a set of user assigned identities. The type 'None'
-	// will remove any identities from the virtual machine scale set.
+// created identity and a set of user assigned identities. The type 'None'
+// will remove any identities from the virtual machine scale set.
 	Type *ResourceIdentityType
 
 	// The list of user identities associated with the virtual machine scale set. The user identity dictionary key references
-	// will be ARM resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+// will be ARM resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue
 
 	// READ-ONLY; The principal id of virtual machine scale set identity. This property will only be provided for a system assigned
-	// identity.
+// identity.
 	PrincipalID *string
 
 	// READ-ONLY; The tenant id associated with the virtual machine scale set. This property will only be provided for a system
-	// assigned identity.
+// assigned identity.
 	TenantID *string
 }
 
@@ -7115,7 +7141,7 @@ type VirtualMachineScaleSetListSKUsResult struct {
 	Value []*VirtualMachineScaleSetSKU
 
 	// The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with this to fetch the next page of VMSS
-	// Skus.
+// Skus.
 	NextLink *string
 }
 
@@ -7125,7 +7151,7 @@ type VirtualMachineScaleSetListWithLinkResult struct {
 	Value []*VirtualMachineScaleSet
 
 	// The uri to fetch the next page of Virtual Machine Scale Sets. Call ListNext() with this to fetch the next page of Virtual
-	// Machine Scale Sets.
+// Machine Scale Sets.
 	NextLink *string
 }
 
@@ -7138,7 +7164,7 @@ type VirtualMachineScaleSetManagedDiskParameters struct {
 	SecurityProfile *VMDiskSecurityProfile
 
 	// Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot
-	// be used with OS Disk.
+// be used with OS Disk.
 	StorageAccountType *StorageAccountTypes
 }
 
@@ -7191,12 +7217,12 @@ type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 // VirtualMachineScaleSetNetworkProfile - Describes a virtual machine scale set network profile.
 type VirtualMachineScaleSetNetworkProfile struct {
 	// A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale set. The
-	// reference will be in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
+// reference will be in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
 	HealthProbe *APIEntityReference
 
 	// specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
-	// for Virtual Machine Scale Set with orchestration mode 'Flexible'
+// for Virtual Machine Scale Set with orchestration mode 'Flexible'
 	NetworkAPIVersion *NetworkAPIVersion
 
 	// The list of network configurations.
@@ -7206,30 +7232,30 @@ type VirtualMachineScaleSetNetworkProfile struct {
 // VirtualMachineScaleSetOSDisk - Describes a virtual machine scale set operating system disk.
 type VirtualMachineScaleSetOSDisk struct {
 	// REQUIRED; Specifies how the virtual machines in the scale set should be created. The only allowed value is: FromImage.
-	// This value is used when you are using an image to create the virtual machine. If you are
-	// using a platform image, you also use the imageReference element described above. If you are using a marketplace image,
-	// you also use the plan element previously described.
+// This value is used when you are using an image to create the virtual machine. If you are
+// using a platform image, you also use the imageReference element described above. If you are using a marketplace image,
+// you also use the plan element previously described.
 	CreateOption *DiskCreateOptionTypes
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard
-	// storage. ReadOnly for Premium storage.
+// storage. ReadOnly for Premium storage.
 	Caching *CachingTypes
 
 	// Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion (This feature is available for VMSS with
-	// Flexible OrchestrationMode only).
-	// Possible values:
-	// Delete If this value is used, the OS disk is deleted when VMSS Flex VM is deleted.
-	// Detach If this value is used, the OS disk is retained after VMSS Flex VM is deleted.
-	// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
-	// delete option for Ephemeral OS Disk.
+// Flexible OrchestrationMode only).
+// Possible values:
+// Delete If this value is used, the OS disk is deleted when VMSS Flex VM is deleted.
+// Detach If this value is used, the OS disk is retained after VMSS Flex VM is deleted.
+// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
+// delete option for Ephemeral OS Disk.
 	DeleteOption *DiskDeleteOptionTypes
 
 	// Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
 	DiffDiskSettings *DiffDiskSettings
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
-	// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
-	// for the disk and the value cannot be larger than 1023.
+// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
+// for the disk and the value cannot be larger than 1023.
 	DiskSizeGB *int32
 
 	// Specifies information about the unmanaged user image to base the scale set on.
@@ -7242,7 +7268,7 @@ type VirtualMachineScaleSetOSDisk struct {
 	Name *string
 
 	// This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or
-	// a specialized VHD. Possible values are: Windows, Linux.
+// a specialized VHD. Possible values are: Windows, Linux.
 	OSType *OperatingSystemTypes
 
 	// Specifies the container urls that are used to store operating system disks for the scale set.
@@ -7255,58 +7281,58 @@ type VirtualMachineScaleSetOSDisk struct {
 // VirtualMachineScaleSetOSProfile - Describes a virtual machine scale set OS profile.
 type VirtualMachineScaleSetOSProfile struct {
 	// Specifies the password of the administrator account.
-	// Minimum-length (Windows): 8 characters
-	// Minimum-length (Linux): 6 characters
-	// Max-length (Windows): 123 characters
-	// Max-length (Linux): 72 characters
-	// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
-	// Has lower characters
-	// Has upper characters
-	// Has a digit
-	// Has a special character (Regex match [\W_])
-	// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
-	// "Password22", "iloveyou!"
-	// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
-	// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
-	// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
+// Minimum-length (Windows): 8 characters
+// Minimum-length (Linux): 6 characters
+// Max-length (Windows): 123 characters
+// Max-length (Linux): 72 characters
+// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
+// Has lower characters
+// Has upper characters
+// Has a digit
+// Has a special character (Regex match [\W_])
+// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
+// "Password22", "iloveyou!"
+// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
+// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
+// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
 	AdminPassword *string
 
 	// Specifies the name of the administrator account.
-	// Windows-only restriction: Cannot end in "."
-	// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123",
-	// "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest",
-	// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-	// Minimum-length (Linux): 1 character
-	// Max-length (Linux): 64 characters
-	// Max-length (Windows): 20 characters
+// Windows-only restriction: Cannot end in "."
+// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123",
+// "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest",
+// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
+// Minimum-length (Linux): 1 character
+// Max-length (Linux): 64 characters
+// Max-length (Windows): 20 characters
 	AdminUsername *string
 
 	// Specifies whether extension operations should be allowed on the virtual machine scale set. This may only be set to False
-	// when no extensions are present on the virtual machine scale set.
+// when no extensions are present on the virtual machine scale set.
 	AllowExtensionOperations *bool
 
 	// Specifies the computer name prefix for all of the virtual machines in the scale set. Computer name prefixes must be 1 to
-	// 15 characters long.
+// 15 characters long.
 	ComputerNamePrefix *string
 
 	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
-	// as a file on the Virtual Machine. The maximum length of the binary array is
-	// 65535 bytes. For using cloud-init for your VM, see Using cloud-init to customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init]
+// as a file on the Virtual Machine. The maximum length of the binary array is
+// 65535 bytes. For using cloud-init for your VM, see Using cloud-init to customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init]
 	CustomData *string
 
 	// Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions, see
-	// Linux on Azure-Endorsed Distributions
-	// [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
+// Linux on Azure-Endorsed Distributions
+// [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 	LinuxConfiguration *LinuxConfiguration
 
 	// Optional property which must either be set to True or omitted.
 	RequireGuestProvisionSignal *bool
 
 	// Specifies set of certificates that should be installed onto the virtual machines in the scale set. To install certificates
-	// on a virtual machine it is recommended to use the Azure Key Vault virtual
-	// machine extension for Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure
-	// Key Vault virtual machine extension for Windows
-	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
+// on a virtual machine it is recommended to use the Azure Key Vault virtual
+// machine extension for Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure
+// Key Vault virtual machine extension for Windows
+// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	Secrets []*VaultSecretGroup
 
 	// Specifies Windows operating system settings on the virtual machine.
@@ -7316,8 +7342,8 @@ type VirtualMachineScaleSetOSProfile struct {
 // VirtualMachineScaleSetProperties - Describes the properties of a Virtual Machine Scale Set.
 type VirtualMachineScaleSetProperties struct {
 	// Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance:
-	// whether the Virtual Machines have the capability to support attaching
-	// managed data disks with UltraSSD_LRS storage account type.
+// whether the Virtual Machines have the capability to support attaching
+// managed data disks with UltraSSD_LRS storage account type.
 	AdditionalCapabilities *AdditionalCapabilities
 
 	// Policy for automatic repairs.
@@ -7327,12 +7353,12 @@ type VirtualMachineScaleSetProperties struct {
 	ConstrainedMaximumCapacity *bool
 
 	// When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This
-	// property will hence ensure that the extensions do not run on the extra
-	// overprovisioned VMs.
+// property will hence ensure that the extensions do not run on the extra
+// overprovisioned VMs.
 	DoNotRunExtensionsOnOverprovisionedVMs *bool
 
 	// Specifies information about the dedicated host group that the virtual machine scale set resides in. Minimum api-version:
-	// 2020-06-01.
+// 2020-06-01.
 	HostGroup *SubResource
 
 	// Specifies the orchestration mode for the virtual machine scale set.
@@ -7348,15 +7374,15 @@ type VirtualMachineScaleSetProperties struct {
 	PriorityMixPolicy *PriorityMixPolicy
 
 	// Specifies information about the proximity placement group that the virtual machine scale set should be assigned to. Minimum
-	// api-version: 2018-04-01.
+// api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
 	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy
 
 	// When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup
-	// is true, it may be modified to false. However, if singlePlacementGroup
-	// is false, it may not be modified to true.
+// is true, it may be modified to false. However, if singlePlacementGroup
+// is false, it may not be modified to true.
 	SinglePlacementGroup *bool
 
 	// Specifies the Spot Restore properties for the virtual machine scale set.
@@ -7369,8 +7395,8 @@ type VirtualMachineScaleSetProperties struct {
 	VirtualMachineProfile *VirtualMachineScaleSetVMProfile
 
 	// Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. zoneBalance property
-	// can only be set if the zones property of the scale set contains more than
-	// one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
+// can only be set if the zones property of the scale set contains more than
+// one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
 	ZoneBalance *bool
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
@@ -7400,7 +7426,7 @@ type VirtualMachineScaleSetPublicIPAddressConfiguration struct {
 // DNS settings.
 type VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings struct {
 	// REQUIRED; The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels
-	// of the PublicIPAddress resources that will be created
+// of the PublicIPAddress resources that will be created
 	DomainNameLabel *string
 }
 
@@ -7420,7 +7446,7 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 	IdleTimeoutInMinutes *int32
 
 	// Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
-	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PublicIPAddressVersion *IPVersion
 
 	// The PublicIPPrefix from which to allocate publicIP addresses.
@@ -7430,18 +7456,18 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 // VirtualMachineScaleSetReimageParameters - Describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetReimageParameters struct {
 	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
-	// is reimaged to the existing version of OS Disk.
+// is reimaged to the existing version of OS Disk.
 	ExactVersion *string
 
 	// The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation
-	// being performed on all virtual machines in the virtual machine scale set.
+// being performed on all virtual machines in the virtual machine scale set.
 	InstanceIDs []*string
 
 	// Specifies information required for reimaging the non-ephemeral OS disk.
 	OSProfile *OSProfileProvisioningData
 
 	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
-	// for VM/VMSS with Ephemeral OS disk.
+// for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool
 }
 
@@ -7475,19 +7501,19 @@ type VirtualMachineScaleSetSKUCapacity struct {
 // VirtualMachineScaleSetStorageProfile - Describes a virtual machine scale set storage profile.
 type VirtualMachineScaleSetStorageProfile struct {
 	// Specifies the parameters that are used to add data disks to the virtual machines in the scale set. For more information
-	// about disks, see About disks and VHDs for Azure virtual machines
-	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
-	DataDisks          []*VirtualMachineScaleSetDataDisk
+// about disks, see About disks and VHDs for Azure virtual machines
+// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
+	DataDisks []*VirtualMachineScaleSetDataDisk
 	DiskControllerType *string
 
 	// Specifies information about the image to use. You can specify information about platform images, marketplace images, or
-	// virtual machine images. This element is required when you want to use a platform
-	// image, marketplace image, or virtual machine image, but is not used in other creation operations.
+// virtual machine images. This element is required when you want to use a platform
+// image, marketplace image, or virtual machine image, but is not used in other creation operations.
 	ImageReference *ImageReference
 
 	// Specifies information about the operating system disk used by the virtual machines in the scale set. For more information
-	// about disks, see About disks and VHDs for Azure virtual machines
-	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
+// about disks, see About disks and VHDs for Azure virtual machines
+// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 	OSDisk *VirtualMachineScaleSetOSDisk
 }
 
@@ -7539,7 +7565,7 @@ type VirtualMachineScaleSetUpdateIPConfigurationProperties struct {
 	Primary *bool
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
-	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PrivateIPAddressVersion *IPVersion
 
 	// The publicIPAddressConfiguration.
@@ -7555,7 +7581,7 @@ type VirtualMachineScaleSetUpdateNetworkConfiguration struct {
 	Name *string
 
 	// Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating network
-	// profile's IP Configuration.
+// profile's IP Configuration.
 	Properties *VirtualMachineScaleSetUpdateNetworkConfigurationProperties
 }
 
@@ -7593,12 +7619,12 @@ type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 // VirtualMachineScaleSetUpdateNetworkProfile - Describes a virtual machine scale set network profile.
 type VirtualMachineScaleSetUpdateNetworkProfile struct {
 	// A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale set. The
-	// reference will be in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
+// reference will be in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
 	HealthProbe *APIEntityReference
 
 	// specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
-	// for Virtual Machine Scale Set with orchestration mode 'Flexible'
+// for Virtual Machine Scale Set with orchestration mode 'Flexible'
 	NetworkAPIVersion *NetworkAPIVersion
 
 	// The list of network configurations.
@@ -7612,22 +7638,22 @@ type VirtualMachineScaleSetUpdateOSDisk struct {
 	Caching *CachingTypes
 
 	// Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion (This feature is available for VMSS with
-	// Flexible OrchestrationMode only).
-	// Possible values:
-	// Delete If this value is used, the OS disk is deleted when VMSS Flex VM is deleted.
-	// Detach If this value is used, the OS disk is retained after VMSS Flex VM is deleted.
-	// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
-	// delete option for Ephemeral OS Disk.
+// Flexible OrchestrationMode only).
+// Possible values:
+// Delete If this value is used, the OS disk is deleted when VMSS Flex VM is deleted.
+// Detach If this value is used, the OS disk is retained after VMSS Flex VM is deleted.
+// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
+// delete option for Ephemeral OS Disk.
 	DeleteOption *DiskDeleteOptionTypes
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
-	// virtual machine image.
-	// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
+// virtual machine image.
+// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
 	DiskSizeGB *int32
 
 	// The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine.
-	// If SourceImage is provided, the destination VirtualHardDisk should not
-	// exist.
+// If SourceImage is provided, the destination VirtualHardDisk should not
+// exist.
 	Image *VirtualHardDisk
 
 	// The managed disk parameters.
@@ -7658,16 +7684,16 @@ type VirtualMachineScaleSetUpdateOSProfile struct {
 // VirtualMachineScaleSetUpdateProperties - Describes the properties of a Virtual Machine Scale Set.
 type VirtualMachineScaleSetUpdateProperties struct {
 	// Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance:
-	// whether the Virtual Machines have the capability to support attaching
-	// managed data disks with UltraSSD_LRS storage account type.
+// whether the Virtual Machines have the capability to support attaching
+// managed data disks with UltraSSD_LRS storage account type.
 	AdditionalCapabilities *AdditionalCapabilities
 
 	// Policy for automatic repairs.
 	AutomaticRepairsPolicy *AutomaticRepairsPolicy
 
 	// When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This
-	// property will hence ensure that the extensions do not run on the extra
-	// overprovisioned VMs.
+// property will hence ensure that the extensions do not run on the extra
+// overprovisioned VMs.
 	DoNotRunExtensionsOnOverprovisionedVMs *bool
 
 	// Specifies whether the Virtual Machine Scale Set should be overprovisioned.
@@ -7677,15 +7703,15 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	PriorityMixPolicy *PriorityMixPolicy
 
 	// Specifies information about the proximity placement group that the virtual machine scale set should be assigned to.
-	// Minimum api-version: 2018-04-01.
+// Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
 	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy
 
 	// When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup
-	// is true, it may be modified to false. However, if singlePlacementGroup
-	// is false, it may not be modified to true.
+// is true, it may be modified to false. However, if singlePlacementGroup
+// is false, it may not be modified to true.
 	SinglePlacementGroup *bool
 
 	// Specifies the Spot Restore properties for the virtual machine scale set.
@@ -7727,7 +7753,7 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties struct {
 // VirtualMachineScaleSetUpdateStorageProfile - Describes a virtual machine scale set storage profile.
 type VirtualMachineScaleSetUpdateStorageProfile struct {
 	// The data disks.
-	DataDisks          []*VirtualMachineScaleSetDataDisk
+	DataDisks []*VirtualMachineScaleSetDataDisk
 	DiskControllerType *string
 
 	// The image reference.
@@ -7770,7 +7796,7 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	StorageProfile *VirtualMachineScaleSetUpdateStorageProfile
 
 	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
-	// Minimum api-version: 2021-03-01
+// Minimum api-version: 2021-03-01
 	UserData *string
 }
 
@@ -7783,10 +7809,10 @@ type VirtualMachineScaleSetVM struct {
 	Identity *VirtualMachineIdentity
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
-	// images. Before you can use a marketplace image from an API, you must
-	// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
-	// Want to deploy programmatically, Get Started ->. Enter any required
-	// information and then click Save.
+// images. Before you can use a marketplace image from an API, you must
+// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
+// Want to deploy programmatically, Get Started ->. Enter any required
+// information and then click Save.
 	Plan *Plan
 
 	// Describes the properties of a virtual machine scale set virtual machine.
@@ -7868,7 +7894,7 @@ type VirtualMachineScaleSetVMExtensionsSummary struct {
 // VirtualMachineScaleSetVMInstanceIDs - Specifies a list of virtual machine instance IDs from the VM scale set.
 type VirtualMachineScaleSetVMInstanceIDs struct {
 	// The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation
-	// being performed on all virtual machines in the virtual machine scale set.
+// being performed on all virtual machines in the virtual machine scale set.
 	InstanceIDs []*string
 }
 
@@ -7881,16 +7907,16 @@ type VirtualMachineScaleSetVMInstanceRequiredIDs struct {
 // VirtualMachineScaleSetVMInstanceView - The instance view of a virtual machine scale set VM.
 type VirtualMachineScaleSetVMInstanceView struct {
 	// Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. You
-	// can easily view the output of your console log. Azure also enables you to see
-	// a screenshot of the VM from the hypervisor.
+// can easily view the output of your console log. Azure also enables you to see
+// a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnosticsInstanceView
 
 	// Specifies the host OS name of the virtual machine.
-	// This name cannot be updated after the VM is created.
-	// Max-length (Windows): 15 characters
-	// Max-length (Linux): 64 characters.
-	// For naming conventions and restrictions see Azure infrastructure services implementation guidelines
-	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions].
+// This name cannot be updated after the VM is created.
+// Max-length (Windows): 15 characters
+// Max-length (Linux): 64 characters.
+// For naming conventions and restrictions see Azure infrastructure services implementation guidelines
+// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions].
 	ComputerName *string
 
 	// The disks information.
@@ -7930,8 +7956,8 @@ type VirtualMachineScaleSetVMInstanceView struct {
 	VMAgent *VirtualMachineAgentInstanceView
 
 	// READ-ONLY; Resource id of the dedicated host, on which the virtual machine is allocated through automatic placement, when
-	// the virtual machine is associated with a dedicated host group that has automatic
-	// placement enabled. Minimum api-version: 2020-06-01.
+// the virtual machine is associated with a dedicated host group that has automatic
+// placement enabled. Minimum api-version: 2020-06-01.
 	AssignedHost *string
 
 	// READ-ONLY; The health status for the VM.
@@ -7944,7 +7970,7 @@ type VirtualMachineScaleSetVMListResult struct {
 	Value []*VirtualMachineScaleSetVM
 
 	// The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next page of VMSS
-	// VMs
+// VMs
 	NextLink *string
 }
 
@@ -7969,8 +7995,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	DiagnosticsProfile *DiagnosticsProfile
 
 	// Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot virtual machines,
-	// both 'Deallocate' and 'Delete' are supported and the minimum api-version is
-	// 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
+// both 'Deallocate' and 'Delete' are supported and the minimum api-version is
+// 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
 	EvictionPolicy *VirtualMachineEvictionPolicyTypes
 
 	// Specifies a collection of settings for extensions installed on virtual machines in the scale set.
@@ -7980,15 +8006,15 @@ type VirtualMachineScaleSetVMProfile struct {
 	HardwareProfile *VirtualMachineScaleSetHardwareProfile
 
 	// Specifies that the image or disk that is being used was licensed on-premises.
-	// Possible values for Windows Server operating system are:
-	// WindowsClient
-	// WindowsServer
-	// Possible values for Linux Server operating system are:
-	// RHELBYOS (for RHEL)
-	// SLESBYOS (for SUSE)
-	// For more information, see Azure Hybrid Use Benefit for Windows Server [https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing]
-	// Azure Hybrid Use Benefit for Linux Server [https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux]
-	// Minimum api-version: 2015-06-15
+// Possible values for Windows Server operating system are:
+// WindowsClient
+// WindowsServer
+// Possible values for Linux Server operating system are:
+// RHELBYOS (for RHEL)
+// SLESBYOS (for SUSE)
+// For more information, see Azure Hybrid Use Benefit for Windows Server [https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing]
+// Azure Hybrid Use Benefit for Linux Server [https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux]
+// Minimum api-version: 2015-06-15
 	LicenseType *string
 
 	// Specifies properties of the network interfaces of the virtual machines in the scale set.
@@ -8010,31 +8036,31 @@ type VirtualMachineScaleSetVMProfile struct {
 	SecurityProfile *SecurityProfile
 
 	// Specifies the service artifact reference id used to set same image version for all virtual machines in the scale set when
-	// using 'latest' image version. Minimum api-version: 2022-11-01
+// using 'latest' image version. Minimum api-version: 2022-11-01
 	ServiceArtifactReference *ServiceArtifactReference
 
 	// Specifies the storage settings for the virtual machine disks.
 	StorageProfile *VirtualMachineScaleSetStorageProfile
 
 	// UserData for the virtual machines in the scale set, which must be base-64 encoded. Customer should not pass any secrets
-	// in here. Minimum api-version: 2021-03-01.
+// in here. Minimum api-version: 2021-03-01.
 	UserData *string
 }
 
 // VirtualMachineScaleSetVMProperties - Describes the properties of a virtual machine scale set virtual machine.
 type VirtualMachineScaleSetVMProperties struct {
 	// Specifies additional capabilities enabled or disabled on the virtual machine in the scale set. For instance: whether the
-	// virtual machine has the capability to support attaching managed data disks with
-	// UltraSSD_LRS storage account type.
+// virtual machine has the capability to support attaching managed data disks with
+// UltraSSD_LRS storage account type.
 	AdditionalCapabilities *AdditionalCapabilities
 
 	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified
-	// in the same availability set are allocated to different nodes to maximize
-	// availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
-	// For more information on Azure
-	// planned maintenance, see Maintenance and updates for Virtual Machines in Azure [https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates].
-	// Currently, a VM can only be added to
-	// availability set at creation time. An existing VM cannot be added to an availability set.
+// in the same availability set are allocated to different nodes to maximize
+// availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
+// For more information on Azure
+// planned maintenance, see Maintenance and updates for Virtual Machines in Azure [https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates].
+// Currently, a VM can only be added to
+// availability set at creation time. An existing VM cannot be added to an availability set.
 	AvailabilitySet *SubResource
 
 	// Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
@@ -8044,15 +8070,15 @@ type VirtualMachineScaleSetVMProperties struct {
 	HardwareProfile *HardwareProfile
 
 	// Specifies that the image or disk that is being used was licensed on-premises.
-	// Possible values for Windows Server operating system are:
-	// WindowsClient
-	// WindowsServer
-	// Possible values for Linux Server operating system are:
-	// RHELBYOS (for RHEL)
-	// SLESBYOS (for SUSE)
-	// For more information, see Azure Hybrid Use Benefit for Windows Server [https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing]
-	// Azure Hybrid Use Benefit for Linux Server [https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux]
-	// Minimum api-version: 2015-06-15
+// Possible values for Windows Server operating system are:
+// WindowsClient
+// WindowsServer
+// Possible values for Linux Server operating system are:
+// RHELBYOS (for RHEL)
+// SLESBYOS (for SUSE)
+// For more information, see Azure Hybrid Use Benefit for Windows Server [https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing]
+// Azure Hybrid Use Benefit for Linux Server [https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux]
+// Minimum api-version: 2015-06-15
 	LicenseType *string
 
 	// Specifies the network interfaces of the virtual machine.
@@ -8074,7 +8100,7 @@ type VirtualMachineScaleSetVMProperties struct {
 	StorageProfile *StorageProfile
 
 	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
-	// Minimum api-version: 2021-03-01
+// Minimum api-version: 2021-03-01
 	UserData *string
 
 	// READ-ONLY; The virtual machine instance view.
@@ -8084,7 +8110,7 @@ type VirtualMachineScaleSetVMProperties struct {
 	LatestModelApplied *bool
 
 	// READ-ONLY; Specifies whether the model applied to the virtual machine is the model of the virtual machine scale set or
-	// the customized model for the virtual machine.
+// the customized model for the virtual machine.
 	ModelDefinitionApplied *string
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
@@ -8100,21 +8126,21 @@ type VirtualMachineScaleSetVMProtectionPolicy struct {
 	ProtectFromScaleIn *bool
 
 	// Indicates that model updates or actions (including scale-in) initiated on the virtual machine scale set should not be applied
-	// to the virtual machine scale set VM.
+// to the virtual machine scale set VM.
 	ProtectFromScaleSetActions *bool
 }
 
 // VirtualMachineScaleSetVMReimageParameters - Describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetVMReimageParameters struct {
 	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
-	// is reimaged to the existing version of OS Disk.
+// is reimaged to the existing version of OS Disk.
 	ExactVersion *string
 
 	// Specifies information required for reimaging the non-ephemeral OS disk.
 	OSProfile *OSProfileProvisioningData
 
 	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
-	// for VM/VMSS with Ephemeral OS disk.
+// for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool
 }
 
@@ -8130,8 +8156,8 @@ type VirtualMachineSize struct {
 	Name *string
 
 	// The number of cores supported by the virtual machine size. For Constrained vCPU capable VM sizes, this number represents
-	// the total vCPUs of quota that the VM uses. For accurate vCPU count, please
-	// refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or https://docs.microsoft.com/rest/api/compute/resourceskus/list
+// the total vCPUs of quota that the VM uses. For accurate vCPU count, please
+// refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or https://docs.microsoft.com/rest/api/compute/resourceskus/list
 	NumberOfCores *int32
 
 	// The OS disk size, in MB, allowed by the virtual machine size.
@@ -8150,7 +8176,7 @@ type VirtualMachineSizeListResult struct {
 // VirtualMachineSoftwarePatchProperties - Describes the properties of a Virtual Machine software patch.
 type VirtualMachineSoftwarePatchProperties struct {
 	// READ-ONLY; The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-	// logs.
+// logs.
 	ActivityID *string
 
 	// READ-ONLY; Describes the availability of a given patch.
@@ -8196,10 +8222,10 @@ type VirtualMachineUpdate struct {
 	Identity *VirtualMachineIdentity
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
-	// images. Before you can use a marketplace image from an API, you must
-	// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
-	// Want to deploy programmatically, Get Started ->. Enter any required
-	// information and then click Save.
+// images. Before you can use a marketplace image from an API, you must
+// enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
+// Want to deploy programmatically, Get Started ->. Enter any required
+// information and then click Save.
 	Plan *Plan
 
 	// Describes the properties of a Virtual Machine.
@@ -8221,19 +8247,19 @@ type WinRMConfiguration struct {
 // WinRMListener - Describes Protocol and thumbprint of Windows Remote Management listener
 type WinRMListener struct {
 	// This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault,
-	// see Add a key or secret to the key vault
-	// [https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add]. In this case, your certificate needs to be the
-	// Base64 encoding of the following JSON Object which is encoded in UTF-8:
-	// {
-	// "data":"",
-	// "dataType":"pfx",
-	// "password":""
-	// }
-	// To install certificates on a virtual machine it is recommended to use the Azure Key Vault virtual machine extension for
-	// Linux
-	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension
-	// for Windows
-	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
+// see Add a key or secret to the key vault
+// [https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add]. In this case, your certificate needs to be the
+// Base64 encoding of the following JSON Object which is encoded in UTF-8:
+// {
+// "data":"",
+// "dataType":"pfx",
+// "password":""
+// }
+// To install certificates on a virtual machine it is recommended to use the Azure Key Vault virtual machine extension for
+// Linux
+// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension
+// for Windows
+// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	CertificateURL *string
 
 	// Specifies the protocol of WinRM listener. Possible values are: http, https.
@@ -8243,12 +8269,12 @@ type WinRMListener struct {
 // WindowsConfiguration - Specifies Windows operating system settings on the virtual machine.
 type WindowsConfiguration struct {
 	// Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is
-	// used by Windows Setup.
+// used by Windows Setup.
 	AdditionalUnattendContent []*AdditionalUnattendContent
 
 	// Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine
-	// scale sets, this property can be updated and updates will take effect on OS
-	// reprovisioning.
+// scale sets, this property can be updated and updates will take effect on OS
+// reprovisioning.
 	EnableAutomaticUpdates *bool
 
 	// Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
@@ -8258,14 +8284,14 @@ type WindowsConfiguration struct {
 	PatchSettings *PatchSettings
 
 	// Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified
-	// in the request body, it is set to true by default. This will ensure that VM
-	// Agent is installed on the VM so that extensions can be added to the VM later.
+// in the request body, it is set to true by default. This will ensure that VM
+// Agent is installed on the VM so that extensions can be added to the VM later.
 	ProvisionVMAgent *bool
 
 	// Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible values can be TimeZoneInfo.Id
-	// [https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id] value from time zones returned by
-	// TimeZoneInfo.GetSystemTimeZones
-	// [https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones].
+// [https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id] value from time zones returned by
+// TimeZoneInfo.GetSystemTimeZones
+// [https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones].
 	TimeZone *string
 
 	// Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
@@ -8299,3 +8325,4 @@ type WindowsVMGuestPatchAutomaticByPlatformSettings struct {
 	// Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
 	RebootSetting *WindowsVMGuestPatchAutomaticByPlatformRebootSetting
 }
+

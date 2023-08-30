@@ -24,7 +24,7 @@ import (
 // CloudServicesUpdateDomainClient contains the methods for the CloudServicesUpdateDomain group.
 // Don't use this type directly, use NewCloudServicesUpdateDomainClient() instead.
 type CloudServicesUpdateDomainClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -40,7 +40,7 @@ func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore
 	}
 	client := &CloudServicesUpdateDomainClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -121,13 +121,13 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(res
 //   - cloudServiceName - Name of the cloud service.
 //   - options - CloudServicesUpdateDomainClientListUpdateDomainsOptions contains the optional parameters for the CloudServicesUpdateDomainClient.NewListUpdateDomainsPager
 //     method.
-func (client *CloudServicesUpdateDomainClient) NewListUpdateDomainsPager(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainClientListUpdateDomainsOptions) *runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse] {
+func (client *CloudServicesUpdateDomainClient) NewListUpdateDomainsPager(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainClientListUpdateDomainsOptions) (*runtime.Pager[CloudServicesUpdateDomainClientListUpdateDomainsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CloudServicesUpdateDomainClientListUpdateDomainsResponse]{
 		More: func(page CloudServicesUpdateDomainClientListUpdateDomainsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServicesUpdateDomainClientListUpdateDomainsResponse) (CloudServicesUpdateDomainClientListUpdateDomainsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesUpdateDomainClient.NewListUpdateDomainsPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServicesUpdateDomainClient.NewListUpdateDomainsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -260,7 +260,8 @@ func (client *CloudServicesUpdateDomainClient) walkUpdateDomainCreateRequest(ctx
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

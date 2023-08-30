@@ -21,10 +21,11 @@ import (
 )
 
 // VirtualMachineSizesServer is a fake server for instances of the armcompute.VirtualMachineSizesClient type.
-type VirtualMachineSizesServer struct {
+type VirtualMachineSizesServer struct{
 	// NewListPager is the fake for method VirtualMachineSizesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(location string, options *armcompute.VirtualMachineSizesClientListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse])
+
 }
 
 // NewVirtualMachineSizesServerTransport creates a new instance of VirtualMachineSizesServerTransport with the provided implementation.
@@ -32,7 +33,7 @@ type VirtualMachineSizesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineSizesServerTransport(srv *VirtualMachineSizesServer) *VirtualMachineSizesServerTransport {
 	return &VirtualMachineSizesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]](),
 	}
 }
@@ -40,7 +41,7 @@ func NewVirtualMachineSizesServerTransport(srv *VirtualMachineSizesServer) *Virt
 // VirtualMachineSizesServerTransport connects instances of armcompute.VirtualMachineSizesClient to instances of VirtualMachineSizesServer.
 // Don't use this type directly, use NewVirtualMachineSizesServerTransport instead.
 type VirtualMachineSizesServerTransport struct {
-	srv          *VirtualMachineSizesServer
+	srv *VirtualMachineSizesServer
 	newListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]]
 }
 
@@ -75,17 +76,17 @@ func (v *VirtualMachineSizesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	newListPager := v.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListPager(locationUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+resp := v.srv.NewListPager(locationUnescaped, nil)
 		newListPager = &resp
 		v.newListPager.add(req, newListPager)
 	}
@@ -102,3 +103,4 @@ func (v *VirtualMachineSizesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	return resp, nil
 }
+

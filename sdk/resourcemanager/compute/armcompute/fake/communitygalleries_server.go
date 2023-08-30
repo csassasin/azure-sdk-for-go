@@ -22,10 +22,11 @@ import (
 )
 
 // CommunityGalleriesServer is a fake server for instances of the armcompute.CommunityGalleriesClient type.
-type CommunityGalleriesServer struct {
+type CommunityGalleriesServer struct{
 	// Get is the fake for method CommunityGalleriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, publicGalleryName string, options *armcompute.CommunityGalleriesClientGetOptions) (resp azfake.Responder[armcompute.CommunityGalleriesClientGetResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCommunityGalleriesServerTransport creates a new instance of CommunityGalleriesServerTransport with the provided implementation.
@@ -93,8 +94,8 @@ func (c *CommunityGalleriesServerTransport) dispatchGet(req *http.Request) (*htt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommunityGallery, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

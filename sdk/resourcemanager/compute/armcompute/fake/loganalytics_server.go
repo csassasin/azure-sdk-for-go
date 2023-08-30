@@ -22,7 +22,7 @@ import (
 )
 
 // LogAnalyticsServer is a fake server for instances of the armcompute.LogAnalyticsClient type.
-type LogAnalyticsServer struct {
+type LogAnalyticsServer struct{
 	// BeginExportRequestRateByInterval is the fake for method LogAnalyticsClient.BeginExportRequestRateByInterval
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginExportRequestRateByInterval func(ctx context.Context, location string, parameters armcompute.RequestRateByIntervalInput, options *armcompute.LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (resp azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse], errResp azfake.ErrorResponder)
@@ -30,6 +30,7 @@ type LogAnalyticsServer struct {
 	// BeginExportThrottledRequests is the fake for method LogAnalyticsClient.BeginExportThrottledRequests
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginExportThrottledRequests func(ctx context.Context, location string, parameters armcompute.ThrottledRequestsInput, options *armcompute.LogAnalyticsClientBeginExportThrottledRequestsOptions) (resp azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewLogAnalyticsServerTransport creates a new instance of LogAnalyticsServerTransport with the provided implementation.
@@ -37,18 +38,18 @@ type LogAnalyticsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLogAnalyticsServerTransport(srv *LogAnalyticsServer) *LogAnalyticsServerTransport {
 	return &LogAnalyticsServerTransport{
-		srv:                              srv,
+		srv: srv,
 		beginExportRequestRateByInterval: newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]](),
-		beginExportThrottledRequests:     newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]](),
+		beginExportThrottledRequests: newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]](),
 	}
 }
 
 // LogAnalyticsServerTransport connects instances of armcompute.LogAnalyticsClient to instances of LogAnalyticsServer.
 // Don't use this type directly, use NewLogAnalyticsServerTransport instead.
 type LogAnalyticsServerTransport struct {
-	srv                              *LogAnalyticsServer
+	srv *LogAnalyticsServer
 	beginExportRequestRateByInterval *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]]
-	beginExportThrottledRequests     *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]]
+	beginExportThrottledRequests *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]]
 }
 
 // Do implements the policy.Transporter interface for LogAnalyticsServerTransport.
@@ -84,24 +85,24 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportRequestRateByInterval(r
 	}
 	beginExportRequestRateByInterval := l.beginExportRequestRateByInterval.get(req)
 	if beginExportRequestRateByInterval == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getRequestRateByInterval`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.RequestRateByIntervalInput](req)
-		if err != nil {
-			return nil, err
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := l.srv.BeginExportRequestRateByInterval(req.Context(), locationUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getRequestRateByInterval`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.RequestRateByIntervalInput](req)
+	if err != nil {
+		return nil, err
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.BeginExportRequestRateByInterval(req.Context(), locationUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginExportRequestRateByInterval = &respr
 		l.beginExportRequestRateByInterval.add(req, beginExportRequestRateByInterval)
 	}
@@ -128,24 +129,24 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 	}
 	beginExportThrottledRequests := l.beginExportThrottledRequests.get(req)
 	if beginExportThrottledRequests == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getThrottledRequests`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.ThrottledRequestsInput](req)
-		if err != nil {
-			return nil, err
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := l.srv.BeginExportThrottledRequests(req.Context(), locationUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/logAnalytics/apiAccess/getThrottledRequests`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.ThrottledRequestsInput](req)
+	if err != nil {
+		return nil, err
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.BeginExportThrottledRequests(req.Context(), locationUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginExportThrottledRequests = &respr
 		l.beginExportThrottledRequests.add(req, beginExportThrottledRequests)
 	}
@@ -165,3 +166,4 @@ func (l *LogAnalyticsServerTransport) dispatchBeginExportThrottledRequests(req *
 
 	return resp, nil
 }
+

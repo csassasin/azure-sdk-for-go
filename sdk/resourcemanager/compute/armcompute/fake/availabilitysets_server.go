@@ -23,7 +23,7 @@ import (
 )
 
 // AvailabilitySetsServer is a fake server for instances of the armcompute.AvailabilitySetsClient type.
-type AvailabilitySetsServer struct {
+type AvailabilitySetsServer struct{
 	// CreateOrUpdate is the fake for method AvailabilitySetsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySet, options *armcompute.AvailabilitySetsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -51,6 +51,7 @@ type AvailabilitySetsServer struct {
 	// Update is the fake for method AvailabilitySetsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySetUpdate, options *armcompute.AvailabilitySetsClientUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewAvailabilitySetsServerTransport creates a new instance of AvailabilitySetsServerTransport with the provided implementation.
@@ -58,8 +59,8 @@ type AvailabilitySetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAvailabilitySetsServerTransport(srv *AvailabilitySetsServer) *AvailabilitySetsServerTransport {
 	return &AvailabilitySetsServerTransport{
-		srv:                        srv,
-		newListPager:               newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
+		srv: srv,
+		newListPager: newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
 		newListAvailableSizesPager: newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]](),
 	}
@@ -68,8 +69,8 @@ func NewAvailabilitySetsServerTransport(srv *AvailabilitySetsServer) *Availabili
 // AvailabilitySetsServerTransport connects instances of armcompute.AvailabilitySetsClient to instances of AvailabilitySetsServer.
 // Don't use this type directly, use NewAvailabilitySetsServerTransport instead.
 type AvailabilitySetsServerTransport struct {
-	srv                        *AvailabilitySetsServer
-	newListPager               *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
+	srv *AvailabilitySetsServer
+	newListPager *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
 	newListAvailableSizesPager *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]]
 }
@@ -142,8 +143,7 @@ func (a *AvailabilitySetsServerTransport) dispatchCreateOrUpdate(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailabilitySet, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -175,8 +175,7 @@ func (a *AvailabilitySetsServerTransport) dispatchDelete(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -208,8 +207,7 @@ func (a *AvailabilitySetsServerTransport) dispatchGet(req *http.Request) (*http.
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailabilitySet, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -220,17 +218,17 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListPager(req *http.Request
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/availabilitySets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/availabilitySets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListPager(resourceGroupNameUnescaped, nil)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.AvailabilitySetsClientListResponse, createLink func() string) {
@@ -257,21 +255,21 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListAvailableSizesPager(req
 	}
 	newListAvailableSizesPager := a.newListAvailableSizesPager.get(req)
 	if newListAvailableSizesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		availabilitySetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, availabilitySetNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	availabilitySetNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, availabilitySetNameUnescaped, nil)
 		newListAvailableSizesPager = &resp
 		a.newListAvailableSizesPager.add(req, newListAvailableSizesPager)
 	}
@@ -295,25 +293,25 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListBySubscriptionPager(req
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/availabilitySets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/availabilitySets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	var options *armcompute.AvailabilitySetsClientListBySubscriptionOptions
+	if expandParam != nil {
+		options = &armcompute.AvailabilitySetsClientListBySubscriptionOptions{
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		var options *armcompute.AvailabilitySetsClientListBySubscriptionOptions
-		if expandParam != nil {
-			options = &armcompute.AvailabilitySetsClientListBySubscriptionOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := a.srv.NewListBySubscriptionPager(options)
+	}
+resp := a.srv.NewListBySubscriptionPager(options)
 		newListBySubscriptionPager = &resp
 		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcompute.AvailabilitySetsClientListBySubscriptionResponse, createLink func() string) {
@@ -365,8 +363,8 @@ func (a *AvailabilitySetsServerTransport) dispatchUpdate(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailabilitySet, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

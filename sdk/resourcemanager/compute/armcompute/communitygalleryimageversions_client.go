@@ -23,7 +23,7 @@ import (
 // CommunityGalleryImageVersionsClient contains the methods for the CommunityGalleryImageVersions group.
 // Don't use this type directly, use NewCommunityGalleryImageVersionsClient() instead.
 type CommunityGalleryImageVersionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewCommunityGalleryImageVersionsClient(subscriptionID string, credential az
 	}
 	client := &CommunityGalleryImageVersionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -129,13 +129,13 @@ func (client *CommunityGalleryImageVersionsClient) getHandleResponse(resp *http.
 //   - galleryImageName - The name of the community gallery image definition.
 //   - options - CommunityGalleryImageVersionsClientListOptions contains the optional parameters for the CommunityGalleryImageVersionsClient.NewListPager
 //     method.
-func (client *CommunityGalleryImageVersionsClient) NewListPager(location string, publicGalleryName string, galleryImageName string, options *CommunityGalleryImageVersionsClientListOptions) *runtime.Pager[CommunityGalleryImageVersionsClientListResponse] {
+func (client *CommunityGalleryImageVersionsClient) NewListPager(location string, publicGalleryName string, galleryImageName string, options *CommunityGalleryImageVersionsClientListOptions) (*runtime.Pager[CommunityGalleryImageVersionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CommunityGalleryImageVersionsClientListResponse]{
 		More: func(page CommunityGalleryImageVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CommunityGalleryImageVersionsClientListResponse) (CommunityGalleryImageVersionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CommunityGalleryImageVersionsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CommunityGalleryImageVersionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -197,3 +197,4 @@ func (client *CommunityGalleryImageVersionsClient) listHandleResponse(resp *http
 	}
 	return result, nil
 }
+

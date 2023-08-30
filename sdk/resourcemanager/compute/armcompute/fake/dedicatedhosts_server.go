@@ -23,7 +23,7 @@ import (
 )
 
 // DedicatedHostsServer is a fake server for instances of the armcompute.DedicatedHostsClient type.
-type DedicatedHostsServer struct {
+type DedicatedHostsServer struct{
 	// BeginCreateOrUpdate is the fake for method DedicatedHostsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters armcompute.DedicatedHost, options *armcompute.DedicatedHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -51,6 +51,7 @@ type DedicatedHostsServer struct {
 	// BeginUpdate is the fake for method DedicatedHostsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters armcompute.DedicatedHostUpdate, options *armcompute.DedicatedHostsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewDedicatedHostsServerTransport creates a new instance of DedicatedHostsServerTransport with the provided implementation.
@@ -58,26 +59,26 @@ type DedicatedHostsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDedicatedHostsServerTransport(srv *DedicatedHostsServer) *DedicatedHostsServerTransport {
 	return &DedicatedHostsServerTransport{
-		srv:                        srv,
-		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]](),
-		beginDelete:                newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]](),
 		newListAvailableSizesPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]](),
-		newListByHostGroupPager:    newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]](),
-		beginRestart:               newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]](),
+		newListByHostGroupPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]](),
+		beginRestart: newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]](),
 	}
 }
 
 // DedicatedHostsServerTransport connects instances of armcompute.DedicatedHostsClient to instances of DedicatedHostsServer.
 // Don't use this type directly, use NewDedicatedHostsServerTransport instead.
 type DedicatedHostsServerTransport struct {
-	srv                        *DedicatedHostsServer
-	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]]
-	beginDelete                *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]]
+	srv *DedicatedHostsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]]
 	newListAvailableSizesPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]]
-	newListByHostGroupPager    *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]]
-	beginRestart               *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]]
+	newListByHostGroupPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]]
+	beginRestart *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DedicatedHostsServerTransport.
@@ -123,32 +124,32 @@ func (d *DedicatedHostsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.DedicatedHost](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.DedicatedHost](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -175,28 +176,28 @@ func (d *DedicatedHostsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		d.beginDelete.add(req, beginDelete)
 	}
@@ -260,8 +261,7 @@ func (d *DedicatedHostsServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DedicatedHost, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -272,25 +272,25 @@ func (d *DedicatedHostsServerTransport) dispatchNewListAvailableSizesPager(req *
 	}
 	newListAvailableSizesPager := d.newListAvailableSizesPager.get(req)
 	if newListAvailableSizesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hostSizes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hostSizes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, nil)
 		newListAvailableSizesPager = &resp
 		d.newListAvailableSizesPager.add(req, newListAvailableSizesPager)
 	}
@@ -314,21 +314,21 @@ func (d *DedicatedHostsServerTransport) dispatchNewListByHostGroupPager(req *htt
 	}
 	newListByHostGroupPager := d.newListByHostGroupPager.get(req)
 	if newListByHostGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByHostGroupPager(resourceGroupNameUnescaped, hostGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := d.srv.NewListByHostGroupPager(resourceGroupNameUnescaped, hostGroupNameUnescaped, nil)
 		newListByHostGroupPager = &resp
 		d.newListByHostGroupPager.add(req, newListByHostGroupPager)
 		server.PagerResponderInjectNextLinks(newListByHostGroupPager, req, func(page *armcompute.DedicatedHostsClientListByHostGroupResponse, createLink func() string) {
@@ -355,28 +355,28 @@ func (d *DedicatedHostsServerTransport) dispatchBeginRestart(req *http.Request) 
 	}
 	beginRestart := d.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRestart = &respr
 		d.beginRestart.add(req, beginRestart)
 	}
@@ -403,32 +403,32 @@ func (d *DedicatedHostsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	}
 	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.DedicatedHostUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.DedicatedHostUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	hostNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, hostGroupNameUnescaped, hostNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		d.beginUpdate.add(req, beginUpdate)
 	}
@@ -448,3 +448,4 @@ func (d *DedicatedHostsServerTransport) dispatchBeginUpdate(req *http.Request) (
 
 	return resp, nil
 }
+

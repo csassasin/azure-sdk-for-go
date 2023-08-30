@@ -23,7 +23,7 @@ import (
 )
 
 // SSHPublicKeysServer is a fake server for instances of the armcompute.SSHPublicKeysClient type.
-type SSHPublicKeysServer struct {
+type SSHPublicKeysServer struct{
 	// Create is the fake for method SSHPublicKeysClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters armcompute.SSHPublicKeyResource, options *armcompute.SSHPublicKeysClientCreateOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientCreateResponse], errResp azfake.ErrorResponder)
@@ -51,6 +51,7 @@ type SSHPublicKeysServer struct {
 	// Update is the fake for method SSHPublicKeysClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters armcompute.SSHPublicKeyUpdateResource, options *armcompute.SSHPublicKeysClientUpdateOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewSSHPublicKeysServerTransport creates a new instance of SSHPublicKeysServerTransport with the provided implementation.
@@ -58,18 +59,18 @@ type SSHPublicKeysServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSSHPublicKeysServerTransport(srv *SSHPublicKeysServer) *SSHPublicKeysServerTransport {
 	return &SSHPublicKeysServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]](),
 	}
 }
 
 // SSHPublicKeysServerTransport connects instances of armcompute.SSHPublicKeysClient to instances of SSHPublicKeysServer.
 // Don't use this type directly, use NewSSHPublicKeysServerTransport instead.
 type SSHPublicKeysServerTransport struct {
-	srv                         *SSHPublicKeysServer
+	srv *SSHPublicKeysServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for SSHPublicKeysServerTransport.
@@ -140,8 +141,7 @@ func (s *SSHPublicKeysServerTransport) dispatchCreate(req *http.Request) (*http.
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SSHPublicKeyResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -173,8 +173,7 @@ func (s *SSHPublicKeysServerTransport) dispatchDelete(req *http.Request) (*http.
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -206,8 +205,7 @@ func (s *SSHPublicKeysServerTransport) dispatchGenerateKeyPair(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SSHPublicKeyGenerateKeyPairResult, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -239,8 +237,7 @@ func (s *SSHPublicKeysServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SSHPublicKeyResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -251,17 +248,17 @@ func (s *SSHPublicKeysServerTransport) dispatchNewListByResourceGroupPager(req *
 	}
 	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.SSHPublicKeysClientListByResourceGroupResponse, createLink func() string) {
@@ -288,13 +285,13 @@ func (s *SSHPublicKeysServerTransport) dispatchNewListBySubscriptionPager(req *h
 	}
 	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/sshPublicKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := s.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcompute.SSHPublicKeysClientListBySubscriptionResponse, createLink func() string) {
@@ -346,8 +343,8 @@ func (s *SSHPublicKeysServerTransport) dispatchUpdate(req *http.Request) (*http.
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SSHPublicKeyResource, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

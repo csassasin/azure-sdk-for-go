@@ -22,10 +22,11 @@ import (
 )
 
 // GallerySharingProfileServer is a fake server for instances of the armcompute.GallerySharingProfileClient type.
-type GallerySharingProfileServer struct {
+type GallerySharingProfileServer struct{
 	// BeginUpdate is the fake for method GallerySharingProfileClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate armcompute.SharingUpdate, options *armcompute.GallerySharingProfileClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewGallerySharingProfileServerTransport creates a new instance of GallerySharingProfileServerTransport with the provided implementation.
@@ -33,7 +34,7 @@ type GallerySharingProfileServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGallerySharingProfileServerTransport(srv *GallerySharingProfileServer) *GallerySharingProfileServerTransport {
 	return &GallerySharingProfileServerTransport{
-		srv:         srv,
+		srv: srv,
 		beginUpdate: newTracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]](),
 	}
 }
@@ -41,7 +42,7 @@ func NewGallerySharingProfileServerTransport(srv *GallerySharingProfileServer) *
 // GallerySharingProfileServerTransport connects instances of armcompute.GallerySharingProfileClient to instances of GallerySharingProfileServer.
 // Don't use this type directly, use NewGallerySharingProfileServerTransport instead.
 type GallerySharingProfileServerTransport struct {
-	srv         *GallerySharingProfileServer
+	srv *GallerySharingProfileServer
 	beginUpdate *tracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]]
 }
 
@@ -76,28 +77,28 @@ func (g *GallerySharingProfileServerTransport) dispatchBeginUpdate(req *http.Req
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/share`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.SharingUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/galleries/(?P<galleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/share`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.SharingUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("galleryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, galleryNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		g.beginUpdate.add(req, beginUpdate)
 	}
@@ -117,3 +118,4 @@ func (g *GallerySharingProfileServerTransport) dispatchBeginUpdate(req *http.Req
 
 	return resp, nil
 }
+

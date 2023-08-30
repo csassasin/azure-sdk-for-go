@@ -23,7 +23,7 @@ import (
 )
 
 // VirtualMachineImagesEdgeZoneServer is a fake server for instances of the armcompute.VirtualMachineImagesEdgeZoneClient type.
-type VirtualMachineImagesEdgeZoneServer struct {
+type VirtualMachineImagesEdgeZoneServer struct{
 	// Get is the fake for method VirtualMachineImagesEdgeZoneClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, version string, options *armcompute.VirtualMachineImagesEdgeZoneClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesEdgeZoneClientGetResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type VirtualMachineImagesEdgeZoneServer struct {
 	// ListSKUs is the fake for method VirtualMachineImagesEdgeZoneClient.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSKUs func(ctx context.Context, location string, edgeZone string, publisherName string, offer string, options *armcompute.VirtualMachineImagesEdgeZoneClientListSKUsOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesEdgeZoneClientListSKUsResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachineImagesEdgeZoneServerTransport creates a new instance of VirtualMachineImagesEdgeZoneServerTransport with the provided implementation.
@@ -134,8 +135,7 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchGet(req *http.Requ
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImage, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -198,8 +198,8 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchList(req *http.Req
 	var options *armcompute.VirtualMachineImagesEdgeZoneClientListOptions
 	if expandParam != nil || topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineImagesEdgeZoneClientListOptions{
-			Expand:  expandParam,
-			Top:     topParam,
+			Expand: expandParam,
+			Top: topParam,
 			Orderby: orderbyParam,
 		}
 	}
@@ -212,8 +212,7 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchList(req *http.Req
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -249,8 +248,7 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListOffers(req *ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -282,8 +280,7 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListPublishers(req
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -323,8 +320,8 @@ func (v *VirtualMachineImagesEdgeZoneServerTransport) dispatchListSKUs(req *http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineImageResourceArray, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
+

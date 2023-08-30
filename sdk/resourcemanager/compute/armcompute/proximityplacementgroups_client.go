@@ -23,7 +23,7 @@ import (
 // ProximityPlacementGroupsClient contains the methods for the ProximityPlacementGroups group.
 // Don't use this type directly, use NewProximityPlacementGroupsClient() instead.
 type ProximityPlacementGroupsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewProximityPlacementGroupsClient(subscriptionID string, credential azcore.
 	}
 	client := &ProximityPlacementGroupsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,7 +47,7 @@ func NewProximityPlacementGroupsClient(subscriptionID string, credential azcore.
 // CreateOrUpdate - Create or update a proximity placement group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - proximityPlacementGroupName - The name of the proximity placement group.
 //   - parameters - Parameters supplied to the Create Proximity Placement Group operation.
@@ -95,12 +95,12 @@ func (client *ProximityPlacementGroupsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -116,7 +116,7 @@ func (client *ProximityPlacementGroupsClient) createOrUpdateHandleResponse(resp 
 // Delete - Delete a proximity placement group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - proximityPlacementGroupName - The name of the proximity placement group.
 //   - options - ProximityPlacementGroupsClientDeleteOptions contains the optional parameters for the ProximityPlacementGroupsClient.Delete
@@ -162,7 +162,7 @@ func (client *ProximityPlacementGroupsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *ProximityPlacementGroupsClient) deleteCreateRequest(ctx context.Co
 // Get - Retrieves information about a proximity placement group .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - proximityPlacementGroupName - The name of the proximity placement group.
 //   - options - ProximityPlacementGroupsClientGetOptions contains the optional parameters for the ProximityPlacementGroupsClient.Get
@@ -221,7 +221,7 @@ func (client *ProximityPlacementGroupsClient) getCreateRequest(ctx context.Conte
 	if options != nil && options.IncludeColocationStatus != nil {
 		reqQP.Set("includeColocationStatus", *options.IncludeColocationStatus)
 	}
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,17 +238,17 @@ func (client *ProximityPlacementGroupsClient) getHandleResponse(resp *http.Respo
 
 // NewListByResourceGroupPager - Lists all proximity placement groups in a resource group.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - ProximityPlacementGroupsClientListByResourceGroupOptions contains the optional parameters for the ProximityPlacementGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *ProximityPlacementGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ProximityPlacementGroupsClientListByResourceGroupOptions) *runtime.Pager[ProximityPlacementGroupsClientListByResourceGroupResponse] {
+func (client *ProximityPlacementGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ProximityPlacementGroupsClientListByResourceGroupOptions) (*runtime.Pager[ProximityPlacementGroupsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProximityPlacementGroupsClientListByResourceGroupResponse]{
 		More: func(page ProximityPlacementGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProximityPlacementGroupsClientListByResourceGroupResponse) (ProximityPlacementGroupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProximityPlacementGroupsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProximityPlacementGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -288,7 +288,7 @@ func (client *ProximityPlacementGroupsClient) listByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,16 +305,16 @@ func (client *ProximityPlacementGroupsClient) listByResourceGroupHandleResponse(
 
 // NewListBySubscriptionPager - Lists all proximity placement groups in a subscription.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - options - ProximityPlacementGroupsClientListBySubscriptionOptions contains the optional parameters for the ProximityPlacementGroupsClient.NewListBySubscriptionPager
 //     method.
-func (client *ProximityPlacementGroupsClient) NewListBySubscriptionPager(options *ProximityPlacementGroupsClientListBySubscriptionOptions) *runtime.Pager[ProximityPlacementGroupsClientListBySubscriptionResponse] {
+func (client *ProximityPlacementGroupsClient) NewListBySubscriptionPager(options *ProximityPlacementGroupsClientListBySubscriptionOptions) (*runtime.Pager[ProximityPlacementGroupsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProximityPlacementGroupsClientListBySubscriptionResponse]{
 		More: func(page ProximityPlacementGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProximityPlacementGroupsClientListBySubscriptionResponse) (ProximityPlacementGroupsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProximityPlacementGroupsClient.NewListBySubscriptionPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProximityPlacementGroupsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -350,7 +350,7 @@ func (client *ProximityPlacementGroupsClient) listBySubscriptionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,7 +368,7 @@ func (client *ProximityPlacementGroupsClient) listBySubscriptionHandleResponse(r
 // Update - Update a proximity placement group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - proximityPlacementGroupName - The name of the proximity placement group.
 //   - parameters - Parameters supplied to the Update Proximity Placement Group operation.
@@ -416,12 +416,12 @@ func (client *ProximityPlacementGroupsClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
@@ -433,3 +433,4 @@ func (client *ProximityPlacementGroupsClient) updateHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

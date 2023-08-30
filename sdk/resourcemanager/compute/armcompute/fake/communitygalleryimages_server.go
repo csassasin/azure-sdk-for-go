@@ -23,7 +23,7 @@ import (
 )
 
 // CommunityGalleryImagesServer is a fake server for instances of the armcompute.CommunityGalleryImagesClient type.
-type CommunityGalleryImagesServer struct {
+type CommunityGalleryImagesServer struct{
 	// Get is the fake for method CommunityGalleryImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *armcompute.CommunityGalleryImagesClientGetOptions) (resp azfake.Responder[armcompute.CommunityGalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
@@ -31,6 +31,7 @@ type CommunityGalleryImagesServer struct {
 	// NewListPager is the fake for method CommunityGalleryImagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(location string, publicGalleryName string, options *armcompute.CommunityGalleryImagesClientListOptions) (resp azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse])
+
 }
 
 // NewCommunityGalleryImagesServerTransport creates a new instance of CommunityGalleryImagesServerTransport with the provided implementation.
@@ -38,7 +39,7 @@ type CommunityGalleryImagesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCommunityGalleryImagesServerTransport(srv *CommunityGalleryImagesServer) *CommunityGalleryImagesServerTransport {
 	return &CommunityGalleryImagesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]](),
 	}
 }
@@ -46,7 +47,7 @@ func NewCommunityGalleryImagesServerTransport(srv *CommunityGalleryImagesServer)
 // CommunityGalleryImagesServerTransport connects instances of armcompute.CommunityGalleryImagesClient to instances of CommunityGalleryImagesServer.
 // Don't use this type directly, use NewCommunityGalleryImagesServerTransport instead.
 type CommunityGalleryImagesServerTransport struct {
-	srv          *CommunityGalleryImagesServer
+	srv *CommunityGalleryImagesServer
 	newListPager *tracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]]
 }
 
@@ -108,8 +109,7 @@ func (c *CommunityGalleryImagesServerTransport) dispatchGet(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CommunityGalleryImage, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -120,21 +120,21 @@ func (c *CommunityGalleryImagesServerTransport) dispatchNewListPager(req *http.R
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communityGalleries/(?P<publicGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		publicGalleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publicGalleryName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListPager(locationUnescaped, publicGalleryNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/communityGalleries/(?P<publicGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/images`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	publicGalleryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publicGalleryName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListPager(locationUnescaped, publicGalleryNameUnescaped, nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CommunityGalleryImagesClientListResponse, createLink func() string) {
@@ -154,3 +154,4 @@ func (c *CommunityGalleryImagesServerTransport) dispatchNewListPager(req *http.R
 	}
 	return resp, nil
 }
+

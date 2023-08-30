@@ -23,7 +23,7 @@ import (
 )
 
 // CloudServiceOperatingSystemsServer is a fake server for instances of the armcompute.CloudServiceOperatingSystemsClient type.
-type CloudServiceOperatingSystemsServer struct {
+type CloudServiceOperatingSystemsServer struct{
 	// GetOSFamily is the fake for method CloudServiceOperatingSystemsClient.GetOSFamily
 	// HTTP status codes to indicate success: http.StatusOK
 	GetOSFamily func(ctx context.Context, location string, osFamilyName string, options *armcompute.CloudServiceOperatingSystemsClientGetOSFamilyOptions) (resp azfake.Responder[armcompute.CloudServiceOperatingSystemsClientGetOSFamilyResponse], errResp azfake.ErrorResponder)
@@ -39,6 +39,7 @@ type CloudServiceOperatingSystemsServer struct {
 	// NewListOSVersionsPager is the fake for method CloudServiceOperatingSystemsClient.NewListOSVersionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOSVersionsPager func(location string, options *armcompute.CloudServiceOperatingSystemsClientListOSVersionsOptions) (resp azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse])
+
 }
 
 // NewCloudServiceOperatingSystemsServerTransport creates a new instance of CloudServiceOperatingSystemsServerTransport with the provided implementation.
@@ -46,7 +47,7 @@ type CloudServiceOperatingSystemsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceOperatingSystemsServerTransport(srv *CloudServiceOperatingSystemsServer) *CloudServiceOperatingSystemsServerTransport {
 	return &CloudServiceOperatingSystemsServerTransport{
-		srv:                    srv,
+		srv: srv,
 		newListOSFamiliesPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]](),
 		newListOSVersionsPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]](),
 	}
@@ -55,7 +56,7 @@ func NewCloudServiceOperatingSystemsServerTransport(srv *CloudServiceOperatingSy
 // CloudServiceOperatingSystemsServerTransport connects instances of armcompute.CloudServiceOperatingSystemsClient to instances of CloudServiceOperatingSystemsServer.
 // Don't use this type directly, use NewCloudServiceOperatingSystemsServerTransport instead.
 type CloudServiceOperatingSystemsServerTransport struct {
-	srv                    *CloudServiceOperatingSystemsServer
+	srv *CloudServiceOperatingSystemsServer
 	newListOSFamiliesPager *tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]]
 	newListOSVersionsPager *tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]]
 }
@@ -118,8 +119,7 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchGetOSFamily(req *h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OSFamily, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -151,8 +151,7 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchGetOSVersion(req *
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OSVersion, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -163,17 +162,17 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSFamiliesP
 	}
 	newListOSFamiliesPager := c.newListOSFamiliesPager.get(req)
 	if newListOSFamiliesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListOSFamiliesPager(locationUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsFamilies`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListOSFamiliesPager(locationUnescaped, nil)
 		newListOSFamiliesPager = &resp
 		c.newListOSFamiliesPager.add(req, newListOSFamiliesPager)
 		server.PagerResponderInjectNextLinks(newListOSFamiliesPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse, createLink func() string) {
@@ -200,17 +199,17 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSVersionsP
 	}
 	newListOSVersionsPager := c.newListOSVersionsPager.get(req)
 	if newListOSVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListOSVersionsPager(locationUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudServiceOsVersions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListOSVersionsPager(locationUnescaped, nil)
 		newListOSVersionsPager = &resp
 		c.newListOSVersionsPager.add(req, newListOSVersionsPager)
 		server.PagerResponderInjectNextLinks(newListOSVersionsPager, req, func(page *armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse, createLink func() string) {
@@ -230,3 +229,4 @@ func (c *CloudServiceOperatingSystemsServerTransport) dispatchNewListOSVersionsP
 	}
 	return resp, nil
 }
+

@@ -25,7 +25,7 @@ import (
 )
 
 // VirtualMachinesServer is a fake server for instances of the armcompute.VirtualMachinesClient type.
-type VirtualMachinesServer struct {
+type VirtualMachinesServer struct{
 	// BeginAssessPatches is the fake for method VirtualMachinesClient.BeginAssessPatches
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginAssessPatches func(ctx context.Context, resourceGroupName string, vmName string, options *armcompute.VirtualMachinesClientBeginAssessPatchesOptions) (resp azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse], errResp azfake.ErrorResponder)
@@ -125,6 +125,7 @@ type VirtualMachinesServer struct {
 	// BeginUpdate is the fake for method VirtualMachinesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, vmName string, parameters armcompute.VirtualMachineUpdate, options *armcompute.VirtualMachinesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachinesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewVirtualMachinesServerTransport creates a new instance of VirtualMachinesServerTransport with the provided implementation.
@@ -132,54 +133,54 @@ type VirtualMachinesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachinesServerTransport(srv *VirtualMachinesServer) *VirtualMachinesServerTransport {
 	return &VirtualMachinesServerTransport{
-		srv:                        srv,
-		beginAssessPatches:         newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse]](),
-		beginCapture:               newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse]](),
+		srv: srv,
+		beginAssessPatches: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse]](),
+		beginCapture: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse]](),
 		beginConvertToManagedDisks: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientConvertToManagedDisksResponse]](),
-		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCreateOrUpdateResponse]](),
-		beginDeallocate:            newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeallocateResponse]](),
-		beginDelete:                newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeleteResponse]](),
-		beginInstallPatches:        newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientInstallPatchesResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListResponse]](),
-		newListAllPager:            newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListAllResponse]](),
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCreateOrUpdateResponse]](),
+		beginDeallocate: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeallocateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeleteResponse]](),
+		beginInstallPatches: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientInstallPatchesResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListResponse]](),
+		newListAllPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListAllResponse]](),
 		newListAvailableSizesPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListAvailableSizesResponse]](),
-		newListByLocationPager:     newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListByLocationResponse]](),
-		beginPerformMaintenance:    newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPerformMaintenanceResponse]](),
-		beginPowerOff:              newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPowerOffResponse]](),
-		beginReapply:               newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReapplyResponse]](),
-		beginRedeploy:              newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRedeployResponse]](),
-		beginReimage:               newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReimageResponse]](),
-		beginRestart:               newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRestartResponse]](),
-		beginRunCommand:            newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRunCommandResponse]](),
-		beginStart:                 newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientStartResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientUpdateResponse]](),
+		newListByLocationPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListByLocationResponse]](),
+		beginPerformMaintenance: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPerformMaintenanceResponse]](),
+		beginPowerOff: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPowerOffResponse]](),
+		beginReapply: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReapplyResponse]](),
+		beginRedeploy: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRedeployResponse]](),
+		beginReimage: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReimageResponse]](),
+		beginRestart: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRestartResponse]](),
+		beginRunCommand: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRunCommandResponse]](),
+		beginStart: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientStartResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachinesServerTransport connects instances of armcompute.VirtualMachinesClient to instances of VirtualMachinesServer.
 // Don't use this type directly, use NewVirtualMachinesServerTransport instead.
 type VirtualMachinesServerTransport struct {
-	srv                        *VirtualMachinesServer
-	beginAssessPatches         *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse]]
-	beginCapture               *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse]]
+	srv *VirtualMachinesServer
+	beginAssessPatches *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse]]
+	beginCapture *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse]]
 	beginConvertToManagedDisks *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientConvertToManagedDisksResponse]]
-	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCreateOrUpdateResponse]]
-	beginDeallocate            *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeallocateResponse]]
-	beginDelete                *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeleteResponse]]
-	beginInstallPatches        *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientInstallPatchesResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListResponse]]
-	newListAllPager            *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListAllResponse]]
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCreateOrUpdateResponse]]
+	beginDeallocate *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeallocateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientDeleteResponse]]
+	beginInstallPatches *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientInstallPatchesResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListResponse]]
+	newListAllPager *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListAllResponse]]
 	newListAvailableSizesPager *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListAvailableSizesResponse]]
-	newListByLocationPager     *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListByLocationResponse]]
-	beginPerformMaintenance    *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPerformMaintenanceResponse]]
-	beginPowerOff              *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPowerOffResponse]]
-	beginReapply               *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReapplyResponse]]
-	beginRedeploy              *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRedeployResponse]]
-	beginReimage               *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReimageResponse]]
-	beginRestart               *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRestartResponse]]
-	beginRunCommand            *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRunCommandResponse]]
-	beginStart                 *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientStartResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientUpdateResponse]]
+	newListByLocationPager *tracker[azfake.PagerResponder[armcompute.VirtualMachinesClientListByLocationResponse]]
+	beginPerformMaintenance *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPerformMaintenanceResponse]]
+	beginPowerOff *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientPowerOffResponse]]
+	beginReapply *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReapplyResponse]]
+	beginRedeploy *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRedeployResponse]]
+	beginReimage *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientReimageResponse]]
+	beginRestart *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRestartResponse]]
+	beginRunCommand *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientRunCommandResponse]]
+	beginStart *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientStartResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachinesServerTransport.
@@ -261,24 +262,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginAssessPatches(req *http.Re
 	}
 	beginAssessPatches := v.beginAssessPatches.get(req)
 	if beginAssessPatches == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/assessPatches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginAssessPatches(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/assessPatches`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginAssessPatches(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginAssessPatches = &respr
 		v.beginAssessPatches.add(req, beginAssessPatches)
 	}
@@ -305,28 +306,28 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCapture(req *http.Request)
 	}
 	beginCapture := v.beginCapture.get(req)
 	if beginCapture == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capture`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineCaptureParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginCapture(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capture`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineCaptureParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginCapture(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCapture = &respr
 		v.beginCapture.add(req, beginCapture)
 	}
@@ -353,24 +354,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginConvertToManagedDisks(req 
 	}
 	beginConvertToManagedDisks := v.beginConvertToManagedDisks.get(req)
 	if beginConvertToManagedDisks == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/convertToManagedDisks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginConvertToManagedDisks(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/convertToManagedDisks`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginConvertToManagedDisks(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginConvertToManagedDisks = &respr
 		v.beginConvertToManagedDisks.add(req, beginConvertToManagedDisks)
 	}
@@ -397,28 +398,28 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachine](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachine](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -445,39 +446,39 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDeallocate(req *http.Reque
 	}
 	beginDeallocate := v.beginDeallocate.get(req)
 	if beginDeallocate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deallocate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deallocate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	hibernateUnescaped, err := url.QueryUnescape(qp.Get("hibernate"))
+	if err != nil {
+		return nil, err
+	}
+	hibernateParam, err := parseOptional(hibernateUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.VirtualMachinesClientBeginDeallocateOptions
+	if hibernateParam != nil {
+		options = &armcompute.VirtualMachinesClientBeginDeallocateOptions{
+			Hibernate: hibernateParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		hibernateUnescaped, err := url.QueryUnescape(qp.Get("hibernate"))
-		if err != nil {
-			return nil, err
-		}
-		hibernateParam, err := parseOptional(hibernateUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.VirtualMachinesClientBeginDeallocateOptions
-		if hibernateParam != nil {
-			options = &armcompute.VirtualMachinesClientBeginDeallocateOptions{
-				Hibernate: hibernateParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginDeallocate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := v.srv.BeginDeallocate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDeallocate = &respr
 		v.beginDeallocate.add(req, beginDeallocate)
 	}
@@ -504,39 +505,39 @@ func (v *VirtualMachinesServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	forceDeletionUnescaped, err := url.QueryUnescape(qp.Get("forceDeletion"))
+	if err != nil {
+		return nil, err
+	}
+	forceDeletionParam, err := parseOptional(forceDeletionUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.VirtualMachinesClientBeginDeleteOptions
+	if forceDeletionParam != nil {
+		options = &armcompute.VirtualMachinesClientBeginDeleteOptions{
+			ForceDeletion: forceDeletionParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		forceDeletionUnescaped, err := url.QueryUnescape(qp.Get("forceDeletion"))
-		if err != nil {
-			return nil, err
-		}
-		forceDeletionParam, err := parseOptional(forceDeletionUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.VirtualMachinesClientBeginDeleteOptions
-		if forceDeletionParam != nil {
-			options = &armcompute.VirtualMachinesClientBeginDeleteOptions{
-				ForceDeletion: forceDeletionParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		v.beginDelete.add(req, beginDelete)
 	}
@@ -584,8 +585,7 @@ func (v *VirtualMachinesServerTransport) dispatchGeneralize(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -629,8 +629,7 @@ func (v *VirtualMachinesServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachine, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -641,28 +640,28 @@ func (v *VirtualMachinesServerTransport) dispatchBeginInstallPatches(req *http.R
 	}
 	beginInstallPatches := v.beginInstallPatches.get(req)
 	if beginInstallPatches == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/installPatches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineInstallPatchesParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginInstallPatches(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/installPatches`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineInstallPatchesParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginInstallPatches(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginInstallPatches = &respr
 		v.beginInstallPatches.add(req, beginInstallPatches)
 	}
@@ -710,8 +709,7 @@ func (v *VirtualMachinesServerTransport) dispatchInstanceView(req *http.Request)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineInstanceView, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -722,35 +720,35 @@ func (v *VirtualMachinesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := v.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armcompute.ExpandTypeForListVMs(expandUnescaped))
+	var options *armcompute.VirtualMachinesClientListOptions
+	if filterParam != nil || expandParam != nil {
+		options = &armcompute.VirtualMachinesClientListOptions{
+			Filter: filterParam,
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(armcompute.ExpandTypeForListVMs(expandUnescaped))
-		var options *armcompute.VirtualMachinesClientListOptions
-		if filterParam != nil || expandParam != nil {
-			options = &armcompute.VirtualMachinesClientListOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-			}
-		}
-		resp := v.srv.NewListPager(resourceGroupNameUnescaped, options)
+	}
+resp := v.srv.NewListPager(resourceGroupNameUnescaped, options)
 		newListPager = &resp
 		v.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.VirtualMachinesClientListResponse, createLink func() string) {
@@ -777,37 +775,37 @@ func (v *VirtualMachinesServerTransport) dispatchNewListAllPager(req *http.Reque
 	}
 	newListAllPager := v.newListAllPager.get(req)
 	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	statusOnlyUnescaped, err := url.QueryUnescape(qp.Get("statusOnly"))
+	if err != nil {
+		return nil, err
+	}
+	statusOnlyParam := getOptional(statusOnlyUnescaped)
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armcompute.ExpandTypesForListVMs(expandUnescaped))
+	var options *armcompute.VirtualMachinesClientListAllOptions
+	if statusOnlyParam != nil || filterParam != nil || expandParam != nil {
+		options = &armcompute.VirtualMachinesClientListAllOptions{
+			StatusOnly: statusOnlyParam,
+			Filter: filterParam,
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		statusOnlyUnescaped, err := url.QueryUnescape(qp.Get("statusOnly"))
-		if err != nil {
-			return nil, err
-		}
-		statusOnlyParam := getOptional(statusOnlyUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(armcompute.ExpandTypesForListVMs(expandUnescaped))
-		var options *armcompute.VirtualMachinesClientListAllOptions
-		if statusOnlyParam != nil || filterParam != nil || expandParam != nil {
-			options = &armcompute.VirtualMachinesClientListAllOptions{
-				StatusOnly: statusOnlyParam,
-				Filter:     filterParam,
-				Expand:     expandParam,
-			}
-		}
-		resp := v.srv.NewListAllPager(options)
+	}
+resp := v.srv.NewListAllPager(options)
 		newListAllPager = &resp
 		v.newListAllPager.add(req, newListAllPager)
 		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armcompute.VirtualMachinesClientListAllResponse, createLink func() string) {
@@ -834,21 +832,21 @@ func (v *VirtualMachinesServerTransport) dispatchNewListAvailableSizesPager(req 
 	}
 	newListAvailableSizesPager := v.newListAvailableSizesPager.get(req)
 	if newListAvailableSizesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vmSizes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+resp := v.srv.NewListAvailableSizesPager(resourceGroupNameUnescaped, vmNameUnescaped, nil)
 		newListAvailableSizesPager = &resp
 		v.newListAvailableSizesPager.add(req, newListAvailableSizesPager)
 	}
@@ -872,17 +870,17 @@ func (v *VirtualMachinesServerTransport) dispatchNewListByLocationPager(req *htt
 	}
 	newListByLocationPager := v.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByLocationPager(locationUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+resp := v.srv.NewListByLocationPager(locationUnescaped, nil)
 		newListByLocationPager = &resp
 		v.newListByLocationPager.add(req, newListByLocationPager)
 		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armcompute.VirtualMachinesClientListByLocationResponse, createLink func() string) {
@@ -909,24 +907,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginPerformMaintenance(req *ht
 	}
 	beginPerformMaintenance := v.beginPerformMaintenance.get(req)
 	if beginPerformMaintenance == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performMaintenance`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginPerformMaintenance(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performMaintenance`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginPerformMaintenance(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginPerformMaintenance = &respr
 		v.beginPerformMaintenance.add(req, beginPerformMaintenance)
 	}
@@ -953,39 +951,39 @@ func (v *VirtualMachinesServerTransport) dispatchBeginPowerOff(req *http.Request
 	}
 	beginPowerOff := v.beginPowerOff.get(req)
 	if beginPowerOff == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/powerOff`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/powerOff`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	skipShutdownUnescaped, err := url.QueryUnescape(qp.Get("skipShutdown"))
+	if err != nil {
+		return nil, err
+	}
+	skipShutdownParam, err := parseOptional(skipShutdownUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.VirtualMachinesClientBeginPowerOffOptions
+	if skipShutdownParam != nil {
+		options = &armcompute.VirtualMachinesClientBeginPowerOffOptions{
+			SkipShutdown: skipShutdownParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		skipShutdownUnescaped, err := url.QueryUnescape(qp.Get("skipShutdown"))
-		if err != nil {
-			return nil, err
-		}
-		skipShutdownParam, err := parseOptional(skipShutdownUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.VirtualMachinesClientBeginPowerOffOptions
-		if skipShutdownParam != nil {
-			options = &armcompute.VirtualMachinesClientBeginPowerOffOptions{
-				SkipShutdown: skipShutdownParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginPowerOff(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := v.srv.BeginPowerOff(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginPowerOff = &respr
 		v.beginPowerOff.add(req, beginPowerOff)
 	}
@@ -1012,24 +1010,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginReapply(req *http.Request)
 	}
 	beginReapply := v.beginReapply.get(req)
 	if beginReapply == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reapply`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginReapply(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reapply`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginReapply(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginReapply = &respr
 		v.beginReapply.add(req, beginReapply)
 	}
@@ -1056,24 +1054,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRedeploy(req *http.Request
 	}
 	beginRedeploy := v.beginRedeploy.get(req)
 	if beginRedeploy == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginRedeploy(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginRedeploy(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRedeploy = &respr
 		v.beginRedeploy.add(req, beginRedeploy)
 	}
@@ -1100,34 +1098,34 @@ func (v *VirtualMachinesServerTransport) dispatchBeginReimage(req *http.Request)
 	}
 	beginReimage := v.beginReimage.get(req)
 	if beginReimage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineReimageParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armcompute.VirtualMachinesClientBeginReimageOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armcompute.VirtualMachinesClientBeginReimageOptions{
+			Parameters: &body,
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineReimageParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.VirtualMachinesClientBeginReimageOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcompute.VirtualMachinesClientBeginReimageOptions{
-				Parameters: &body,
-			}
-		}
-		respr, errRespr := v.srv.BeginReimage(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	}
+	respr, errRespr := v.srv.BeginReimage(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginReimage = &respr
 		v.beginReimage.add(req, beginReimage)
 	}
@@ -1154,24 +1152,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRestart(req *http.Request)
 	}
 	beginRestart := v.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginRestart(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRestart = &respr
 		v.beginRestart.add(req, beginRestart)
 	}
@@ -1240,8 +1238,7 @@ func (v *VirtualMachinesServerTransport) dispatchRetrieveBootDiagnosticsData(req
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RetrieveBootDiagnosticsDataResult, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -1252,28 +1249,28 @@ func (v *VirtualMachinesServerTransport) dispatchBeginRunCommand(req *http.Reque
 	}
 	beginRunCommand := v.beginRunCommand.get(req)
 	if beginRunCommand == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.RunCommandInput](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginRunCommand(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.RunCommandInput](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginRunCommand(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRunCommand = &respr
 		v.beginRunCommand.add(req, beginRunCommand)
 	}
@@ -1321,8 +1318,7 @@ func (v *VirtualMachinesServerTransport) dispatchSimulateEviction(req *http.Requ
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -1333,24 +1329,24 @@ func (v *VirtualMachinesServerTransport) dispatchBeginStart(req *http.Request) (
 	}
 	beginStart := v.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginStart(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginStart(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginStart = &respr
 		v.beginStart.add(req, beginStart)
 	}
@@ -1377,28 +1373,28 @@ func (v *VirtualMachinesServerTransport) dispatchBeginUpdate(req *http.Request) 
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vmNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, vmNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		v.beginUpdate.add(req, beginUpdate)
 	}
@@ -1418,3 +1414,4 @@ func (v *VirtualMachinesServerTransport) dispatchBeginUpdate(req *http.Request) 
 
 	return resp, nil
 }
+

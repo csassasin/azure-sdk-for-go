@@ -23,7 +23,7 @@ import (
 )
 
 // SnapshotsServer is a fake server for instances of the armcompute.SnapshotsClient type.
-type SnapshotsServer struct {
+type SnapshotsServer struct{
 	// BeginCreateOrUpdate is the fake for method SnapshotsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.Snapshot, options *armcompute.SnapshotsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -55,6 +55,7 @@ type SnapshotsServer struct {
 	// BeginUpdate is the fake for method SnapshotsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.SnapshotUpdate, options *armcompute.SnapshotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
@@ -62,28 +63,28 @@ type SnapshotsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport {
 	return &SnapshotsServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
-		beginGrantAccess:            newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
+		beginGrantAccess: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
-		beginRevokeAccess:           newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
+		beginRevokeAccess: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
 	}
 }
 
 // SnapshotsServerTransport connects instances of armcompute.SnapshotsClient to instances of SnapshotsServer.
 // Don't use this type directly, use NewSnapshotsServerTransport instead.
 type SnapshotsServerTransport struct {
-	srv                         *SnapshotsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
-	beginGrantAccess            *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
+	srv *SnapshotsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
+	beginGrantAccess *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
-	beginRevokeAccess           *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
+	beginRevokeAccess *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.
@@ -131,28 +132,28 @@ func (s *SnapshotsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	}
 	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.Snapshot](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.Snapshot](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -179,24 +180,24 @@ func (s *SnapshotsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		s.beginDelete.add(req, beginDelete)
 	}
@@ -244,8 +245,7 @@ func (s *SnapshotsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Snapshot, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -256,28 +256,28 @@ func (s *SnapshotsServerTransport) dispatchBeginGrantAccess(req *http.Request) (
 	}
 	beginGrantAccess := s.beginGrantAccess.get(req)
 	if beginGrantAccess == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/beginGetAccess`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.GrantAccessData](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginGrantAccess(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/beginGetAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.GrantAccessData](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginGrantAccess(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginGrantAccess = &respr
 		s.beginGrantAccess.add(req, beginGrantAccess)
 	}
@@ -304,13 +304,13 @@ func (s *SnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 1 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := s.srv.NewListPager(nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.SnapshotsClientListResponse, createLink func() string) {
@@ -337,17 +337,17 @@ func (s *SnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http
 	}
 	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := s.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
 		newListByResourceGroupPager = &resp
 		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcompute.SnapshotsClientListByResourceGroupResponse, createLink func() string) {
@@ -374,24 +374,24 @@ func (s *SnapshotsServerTransport) dispatchBeginRevokeAccess(req *http.Request) 
 	}
 	beginRevokeAccess := s.beginRevokeAccess.get(req)
 	if beginRevokeAccess == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endGetAccess`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginRevokeAccess(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/endGetAccess`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginRevokeAccess(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRevokeAccess = &respr
 		s.beginRevokeAccess.add(req, beginRevokeAccess)
 	}
@@ -418,28 +418,28 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	beginUpdate := s.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.SnapshotUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.SnapshotUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	snapshotNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, snapshotNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		s.beginUpdate.add(req, beginUpdate)
 	}
@@ -459,3 +459,4 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 
 	return resp, nil
 }
+

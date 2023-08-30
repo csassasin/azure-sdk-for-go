@@ -23,7 +23,7 @@ import (
 // DiskEncryptionSetsClient contains the methods for the DiskEncryptionSets group.
 // Don't use this type directly, use NewDiskEncryptionSetsClient() instead.
 type DiskEncryptionSetsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenC
 	}
 	client := &DiskEncryptionSetsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,7 +47,7 @@ func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Creates or updates a disk encryption set
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - resourceGroupName - The name of the resource group.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
@@ -71,7 +71,7 @@ func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Creates or updates a disk encryption set
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 func (client *DiskEncryptionSetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSet, options *DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiskEncryptionSetsClient.BeginCreateOrUpdate"
@@ -113,19 +113,19 @@ func (client *DiskEncryptionSetsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, diskEncryptionSet); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
 
 // BeginDelete - Deletes a disk encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - resourceGroupName - The name of the resource group.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
@@ -148,7 +148,7 @@ func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourc
 // Delete - Deletes a disk encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 func (client *DiskEncryptionSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiskEncryptionSetsClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *DiskEncryptionSetsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +199,7 @@ func (client *DiskEncryptionSetsClient) deleteCreateRequest(ctx context.Context,
 // Get - Gets information about a disk encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - resourceGroupName - The name of the resource group.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
@@ -247,7 +247,7 @@ func (client *DiskEncryptionSetsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,16 +264,16 @@ func (client *DiskEncryptionSetsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists all the disk encryption sets under a subscription.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - options - DiskEncryptionSetsClientListOptions contains the optional parameters for the DiskEncryptionSetsClient.NewListPager
 //     method.
-func (client *DiskEncryptionSetsClient) NewListPager(options *DiskEncryptionSetsClientListOptions) *runtime.Pager[DiskEncryptionSetsClientListResponse] {
+func (client *DiskEncryptionSetsClient) NewListPager(options *DiskEncryptionSetsClientListOptions) (*runtime.Pager[DiskEncryptionSetsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiskEncryptionSetsClientListResponse]{
 		More: func(page DiskEncryptionSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListResponse) (DiskEncryptionSetsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -309,7 +309,7 @@ func (client *DiskEncryptionSetsClient) listCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,20 +326,20 @@ func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) 
 
 // NewListAssociatedResourcesPager - Lists all resources that are encrypted with this disk encryption set.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - resourceGroupName - The name of the resource group.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
 //     name length is 80 characters.
 //   - options - DiskEncryptionSetsClientListAssociatedResourcesOptions contains the optional parameters for the DiskEncryptionSetsClient.NewListAssociatedResourcesPager
 //     method.
-func (client *DiskEncryptionSetsClient) NewListAssociatedResourcesPager(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientListAssociatedResourcesOptions) *runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse] {
+func (client *DiskEncryptionSetsClient) NewListAssociatedResourcesPager(resourceGroupName string, diskEncryptionSetName string, options *DiskEncryptionSetsClientListAssociatedResourcesOptions) (*runtime.Pager[DiskEncryptionSetsClientListAssociatedResourcesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiskEncryptionSetsClientListAssociatedResourcesResponse]{
 		More: func(page DiskEncryptionSetsClientListAssociatedResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListAssociatedResourcesResponse) (DiskEncryptionSetsClientListAssociatedResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListAssociatedResourcesPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListAssociatedResourcesPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -383,7 +383,7 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -400,17 +400,17 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(re
 
 // NewListByResourceGroupPager - Lists all the disk encryption sets under a resource group.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - resourceGroupName - The name of the resource group.
 //   - options - DiskEncryptionSetsClientListByResourceGroupOptions contains the optional parameters for the DiskEncryptionSetsClient.NewListByResourceGroupPager
 //     method.
-func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) *runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse] {
+func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) (*runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[DiskEncryptionSetsClientListByResourceGroupResponse]{
 		More: func(page DiskEncryptionSetsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskEncryptionSetsClientListByResourceGroupResponse) (DiskEncryptionSetsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListByResourceGroupPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskEncryptionSetsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -450,7 +450,7 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -468,7 +468,7 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *
 // BeginUpdate - Updates (patches) a disk encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 //   - resourceGroupName - The name of the resource group.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
@@ -492,7 +492,7 @@ func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourc
 // Update - Updates (patches) a disk encryption set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-02
+// Generated from API version 2022-07-02
 func (client *DiskEncryptionSetsClient) update(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet DiskEncryptionSetUpdate, options *DiskEncryptionSetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiskEncryptionSetsClient.BeginUpdate"
@@ -534,11 +534,12 @@ func (client *DiskEncryptionSetsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, diskEncryptionSet); err != nil {
-		return nil, err
-	}
+	return nil, err
+}
 	return req, nil
 }
+

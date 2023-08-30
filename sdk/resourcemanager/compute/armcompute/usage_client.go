@@ -23,7 +23,7 @@ import (
 // UsageClient contains the methods for the Usage group.
 // Don't use this type directly, use NewUsageClient() instead.
 type UsageClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -39,7 +39,7 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 	}
 	client := &UsageClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,16 +47,16 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 // NewListPager - Gets, for the specified location, the current compute resource usage information as well as the limits for
 // compute resources under the subscription.
 //
-// Generated from API version 2023-03-01
+// Generated from API version 2023-09-01
 //   - location - The location for which resource usage is queried.
 //   - options - UsageClientListOptions contains the optional parameters for the UsageClient.NewListPager method.
-func (client *UsageClient) NewListPager(location string, options *UsageClientListOptions) *runtime.Pager[UsageClientListResponse] {
+func (client *UsageClient) NewListPager(location string, options *UsageClientListOptions) (*runtime.Pager[UsageClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[UsageClientListResponse]{
 		More: func(page UsageClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *UsageClientListResponse) (UsageClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsageClient.NewListPager")
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsageClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -96,7 +96,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, location strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,3 +110,4 @@ func (client *UsageClient) listHandleResponse(resp *http.Response) (UsageClientL
 	}
 	return result, nil
 }
+

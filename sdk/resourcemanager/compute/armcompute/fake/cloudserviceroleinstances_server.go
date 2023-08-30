@@ -23,7 +23,7 @@ import (
 )
 
 // CloudServiceRoleInstancesServer is a fake server for instances of the armcompute.CloudServiceRoleInstancesClient type.
-type CloudServiceRoleInstancesServer struct {
+type CloudServiceRoleInstancesServer struct{
 	// BeginDelete is the fake for method CloudServiceRoleInstancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -55,6 +55,7 @@ type CloudServiceRoleInstancesServer struct {
 	// BeginRestart is the fake for method CloudServiceRoleInstancesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestart func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCloudServiceRoleInstancesServerTransport creates a new instance of CloudServiceRoleInstancesServerTransport with the provided implementation.
@@ -62,8 +63,8 @@ type CloudServiceRoleInstancesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceRoleInstancesServerTransport(srv *CloudServiceRoleInstancesServer) *CloudServiceRoleInstancesServerTransport {
 	return &CloudServiceRoleInstancesServerTransport{
-		srv:          srv,
-		beginDelete:  newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]](),
+		srv: srv,
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]](),
 		beginRebuild: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]](),
 		beginReimage: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]](),
@@ -74,8 +75,8 @@ func NewCloudServiceRoleInstancesServerTransport(srv *CloudServiceRoleInstancesS
 // CloudServiceRoleInstancesServerTransport connects instances of armcompute.CloudServiceRoleInstancesClient to instances of CloudServiceRoleInstancesServer.
 // Don't use this type directly, use NewCloudServiceRoleInstancesServerTransport instead.
 type CloudServiceRoleInstancesServerTransport struct {
-	srv          *CloudServiceRoleInstancesServer
-	beginDelete  *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]]
+	srv *CloudServiceRoleInstancesServer
+	beginDelete *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]]
 	beginRebuild *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]]
 	beginReimage *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]]
@@ -127,28 +128,28 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginDelete(req *http
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginDelete(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		c.beginDelete.add(req, beginDelete)
 	}
@@ -212,8 +213,7 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchGet(req *http.Request
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleInstance, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -249,8 +249,7 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchGetInstanceView(req *
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleInstanceView, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -286,11 +285,10 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchGetRemoteDesktopFile(
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:        server.GetResponse(respr).Body,
+		Body: server.GetResponse(respr).Body,
 		ContentType: "application/octet-stream",
 	})
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -301,33 +299,33 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchNewListPager(req *htt
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(armcompute.InstanceViewTypes(expandUnescaped))
+	var options *armcompute.CloudServiceRoleInstancesClientListOptions
+	if expandParam != nil {
+		options = &armcompute.CloudServiceRoleInstancesClientListOptions{
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(armcompute.InstanceViewTypes(expandUnescaped))
-		var options *armcompute.CloudServiceRoleInstancesClientListOptions
-		if expandParam != nil {
-			options = &armcompute.CloudServiceRoleInstancesClientListOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := c.srv.NewListPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
+	}
+resp := c.srv.NewListPager(resourceGroupNameUnescaped, cloudServiceNameUnescaped, options)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.CloudServiceRoleInstancesClientListResponse, createLink func() string) {
@@ -354,28 +352,28 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRebuild(req *htt
 	}
 	beginRebuild := c.beginRebuild.get(req)
 	if beginRebuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebuild`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginRebuild(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rebuild`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginRebuild(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRebuild = &respr
 		c.beginRebuild.add(req, beginRebuild)
 	}
@@ -402,28 +400,28 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginReimage(req *htt
 	}
 	beginReimage := c.beginReimage.get(req)
 	if beginReimage == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginReimage(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reimage`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginReimage(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginReimage = &respr
 		c.beginReimage.add(req, beginReimage)
 	}
@@ -450,28 +448,28 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRestart(req *htt
 	}
 	beginRestart := c.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginRestart(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/cloudServices/(?P<cloudServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/roleInstances/(?P<roleInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	roleInstanceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("roleInstanceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudServiceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("cloudServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginRestart(req.Context(), roleInstanceNameUnescaped, resourceGroupNameUnescaped, cloudServiceNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginRestart = &respr
 		c.beginRestart.add(req, beginRestart)
 	}
@@ -491,3 +489,4 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchBeginRestart(req *htt
 
 	return resp, nil
 }
+

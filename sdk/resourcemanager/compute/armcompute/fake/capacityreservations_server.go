@@ -23,7 +23,7 @@ import (
 )
 
 // CapacityReservationsServer is a fake server for instances of the armcompute.CapacityReservationsClient type.
-type CapacityReservationsServer struct {
+type CapacityReservationsServer struct{
 	// BeginCreateOrUpdate is the fake for method CapacityReservationsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservation, options *armcompute.CapacityReservationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type CapacityReservationsServer struct {
 	// BeginUpdate is the fake for method CapacityReservationsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservationUpdate, options *armcompute.CapacityReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCapacityReservationsServerTransport creates a new instance of CapacityReservationsServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type CapacityReservationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCapacityReservationsServerTransport(srv *CapacityReservationsServer) *CapacityReservationsServerTransport {
 	return &CapacityReservationsServerTransport{
-		srv:                                    srv,
-		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]](),
-		beginDelete:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]](),
 		newListByCapacityReservationGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]](),
-		beginUpdate:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]](),
 	}
 }
 
 // CapacityReservationsServerTransport connects instances of armcompute.CapacityReservationsClient to instances of CapacityReservationsServer.
 // Don't use this type directly, use NewCapacityReservationsServerTransport instead.
 type CapacityReservationsServerTransport struct {
-	srv                                    *CapacityReservationsServer
-	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]]
-	beginDelete                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]]
+	srv *CapacityReservationsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]]
 	newListByCapacityReservationGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]]
-	beginUpdate                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacityReservationsServerTransport.
@@ -107,32 +108,32 @@ func (c *CapacityReservationsServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.CapacityReservation](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, capacityReservationNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.CapacityReservation](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, capacityReservationNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -159,28 +160,28 @@ func (c *CapacityReservationsServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, capacityReservationNameUnescaped, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, capacityReservationNameUnescaped, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		c.beginDelete.add(req, beginDelete)
 	}
@@ -244,8 +245,7 @@ func (c *CapacityReservationsServerTransport) dispatchGet(req *http.Request) (*h
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CapacityReservation, req)
-	if err != nil {
-		return nil, err
+	if err != nil {		return nil, err
 	}
 	return resp, nil
 }
@@ -256,21 +256,21 @@ func (c *CapacityReservationsServerTransport) dispatchNewListByCapacityReservati
 	}
 	newListByCapacityReservationGroupPager := c.newListByCapacityReservationGroupPager.get(req)
 	if newListByCapacityReservationGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByCapacityReservationGroupPager(resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListByCapacityReservationGroupPager(resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, nil)
 		newListByCapacityReservationGroupPager = &resp
 		c.newListByCapacityReservationGroupPager.add(req, newListByCapacityReservationGroupPager)
 		server.PagerResponderInjectNextLinks(newListByCapacityReservationGroupPager, req, func(page *armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse, createLink func() string) {
@@ -297,32 +297,32 @@ func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Requ
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.CapacityReservationUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, capacityReservationNameUnescaped, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityReservations/(?P<capacityReservationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcompute.CapacityReservationUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	capacityReservationNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, capacityReservationGroupNameUnescaped, capacityReservationNameUnescaped, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		c.beginUpdate.add(req, beginUpdate)
 	}
@@ -342,3 +342,4 @@ func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Requ
 
 	return resp, nil
 }
+
